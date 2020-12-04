@@ -12,6 +12,11 @@ repositories {
     mavenCentral()
 }
 
+compileJava{
+    options.fork = false
+    options.incremental = false
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -19,10 +24,10 @@ dependencies {
     }
 
     // lombok
-    annotationProcessor("org.projectlombok:lombok:1.18.4")
-    compileOnly("org.projectlombok:lombok:1.18.4")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.4")
-    testCompileOnly("org.projectlombok:lombok:1.18.4")
+    annotationProcessor("org.projectlombok:lombok:1.18.10")
+    compileOnly("org.projectlombok:lombok:1.18.10")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
+    testCompileOnly("org.projectlombok:lombok:1.18.10")
 }
 
 test {

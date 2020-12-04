@@ -9,13 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-//    private final Service service;
     private final BeanFactory factory;
-
-    public UserController(BeanFactory factory) {
-        this.factory = factory;
-    }
-
 
     @GetMapping("/test")
     public String test() {
