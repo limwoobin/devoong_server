@@ -1,21 +1,21 @@
 package com.drogbalog.server.user.controller;
 
 import com.drogbalog.server.user.service.Service;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/user")
 @RequiredArgsConstructor
+@Api(tags = "User Api")
 public class UserController {
     private final BeanFactory factory;
-
-//    public UserController(BeanFactory factory) {
-//        this.factory = factory;
-//    }
 
     @GetMapping("/test")
     public String test() {
