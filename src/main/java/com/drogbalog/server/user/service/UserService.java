@@ -1,16 +1,11 @@
 package com.drogbalog.server.user.service;
 
+import com.drogbalog.server.user.dao.UserDao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-@Component("user")
 @RequiredArgsConstructor
-public class UserService implements com.drogbalog.server.user.service.Service {
-
-    @Override
-    public String serviceTest() {
-        return "userService";
-    }
+public class UserService  {
+    private final UserDao userDao;
 }
