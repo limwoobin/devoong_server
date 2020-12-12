@@ -25,11 +25,11 @@ dependencies {
     }
 
     // jpa
-//    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-//    compile("mysql:mysql-connector-java")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'
 
-    // security
-    //    implementation("org.springframework.boot:spring-boot-starter-security")
+//     security
+//        implementation("org.springframework.boot:spring-boot-starter-security")
 
     // lombok
     annotationProcessor("org.projectlombok:lombok:1.18.10")
@@ -59,6 +59,8 @@ dependencies {
     implementation('com.squareup.retrofit2:retrofit:2.5.0')
     implementation('com.squareup.retrofit2:converter-gson:2.5.0')
     implementation('com.squareup.okhttp3:logging-interceptor:3.12.1')
+
+    testImplementation("com.h2database:h2")
 }
 
 test {
