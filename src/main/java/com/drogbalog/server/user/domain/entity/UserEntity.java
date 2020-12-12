@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,4 +39,7 @@ public class UserEntity {
     @Column(nullable = false , updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "credit" , cascade = CascadeType.PERSIST)
+    private List<UserHistoryEntity> userHistory;
 }
