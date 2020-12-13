@@ -1,6 +1,6 @@
 package com.drogbalog.server.user.service;
 
-import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.user.dao.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class UserService  {
     public void test() {
         String a = null;
         if (a == null) {
-            throw new DrogbalogException("ang~~");
+            throw new BadRequestException("ang zzzz~~");
         }
     }
 }

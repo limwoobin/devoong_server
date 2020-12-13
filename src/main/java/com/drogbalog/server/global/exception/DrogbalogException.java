@@ -26,4 +26,9 @@ public class DrogbalogException extends RuntimeException {
         this.code = status.value();
         this.message = message;
     }
+
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }

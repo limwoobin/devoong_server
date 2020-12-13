@@ -1,5 +1,6 @@
 package com.drogbalog.server.global.advice;
 
+import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.global.exception.DrogbalogException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,21 @@ public class ExceptionAdvice {
         exception.setMessage(e.getMessage());
         exception.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         exception.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exception , HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<DrogbalogException> badRequestException(Exception e) {
+        DrogbalogException exception = makeExceptionObject(HttpStatus.BAD_REQUEST , e);
         return new ResponseEntity<>(exception , HttpStatus.BAD_REQUEST);
+    }
+
+    private DrogbalogException makeExceptionObject(HttpStatus status , Exception e) {
+        DrogbalogException exception = new DrogbalogException();
+        exception.setStatus(status);
+        exception.setCode(status.value());
+        exception.setMessage(e.getMessage());
+        return exception;
     }
 }

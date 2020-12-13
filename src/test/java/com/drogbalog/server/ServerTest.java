@@ -8,7 +8,9 @@ public class ServerTest {
 
     @Test
     public void test() {
-
+        Exception e = new Exception();
+        System.out.println(e.getMessage());
+        System.out.println(e.getCause());
     }
 
 }
