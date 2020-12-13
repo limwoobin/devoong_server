@@ -1,11 +1,14 @@
 package com.drogbalog.server;
 
-import lombok.RequiredArgsConstructor;
+import com.drogbalog.server.global.exception.DrogbalogException;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 
 public class ServerTest {
 
+    @Test
+    public void test() {
+
+    }
 
 }

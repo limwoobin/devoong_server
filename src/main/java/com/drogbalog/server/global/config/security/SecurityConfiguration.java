@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.security;
+package com.drogbalog.server.global.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
