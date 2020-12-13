@@ -21,6 +21,11 @@ public class DrogbalogException extends RuntimeException {
         this.message = message;
     }
 
+    public DrogbalogException(int code , String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public DrogbalogException(HttpStatus status , String message) {
         this.status = status;
         this.code = status.value();
