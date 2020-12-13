@@ -5,6 +5,8 @@ import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,13 @@ public class UserController {
     private final UserService userService;
     private final UserHistoryService userHistoryService;
 
+    private static final Logger logger = LogManager.getLogger(UserController.class);
+
     @GetMapping(value = "")
     public ResponseEntity<HttpStatus> testResponse() {
         String a = null;
-        if (a == null) {
-            throw new DrogbalogException("ang~~");
-        }
+        logger.info("INFO LOGGER");
+        logger.debug("DEBUG LOGGER");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -29,6 +29,7 @@ build
 out
 .idea
 gradle
+logs
 
 # setting files
 gradlew
