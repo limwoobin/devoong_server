@@ -1,6 +1,6 @@
 package com.drogbalog.server.user.controller;
 
-import com.drogbalog.server.user.domain.dto.UserDto;
+import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -13,5 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "User Api")
 public class UserController {
     private final UserService userService;
+    private final UserHistoryService userHistoryService;
 
 }

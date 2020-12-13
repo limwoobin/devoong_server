@@ -19,6 +19,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false , length = 20)
     private long id;
 
     @Column(length = 30)
@@ -40,6 +41,13 @@ public class UserEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "credit" , cascade = CascadeType.PERSIST)
-    private List<UserHistoryEntity> userHistory;
+//    @OneToMany(mappedBy = "user" , cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
+//    private List<UserHistoryEntity> userHistoryEntities;
+
+//    @PostPersist
+//    public void postPersist(UserHistoryEntity userHistoryEntity) {
+//        if (userHistoryEntities != null) {
+//            userHistoryEntities.forEach(loginHistory -> loginHistory.setUserId(this.id));
+//        }
+//    }
 }

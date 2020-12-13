@@ -29,7 +29,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
 //     security
-//        implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // lombok
     annotationProcessor("org.projectlombok:lombok:1.18.10")
