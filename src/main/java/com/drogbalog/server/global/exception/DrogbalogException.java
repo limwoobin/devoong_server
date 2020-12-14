@@ -32,6 +32,12 @@ public class DrogbalogException extends RuntimeException {
         this.message = message;
     }
 
+    public DrogbalogException(HttpStatus status , int code , String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+    }
+
     @Override
     public synchronized Throwable fillInStackTrace() {
         return this;

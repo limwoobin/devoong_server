@@ -1,6 +1,5 @@
 package com.drogbalog.server.user.controller;
 
-import com.drogbalog.server.global.exception.DrogbalogException;
 import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;

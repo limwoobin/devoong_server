@@ -1,18 +1,15 @@
 package com.drogbalog.server;
 
-import com.drogbalog.server.global.config.web.MethodType;
-import com.drogbalog.server.global.exception.DrogbalogException;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-
-import java.util.Arrays;
+import org.springframework.util.StringUtils;
 
 public class ServerTest {
 
     @Test
     public void test() {
-        System.out.println(Arrays.toString(MethodType.values()));
-        System.out.println(Arrays.asList(MethodType.values()));
+        System.out.println(!StringUtils.isEmpty(null));
+        System.out.println(!StringUtils.isEmpty("zz"));
     }
 
 }
