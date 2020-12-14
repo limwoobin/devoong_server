@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    private static final long MAX_SECONDS = 3600;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -15,7 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods(Arrays.toString(MethodType.values()))
                 .allowCredentials(true)
-                .maxAge(3000);
+                .allowedHeaders("*")
+                .maxAge(MAX_SECONDS);
     }
 
 }
