@@ -1,11 +1,9 @@
 package com.drogbalog.server.global.retrofit;
 
-import org.springframework.stereotype.Component;
-
 public class RetrofitFactory<S> {
-    private AbstractRetrofit retrofit;
+    private final AbstractRetrofit retrofit;
 
-    public RetrofitFactory(AbstractRetrofit abstractRetrofit) {
+    public RetrofitFactory(AbstractRetrofit retrofit) {
         this.retrofit = retrofit;
     }
 
