@@ -1,9 +1,9 @@
 package com.drogbalog.server.global.retrofit.impl;
 
-import com.drogbalog.server.global.retrofit.AbstractRetrofit;
+import com.drogbalog.server.global.retrofit.RetrofitFactory;
 import okhttp3.OkHttpClient;
 
-public class RetrofitSafe<S> extends AbstractRetrofit<S> {
+public class RetrofitSafe<S> extends RetrofitFactory<S> {
 
     @Override
     public S createService(String domain, Class<S> service) {

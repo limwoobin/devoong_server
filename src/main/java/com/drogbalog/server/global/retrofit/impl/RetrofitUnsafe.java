@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.retrofit.impl;
 
-import com.drogbalog.server.global.retrofit.AbstractRetrofit;
+import com.drogbalog.server.global.retrofit.RetrofitFactory;
 import okhttp3.OkHttpClient;
 
 import javax.net.ssl.SSLContext;
@@ -8,7 +8,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class RetrofitUnsafe<S> extends AbstractRetrofit<S> {
+public class RetrofitUnsafe<S> extends RetrofitFactory<S> {
 
     @Override
     public S createService(String domain, Class<S> service) {
