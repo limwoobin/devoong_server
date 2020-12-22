@@ -1,6 +1,7 @@
 package com.drogbalog.server.user.controller;
 
 import com.drogbalog.server.user.domain.dto.UserDto;
+import com.drogbalog.server.user.domain.dto.UserHistoryDto;
 import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "User Api")
 public class UserController {
     private final UserService userService;
+    private final UserHistoryService userHistoryService;
 
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
@@ -36,5 +38,12 @@ public class UserController {
     public ResponseEntity<UserDto> getUserInfo(@PathVariable(name = "userId") long userId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/history/{userId}")
+    public ResponseEntity<UserHistoryDto> getUserLoginHistory(@PathVariable(name = "userId") long userId) {
+        UserHistoryDto userHistoryDto = userHistoryService.getUserLoginHistory(userId);
+
+        return new ResponseEntity<>(userHistoryDto , HttpStatus.OK);
     }
 }

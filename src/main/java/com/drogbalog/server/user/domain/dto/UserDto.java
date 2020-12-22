@@ -18,7 +18,7 @@ public class UserDto {
     private long id;
 
     @ApiModelProperty(value = "사용자 계정")
-    private String userEmail;
+    private String email;
 
     @ApiModelProperty(value = "사용자 닉네임")
     private String nickName;
@@ -32,6 +32,6 @@ public class UserDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "사용자 히스토리")
-    private UserHistoryDto userHistory;
+//    @ApiModelProperty(value = "사용자 히스토리")
+//    private UserHistoryDto userHistory;
 }

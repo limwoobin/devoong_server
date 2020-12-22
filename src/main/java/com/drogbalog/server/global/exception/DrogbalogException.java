@@ -1,11 +1,13 @@
 package com.drogbalog.server.global.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class DrogbalogException extends RuntimeException {
     private HttpStatus status;
     private int code;

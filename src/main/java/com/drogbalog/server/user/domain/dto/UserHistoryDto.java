@@ -14,7 +14,7 @@ public class UserHistoryDto {
     private long id;
 
     @ApiModelProperty(value = "사용자 id")
-    private long user_id;
+    private long userId;
 
     @ApiModelProperty(value = "로그인 시간")
     private LocalDateTime loginAt;
