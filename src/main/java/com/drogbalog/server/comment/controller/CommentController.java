@@ -34,4 +34,10 @@ public class CommentController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @PostMapping(value = "/like/post")
+//    @ApiOperation(value = "좋아요 누르기")
+//    public ResponseEntity<> postLikeEmotion() {
+//        return new ResponseEntity<>();
+//    }
 }
