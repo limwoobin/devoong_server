@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class UserDao {
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
 }
