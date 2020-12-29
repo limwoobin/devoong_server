@@ -2,14 +2,12 @@ package com.drogbalog.server.user.domain.entity;
 
 import com.drogbalog.server.global.code.Gender;
 import lombok.Data;
-import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -41,14 +39,4 @@ public class UserEntity {
     @Column(name = "created_at" , nullable = false , updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
-
-//    @OneToMany(mappedBy = "user" , cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
-//    private List<UserHistoryEntity> userHistoryEntities;
-
-//    @PostPersist
-//    public void postPersist(UserHistoryEntity userHistoryEntity) {
-//        if (userHistoryEntities != null) {
-//            userHistoryEntities.forEach(loginHistory -> loginHistory.setUserId(this.id));
-//        }
-//    }
 }

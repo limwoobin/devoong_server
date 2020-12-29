@@ -26,8 +26,4 @@ public class UserHistoryEntity {
     @Column(nullable = false , updatable = false)
     @CreatedDate
     private LocalDateTime loginAt;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id" , insertable = false , updatable = false)
-//    private UserEntity userEntity;
 }

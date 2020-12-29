@@ -18,23 +18,14 @@ public class ServerTest {
 
     @Test
     public void test() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail("drogba02@naver.com");
-        userEntity.setPassword("zzzz");
-        userEntity.setGender(Gender.MALE);
-        userEntity.setNickName("drogba");
-        repository.save(userEntity);
-
-        UserEntity user = repository.findById(1L);
-        assertEquals("drogba" , user.getNickName());
-    }
-
-    @Test
-    public void optionalTest() {
-        Optional<String> optionalS = null;
-        System.out.println(optionalS.get());
-
-        optionalS = Optional.of("T");
-        System.out.println(optionalS.get());
+//        UserEntity userEntity = new UserEntity();
+//        userEntity.setEmail("drogba02@naver.com");
+//        userEntity.setPassword("zzzz");
+//        userEntity.setGender(Gender.MALE);
+//        userEntity.setNickName("drogba");
+//        repository.save(userEntity);
+//
+//        UserEntity user = repository.findById(1L);
+//        assertEquals("drogba" , user.getNickName());
     }
 }

@@ -2,6 +2,7 @@ package com.drogbalog.server.user.controller;
 
 import com.drogbalog.server.user.domain.dto.UserDto;
 import com.drogbalog.server.user.domain.dto.UserHistoryDto;
+import com.drogbalog.server.user.domain.request.UserRequest;
 import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -23,17 +24,9 @@ public class UserController {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    @PostMapping(value = "/signUp")
-    @ApiOperation(value = "회원가입")
-    public ResponseEntity<UserDto> signUp() {
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping(value = "/login")
+    @GetMapping(value = "/login")
     @ApiOperation(value = "로그인")
     public ResponseEntity<UserDto> login() {
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -44,15 +37,22 @@ public class UserController {
         return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
 
-    @PutMapping(value = "/update")
+    @PostMapping(value = "")
+    @ApiOperation(value = "회원가입")
+    public ResponseEntity<UserDto> signUp(UserRequest request) {
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "")
     @ApiOperation(value = "회원정보 수정")
-    public ResponseEntity<UserDto> updateUser() {
+    public ResponseEntity<UserDto> updateUser(UserRequest request) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "/{userId}")
     @ApiOperation(value = "회원 탈퇴")
-    public ResponseEntity<Void> deleteUser() {
+    public ResponseEntity<Void> deleteUser(@PathVariable(name = "userId") long userId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
