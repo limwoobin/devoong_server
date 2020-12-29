@@ -1,6 +1,7 @@
 package com.drogbalog.server.user.domain.entity;
 
 import com.drogbalog.server.global.code.Gender;
+import lombok.Data;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
+@Data
 @DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
