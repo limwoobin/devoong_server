@@ -38,7 +38,7 @@ public class UserEntity {
     @Column(length = 6)
     private Gender gender;
 
-    @Column(nullable = false , updatable = false)
+    @Column(name = "created_at" , nullable = false , updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -23,7 +25,16 @@ public class ServerTest {
         userEntity.setNickName("drogba");
         repository.save(userEntity);
 
-        UserEntity user = repository.findById(1L).orElseThrow(() -> new RuntimeException());
+        UserEntity user = repository.findById(1L);
         assertEquals("drogba" , user.getNickName());
+    }
+
+    @Test
+    public void optionalTest() {
+        Optional<String> optionalS = null;
+        System.out.println(optionalS.get());
+
+        optionalS = Optional.of("T");
+        System.out.println(optionalS.get());
     }
 }

@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
     private final UserHistoryService userHistoryService;
 
-    private static final Logger logger = LogManager.getLogger(UserController.class);
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
@@ -40,7 +40,19 @@ public class UserController {
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable(name = "userId") long userId) {
+        UserDto userDto = userService.getUserInfo(userId);
+        return new ResponseEntity<>(userDto , HttpStatus.OK);
+    }
 
+    @PutMapping(value = "/update")
+    @ApiOperation(value = "회원정보 수정")
+    public ResponseEntity<UserDto> updateUser() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/delete")
+    @ApiOperation(value = "회원 탈퇴")
+    public ResponseEntity<Void> deleteUser() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

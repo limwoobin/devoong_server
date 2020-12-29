@@ -3,11 +3,11 @@ package com.drogbalog.server.global.code;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public enum UseType implements CodeInfo {
-    ACTIVE("활성화"),
-    DISABLE("비활성화");
+@AllArgsConstructor
+public enum Status implements CodeInfo {
+    ACTIVE("active"),
+    DISABLE("disable");
 
     private String description;
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @ApiModel(value = "User Api Request Model")
-public class UserRequestVo {
+public class UserRequest {
 
     @ApiModelProperty(value = "사용자 id")
     private long id;
