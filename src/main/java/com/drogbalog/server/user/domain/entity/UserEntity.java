@@ -1,6 +1,9 @@
 package com.drogbalog.server.user.domain.entity;
 
 import com.drogbalog.server.global.code.Gender;
+import com.drogbalog.server.global.code.Status;
+import com.drogbalog.server.global.config.auth.Role;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,9 +37,37 @@ public class UserEntity {
     private String profileImagePath;
 
     @Column(length = 6)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(length = 7)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(length = 8)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "created_at" , nullable = false , updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Builder
+    public UserEntity(String email , String nickName , String profileImagePath , Role role) {
+        this.email = email;
+        this.nickName = nickName;
+        this.profileImagePath = profileImagePath;
+        this.role = role;
+    }
+
+    public UserEntity update(String nickName , String profileImagePath) {
+        this.nickName = nickName;
+        this.profileImagePath = profileImagePath;
+
+        return this;
+    }
+
+    public String getRoleDescription() {
+        return this.role.getDescription();
+    }
 }

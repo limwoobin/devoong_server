@@ -1,8 +1,8 @@
 package com.drogbalog.server.user.domain.dto;
 
 import com.drogbalog.server.global.code.Gender;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.util.DateTimeUtil;
-import com.drogbalog.server.user.domain.entity.UserHistoryEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,9 +29,9 @@ public class UserDto {
     @ApiModelProperty(value = "사용자 성별")
     private Gender gender;
 
+    @ApiModelProperty(value = "사용자 상태")
+    private Status status;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
-
-//    @ApiModelProperty(value = "사용자 히스토리")
-//    private UserHistoryDto userHistory;
 }
