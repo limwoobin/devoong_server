@@ -3,21 +3,17 @@ package com.drogbalog.server.user.domain.entity;
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.auth.Role;
+import com.drogbalog.server.global.entity.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @DynamicInsert
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +43,6 @@ public class UserEntity {
     @Column(length = 8)
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(name = "created_at" , nullable = false , updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @Builder
     public UserEntity(String email , String nickName , String profileImagePath , Role role) {
