@@ -1,6 +1,6 @@
-package com.drogbalog.server.global.config.auth;
+package com.drogbalog.server.global.config.security.auth;
 
-import com.drogbalog.server.global.config.auth.dto.SessionUser;
+import com.drogbalog.server.global.config.security.auth.dto.SessionUser;
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import com.drogbalog.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
-public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest , OAuth2User> {
+public class OAuthService implements OAuth2UserService<OAuth2UserRequest , OAuth2User> {
     private final UserRepository repository;
     private final HttpSession httpSession;
 

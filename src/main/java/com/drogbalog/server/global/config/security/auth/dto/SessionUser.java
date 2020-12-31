@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.config.auth.dto;
+package com.drogbalog.server.global.config.security.auth.dto;
 
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import lombok.Getter;

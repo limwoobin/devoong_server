@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.web;
 
-import com.drogbalog.server.global.config.auth.LoginUserArgumentResolver;
+import com.drogbalog.server.global.config.security.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -26,7 +28,9 @@ public class UserController {
 
     @GetMapping(value = "/login")
     @ApiOperation(value = "로그인")
-    public ResponseEntity<UserDto> login() {
+    public ResponseEntity<UserDto> login(HttpSession session) {
+        logger.info(session.getId());
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

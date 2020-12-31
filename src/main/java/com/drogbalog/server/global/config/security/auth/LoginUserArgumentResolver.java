@@ -1,6 +1,6 @@
-package com.drogbalog.server.global.config.auth;
+package com.drogbalog.server.global.config.security.auth;
 
-import com.drogbalog.server.global.config.auth.dto.SessionUser;
+import com.drogbalog.server.global.config.security.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

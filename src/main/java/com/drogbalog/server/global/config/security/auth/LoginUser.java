@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.config.auth;
+package com.drogbalog.server.global.config.security.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

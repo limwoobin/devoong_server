@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.config.auth;
+package com.drogbalog.server.global.config.security.auth;
 
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import lombok.Builder;

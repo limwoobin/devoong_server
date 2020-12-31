@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.config.auth;
+package com.drogbalog.server.global.config.security.auth;
 
 import com.drogbalog.server.global.code.CodeInfo;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Role implements CodeInfo {
     GUEST("Guest"),
-    USER("User");
+    USER("User"),
+    ADMIN("Admin");
 
     private String description;
 }

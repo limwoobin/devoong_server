@@ -2,15 +2,15 @@ package com.drogbalog.server.user.domain.entity;
 
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
-import com.drogbalog.server.global.config.auth.Role;
+import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
 @DynamicInsert
 @Table(name = "user")
 public class UserEntity extends BaseTimeEntity {
