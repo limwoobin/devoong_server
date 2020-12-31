@@ -35,3 +35,7 @@ logs
 gradlew
 gradlew.bat
 HELP.md
+
+
+# yml files
+application-oauth.yml
