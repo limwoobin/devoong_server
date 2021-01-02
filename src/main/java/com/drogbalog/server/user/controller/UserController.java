@@ -51,7 +51,8 @@ public class UserController {
     @PutMapping(value = "")
     @ApiOperation(value = "회원정보 수정")
     public ResponseEntity<UserDto> updateUser(UserRequest request) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        UserDto userDto = userService.updateUserInfo(request);
+        return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{userId}")
@@ -64,6 +65,7 @@ public class UserController {
     @GetMapping(value = "/history/{userId}")
     @ApiOperation(value = "로그인 내역 조회")
     public ResponseEntity<UserHistoryDto> getUserLoginHistory(@PathVariable(name = "userId") long userId) {
+        // todo : mongodb api 호출 예정
         UserHistoryDto userHistoryDto = userHistoryService.getUserLoginHistory(userId);
 
         return new ResponseEntity<>(userHistoryDto , HttpStatus.OK);

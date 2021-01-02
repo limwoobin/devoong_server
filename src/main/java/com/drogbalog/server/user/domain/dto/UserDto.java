@@ -33,5 +33,5 @@ public class UserDto {
     private Status status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
 }
