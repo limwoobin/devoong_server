@@ -57,6 +57,7 @@ public class UserController {
     @DeleteMapping(value = "/{userId}")
     @ApiOperation(value = "회원 탈퇴")
     public ResponseEntity<Void> deleteUser(@PathVariable(name = "userId") long userId) {
+        userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
