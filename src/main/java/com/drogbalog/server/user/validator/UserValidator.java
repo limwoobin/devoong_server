@@ -17,12 +17,20 @@ public class UserValidator {
 
     public boolean signUpValidationCheck(UserRequest request) {
         List<Validator> validators = Arrays.asList(new EmailValidator(userDao) , new NickNameValidator(userDao));
-        boolean isUserRequest = false;
+        return this.validatorLoop(validators , request);
+    }
 
+    public boolean userUpdateValidationCheck(UserRequest request) {
+        List<Validator> validators = Arrays.asList(new NickNameValidator(userDao));
+        return this.validatorLoop(validators , request);
+    }
+
+    private boolean validatorLoop(List<Validator> validators , UserRequest request) {
+        boolean isRequest = false;
         for (Validator validator : validators) {
-            isUserRequest = validator.signUpValidator(request);
+            isRequest = validator.signUpValidator(request);
         }
 
-        return isUserRequest;
+        return isRequest;
     }
 }
