@@ -5,9 +5,9 @@ import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.auth.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @ApiModel(value = "User Api Request Model")
 public class UserRequest {
     public UserRequest() {

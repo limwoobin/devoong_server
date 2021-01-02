@@ -7,12 +7,14 @@ import com.drogbalog.server.global.entity.BaseTimeEntity;
 import com.drogbalog.server.user.domain.request.UserRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
 @Entity
 @Getter
 @DynamicInsert
+@NoArgsConstructor
 @Table(name = "user")
 public class UserEntity extends BaseTimeEntity {
 

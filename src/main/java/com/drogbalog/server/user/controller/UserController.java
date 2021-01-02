@@ -1,9 +1,7 @@
 package com.drogbalog.server.user.controller;
 
 import com.drogbalog.server.user.domain.dto.UserDto;
-import com.drogbalog.server.user.domain.dto.UserHistoryDto;
 import com.drogbalog.server.user.domain.request.UserRequest;
-import com.drogbalog.server.user.service.UserHistoryService;
 import com.drogbalog.server.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpSession;
 @Api(tags = "User Api")
 public class UserController {
     private final UserService userService;
-    private final UserHistoryService userHistoryService;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -44,8 +41,8 @@ public class UserController {
     @PostMapping(value = "")
     @ApiOperation(value = "회원가입")
     public ResponseEntity<UserDto> signUp(UserRequest request) {
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        UserDto userDto = userService.signUp(request);
+        return new ResponseEntity<>(userDto , HttpStatus.CREATED);
     }
 
     @PutMapping(value = "")
@@ -60,14 +57,5 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable(name = "userId") long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/history/{userId}")
-    @ApiOperation(value = "로그인 내역 조회")
-    public ResponseEntity<UserHistoryDto> getUserLoginHistory(@PathVariable(name = "userId") long userId) {
-        // todo : mongodb api 호출 예정
-        UserHistoryDto userHistoryDto = userHistoryService.getUserLoginHistory(userId);
-
-        return new ResponseEntity<>(userHistoryDto , HttpStatus.OK);
     }
 }
