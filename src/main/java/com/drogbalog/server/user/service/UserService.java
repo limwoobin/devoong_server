@@ -1,13 +1,10 @@
 package com.drogbalog.server.user.service;
 
-import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.user.dao.UserDao;
 import com.drogbalog.server.user.domain.dto.UserDto;
 import com.drogbalog.server.user.domain.request.UserRequest;
 import com.drogbalog.server.user.validator.UserValidator;
-import com.drogbalog.server.user.validator.Validator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +16,11 @@ public class UserService  {
     private final UserValidator userValidator;
 
     public UserDto signUp(UserRequest request) {
-        this.userValidationCheck(request);
+        userValidator.signUpValidationCheck(request);
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         UserDto userDto = userDao.signUp(request);
         return userDto;
-    }
-
-    private void userValidationCheck(UserRequest request) {
-        boolean isUserRequest = userValidator.signUpValidationCheck(request);
-
-        if (!isUserRequest) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST , "already in use data");
-        }
     }
 
     public UserDto getUserInfo(long userId) {
@@ -40,6 +29,8 @@ public class UserService  {
     }
 
     public UserDto updateUserInfo(UserRequest request) {
+        userValidator.userUpdateValidationCheck(request);
+
         UserDto userDto = userDao.updateUserInfo(request);
         return userDto;
     }
