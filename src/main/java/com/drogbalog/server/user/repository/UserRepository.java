@@ -12,5 +12,9 @@ public interface UserRepository extends DefaultRepository<UserEntity , Long> {
     UserEntity findById(long id);
 
     Optional<UserEntity> findByEmail(String email);
+
+    UserEntity findByNickname(String nickName);
+
+    UserEntity findByEmailNotOptional(String email);
 }
 

@@ -4,14 +4,17 @@ import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
+import com.drogbalog.server.user.domain.request.UserRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
 @Entity
 @Getter
 @DynamicInsert
+@NoArgsConstructor
 @Table(name = "user")
 public class UserEntity extends BaseTimeEntity {
 
@@ -55,6 +58,14 @@ public class UserEntity extends BaseTimeEntity {
     public UserEntity update(String nickName , String profileImagePath) {
         this.nickName = nickName;
         this.profileImagePath = profileImagePath;
+
+        return this;
+    }
+
+    public UserEntity update(UserRequest request) {
+        this.password = request.getPassword();
+        this.nickName = request.getNickName();
+        this.profileImagePath = request.getProfileImagePath();
 
         return this;
     }

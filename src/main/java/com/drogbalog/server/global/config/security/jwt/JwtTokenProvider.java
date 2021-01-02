@@ -27,10 +27,10 @@ public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
 
     @Value("${jwt.secret_key}")
-    private String secretKey = "drogbalog_secret_key";
+    private String secretKey;
 
     @Value("${jwt.token_valid_time}")
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime;
 
     @PostConstruct
     protected void init() {
