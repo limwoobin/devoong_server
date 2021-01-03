@@ -13,24 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class UserDao {
     private final UserRepository repository;
     private final UserConverter converter;
 
-    @Transactional
     public UserDto signUp(UserRequest request) {
         UserEntity userEntity = converter.userRequestConvert(request);
         UserDto userDto = converter.userConverts(repository.save(userEntity));
         return userDto;
     }
 
-    @Transactional
     public UserDto getUserInfo(long userId) {
         UserEntity userEntity = repository.findById(userId);
         return converter.userConverts(userEntity);
     }
 
-    @Transactional
     public UserDto updateUserInfo(UserRequest request) {
         UserEntity userEntity = repository.findById(request.getId());
         userEntity.update(request);
@@ -38,7 +36,6 @@ public class UserDao {
         return converter.userConverts(userEntity);
     }
 
-    @Transactional
     public void deleteUser(long userId) {
         try {
             repository.deleteById(userId);
@@ -47,12 +44,10 @@ public class UserDao {
         }
     }
 
-    @Transactional
     public UserEntity findByEmail(String email) {
         return repository.findByEmailNotOptional(email);
     }
 
-    @Transactional
     public UserEntity findByNickName(String nickName) {
         return repository.findByNickname(nickName);
     }
