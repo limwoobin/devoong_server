@@ -17,7 +17,7 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket userApi() {
-        return getDocket("user-api", "/user/**");
+        return getDocket("user-api", "/users/**");
     }
 
     private Docket getDocket(String groupName, String pathPattern) {

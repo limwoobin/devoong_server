@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @Api(tags = "User Api")
 public class UserController {
@@ -26,6 +26,14 @@ public class UserController {
     @GetMapping(value = "/login")
     @ApiOperation(value = "로그인")
     public ResponseEntity<UserDto> login(HttpSession session) {
+        logger.info(session.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/logout")
+    @ApiOperation(value = "로그아웃")
+    public ResponseEntity<HttpStatus> logout(HttpSession session) {
         logger.info(session.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);

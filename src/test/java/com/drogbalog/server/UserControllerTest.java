@@ -19,17 +19,17 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    public void loginTest() throws Exception {
-        mvc.perform(get("/user/login"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void getUserTest() throws Exception {
-        String nickName = "drogba";
-        mvc.perform(get("/user/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(nickName));
-    }
+//    @Test
+//    public void loginTest() throws Exception {
+//        mvc.perform(get("/user/login"))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    public void getUserTest() throws Exception {
+//        String nickName = "drogba";
+//        mvc.perform(get("/user/1"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(nickName));
+//    }
 }

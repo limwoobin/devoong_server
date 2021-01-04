@@ -8,6 +8,7 @@ import com.drogbalog.server.user.domain.request.UserRequest;
 import com.drogbalog.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,10 +46,11 @@ public class UserDao {
     }
 
     public UserEntity findByEmail(String email) {
-        return repository.findByEmailNotOptional(email);
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No Such Email"));
     }
 
     public UserEntity findByNickName(String nickName) {
-        return repository.findByNickname(nickName);
+        return repository.findByNickName(nickName);
     }
 }

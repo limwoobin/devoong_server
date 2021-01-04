@@ -10,6 +10,7 @@ spring:
       path: /test_db
   datasource:
     hikari:
+      #jdbc-url: org.h2.Driver
       driver-class-name: org.h2.Driver
       username: test
       password: 1234
