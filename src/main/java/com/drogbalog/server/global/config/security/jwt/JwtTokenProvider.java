@@ -19,7 +19,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-import static com.drogbalog.server.global.util.StaticInfo.HEADER_TOKEN_NAME;
+import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RequiredArgsConstructor
 @Component
@@ -41,12 +41,18 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(userPrimaryKey);
         claims.put("roles" , roles);
         Date now = new Date();
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidTime))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setExpiration(createExpiredTime(tokenValidTime))
+                .signWith(SignatureAlgorithm.HS256 , secretKey)
                 .compact();
+    }
+
+    private static Date createExpiredTime(long tokenValidTime) {
+        Date now = new Date();
+        return new Date(now.getTime() + tokenValidTime);
     }
 
     public Authentication getAuthentication(String token) {
@@ -60,7 +66,7 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(HEADER_TOKEN_NAME);
+        return request.getHeader(DR_HEADER_TOKEN);
     }
 
     public boolean validateToken(String jwtToken) {

@@ -2,6 +2,7 @@ package com.drogbalog.server.user.domain.dto;
 
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
+import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.util.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -32,6 +33,6 @@ public class UserDto {
     @ApiModelProperty(value = "사용자 상태")
     private Status status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
-    private LocalDateTime createdDate;
+    @ApiModelProperty(value = "token")
+    private String jwtToken;
 }
