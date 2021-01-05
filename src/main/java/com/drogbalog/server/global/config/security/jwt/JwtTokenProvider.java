@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
@@ -32,22 +31,33 @@ public class JwtTokenProvider {
     @Value("${jwt.token_valid_time}")
     private long tokenValidTime;
 
+    @Value("${jwt.refreshToken_valid_time}")
+    private long refreshTokenValidTime;
+
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userPrimaryKey , List<Role> roles) {
+    private String doGenerateToken(String userPrimaryKey , long validTime) {
         Claims claims = Jwts.claims().setSubject(userPrimaryKey);
-        claims.put("roles" , roles);
+        claims.put("role" , Role.USER);
         Date now = new Date();
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(createExpiredTime(tokenValidTime))
+                .setExpiration(createExpiredTime(validTime))
                 .signWith(SignatureAlgorithm.HS256 , secretKey)
                 .compact();
+    }
+
+    public String generateToken(String userPrimaryKey) {
+        return doGenerateToken(userPrimaryKey , tokenValidTime);
+    }
+
+    public String generateRefreshToken(String userPrimaryKey) {
+        return doGenerateToken(userPrimaryKey , refreshTokenValidTime);
     }
 
     private static Date createExpiredTime(long tokenValidTime) {

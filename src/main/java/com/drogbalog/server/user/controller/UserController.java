@@ -31,7 +31,7 @@ public class UserController {
     @ApiOperation(value = "로그인")
     public ResponseEntity<UserDto> login(@RequestBody UserRequest request) {
         UserDto userDto = new UserDto();
-        userDto.setJwtToken(jwtTokenProvider.createToken(request.getEmail() , Arrays.asList(Role.values())));
+        userDto.setJwtToken(jwtTokenProvider.generateToken(request.getEmail()));
 
         return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
