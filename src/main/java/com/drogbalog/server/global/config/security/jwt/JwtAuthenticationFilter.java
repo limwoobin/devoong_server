@@ -24,12 +24,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(Arrays.asList("/test"));
+            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db"));
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
-        tokenValidCheck(token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -37,12 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private void tokenValidCheck(String token) {
-        if (StringUtils.isEmpty(token)) {
-            throw new InvalidJwtTokenException(HttpStatus.BAD_REQUEST , "Invalid Token");
-        }
     }
 
     @Override

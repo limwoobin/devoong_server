@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.function.Function;
 
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
@@ -66,13 +67,22 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPrimaryKey(token));
+        String userPrimaryKey = this.getUserPrimaryKey(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userPrimaryKey);
         return new UsernamePasswordAuthenticationToken(userDetails , "" , userDetails.getAuthorities());
     }
 
     public String getUserPrimaryKey(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token)
-                .getBody().getSubject();
+        return getClaimFromToken(token , Claims::getSubject);
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
     public String resolveToken(HttpServletRequest request) {

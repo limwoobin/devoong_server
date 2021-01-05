@@ -1,5 +1,6 @@
 package com.drogbalog.server;
 
+import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import com.drogbalog.server.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -15,13 +16,17 @@ public class ServerTest {
 
     @Test
     public void test() {
-        UserEntity userEntity = UserEntity.builder()
-                .email("drogba02@naver.com")
-                .password("zzz")
-                .nickName("drogba")
-                .build();
-        repository.save(userEntity);
-        UserEntity user = repository.findById(1L);
-        assertEquals("drogba" , user.getNickName());
+//        UserEntity userEntity = UserEntity.builder()
+//                .email("drogba02@naver.com")
+//                .password("zzz")
+//                .nickName("drogba")
+//                .build();
+//        repository.save(userEntity);
+//        UserEntity user = repository.findById(1L);
+//        assertEquals("drogba" , user.getNickName());
+        UserEntity entity = repository.findByEmail("azaz")
+                .orElseThrow(RuntimeException::new);
+
+        System.out.println(entity.getEmail());
     }
 }
