@@ -24,7 +24,7 @@ public class RetrofitClient<T> {
             }
 
             ErrorResponse errorResponse = parseErrorBody(response.errorBody());
-            HttpStatus status = HttpStatus.valueOf(errorResponse.getStatus());
+            HttpStatus status = HttpStatus.valueOf(errorResponse.getCode());
 
             throw new DrogbalogException(status, errorResponse.getCode(), errorResponse.getMessage());
 
