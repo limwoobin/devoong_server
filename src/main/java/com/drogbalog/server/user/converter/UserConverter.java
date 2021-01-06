@@ -4,10 +4,16 @@ import com.drogbalog.server.user.domain.dto.UserDto;
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import com.drogbalog.server.user.domain.request.UserRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface UserConverter {
 
+    @Mappings({
+            @Mapping(target = "accessToken", ignore = true),
+            @Mapping(target = "refreshToken", ignore = true)
+    })
     UserDto userConverts(UserEntity userEntity);
 
     UserEntity userRequestConvert(UserRequest request);

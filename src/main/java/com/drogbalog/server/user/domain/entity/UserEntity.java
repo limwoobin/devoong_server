@@ -5,6 +5,7 @@ import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import com.drogbalog.server.user.domain.request.UserRequest;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -18,39 +18,42 @@ import javax.validation.Valid;
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RestController
-@RequestMapping("/users")
 @RequiredArgsConstructor
-@Api(tags = "User Api")
-public class UserController {
+@Api(tags = "User Auth Api")
+public class UserAuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    @GetMapping(value = "/{userId}")
-    @ApiOperation(value = "회원정보 조회")
-    public ResponseEntity<UserDto> getUserInfo(
+    @PostMapping(value = "/signUp")
+    @ApiOperation(value = "회원가입")
+    public ResponseEntity<UserDto> signUp(
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-            @PathVariable(name = "userId") long userId) {
-        UserDto userDto = userService.getUserInfo(userId);
+            @Valid @RequestBody UserRequest request) {
+        UserDto userDto = userService.signUp(request);
+        userDto = jwtTokenProvider.generateTokens(userDto);
+
+        return new ResponseEntity<>(userDto , HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/login")
+    @ApiOperation(value = "로그인")
+    public ResponseEntity<UserDto> login(
+            @Valid @RequestBody UserRequest request) {
+        UserDto userDto = userService.signUp(request);
+        userDto = jwtTokenProvider.generateTokens(userDto);
+
         return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
 
-    @PutMapping(value = "")
-    @ApiOperation(value = "회원정보 수정")
-    public ResponseEntity<UserDto> updateUser(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-            @RequestBody UserRequest request) {
-        UserDto userDto = userService.updateUserInfo(request);
-        return new ResponseEntity<>(userDto , HttpStatus.OK);
-    }
+    @GetMapping(value = "/logout")
+    @ApiOperation(value = "로그아웃")
+    public ResponseEntity<HttpStatus> logout(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+        logger.info(token);
+        // todo: redis 연동
 
-    @DeleteMapping(value = "/{userId}")
-    @ApiOperation(value = "회원 탈퇴")
-    public ResponseEntity<Void> deleteUser(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-            @PathVariable(name = "userId") long userId) {
-        userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

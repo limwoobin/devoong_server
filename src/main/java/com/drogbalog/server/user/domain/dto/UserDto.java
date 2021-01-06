@@ -33,6 +33,9 @@ public class UserDto {
     @ApiModelProperty(value = "사용자 상태")
     private Status status;
 
-    @ApiModelProperty(value = "token")
-    private String jwtToken;
+    @ApiModelProperty(value = "access_token")
+    private String accessToken;
+
+    @ApiModelProperty(value = "refresh_token")
+    private String refreshToken;
 }

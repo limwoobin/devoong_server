@@ -1,6 +1,7 @@
 package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.exception.UserNotFoundException;
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import com.drogbalog.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Not Found UserName"));
+                .orElseThrow(() -> new UserNotFoundException("Not Found UserName"));
 
         return new User(userEntity.getEmail() , userEntity.getPassword() , getGrantedAuthorities());
     }
