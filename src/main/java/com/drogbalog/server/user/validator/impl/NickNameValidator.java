@@ -19,7 +19,7 @@ public class NickNameValidator implements Validator {
     public boolean signUpValidator(UserRequest request) {
         UserEntity userEntity = userDao.findByNickName(request.getNickName());
         if (!StringUtils.isEmpty(userEntity)) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST , "Already in use nickName");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST , "이미 사용중인 닉네임 입니다.");
         }
 
         return true;

@@ -32,7 +32,6 @@ public class UserAuthController {
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @Valid @RequestBody UserRequest request) {
         UserDto userDto = userService.signUp(request);
-        userDto = jwtTokenProvider.generateTokens(userDto);
 
         return new ResponseEntity<>(userDto , HttpStatus.CREATED);
     }
@@ -41,7 +40,7 @@ public class UserAuthController {
     @ApiOperation(value = "로그인")
     public ResponseEntity<UserDto> login(
             @Valid @RequestBody UserRequest request) {
-        UserDto userDto = userService.signUp(request);
+        UserDto userDto = userService.login(request);
         userDto = jwtTokenProvider.generateTokens(userDto);
 
         return new ResponseEntity<>(userDto , HttpStatus.OK);

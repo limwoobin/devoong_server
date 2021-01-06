@@ -11,10 +11,6 @@ public class InvalidJwtTokenException extends DrogbalogException {
         super(message);
     }
 
-    public InvalidJwtTokenException(InvalidDataType dataType) {
-        super(dataType.getCode() , dataType.getMessage());
-    }
-
     public InvalidJwtTokenException(HttpStatus status , String message) {
         super(status , message);
     }
