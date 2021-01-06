@@ -29,7 +29,9 @@ public class UserController {
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "로그인")
-    public ResponseEntity<UserDto> login(@Valid @RequestBody UserRequest request) {
+    public ResponseEntity<UserDto> login(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @Valid @RequestBody UserRequest request) {
         UserDto userDto = new UserDto();
         userDto.setJwtToken(jwtTokenProvider.generateToken(request.getEmail()));
 
@@ -47,28 +49,37 @@ public class UserController {
 
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
-    public ResponseEntity<UserDto> getUserInfo(@PathVariable(name = "userId") long userId) {
+    public ResponseEntity<UserDto> getUserInfo(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @PathVariable(name = "userId") long userId) {
         UserDto userDto = userService.getUserInfo(userId);
         return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
 
     @PostMapping(value = "")
     @ApiOperation(value = "회원가입")
-    public ResponseEntity<UserDto> signUp(UserRequest request) {
+    public ResponseEntity<UserDto> signUp(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @Valid @RequestBody UserRequest request) {
         UserDto userDto = userService.signUp(request);
+        userDto.setJwtToken(jwtTokenProvider.generateToken(request.getEmail()));
         return new ResponseEntity<>(userDto , HttpStatus.CREATED);
     }
 
     @PutMapping(value = "")
     @ApiOperation(value = "회원정보 수정")
-    public ResponseEntity<UserDto> updateUser(UserRequest request) {
+    public ResponseEntity<UserDto> updateUser(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @RequestBody UserRequest request) {
         UserDto userDto = userService.updateUserInfo(request);
         return new ResponseEntity<>(userDto , HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{userId}")
     @ApiOperation(value = "회원 탈퇴")
-    public ResponseEntity<Void> deleteUser(@PathVariable(name = "userId") long userId) {
+    public ResponseEntity<Void> deleteUser(
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @PathVariable(name = "userId") long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

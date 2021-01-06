@@ -48,11 +48,12 @@ public class UserEntity extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public UserEntity(String email , String password , String nickName , String profileImagePath , Role role) {
+    public UserEntity(String email , String password , String nickName , String profileImagePath , Status status ,  Role role) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.profileImagePath = profileImagePath;
+        this.status = status;
         this.role = role;
     }
 
@@ -67,6 +68,12 @@ public class UserEntity extends BaseTimeEntity {
         this.password = request.getPassword();
         this.nickName = request.getNickName();
         this.profileImagePath = request.getProfileImagePath();
+
+        return this;
+    }
+
+    public UserEntity updateStatus(Status status) {
+        this.status = status;
 
         return this;
     }
