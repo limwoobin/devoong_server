@@ -1,6 +1,5 @@
 package com.drogbalog.server.user.controller;
 
-import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.user.domain.dto.UserDto;
 import com.drogbalog.server.user.domain.request.UserRequest;
@@ -13,7 +12,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Arrays;
+
+import javax.validation.Valid;
 
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "로그인")
-    public ResponseEntity<UserDto> login(@RequestBody UserRequest request) {
+    public ResponseEntity<UserDto> login(@Valid @RequestBody UserRequest request) {
         UserDto userDto = new UserDto();
         userDto.setJwtToken(jwtTokenProvider.generateToken(request.getEmail()));
 
