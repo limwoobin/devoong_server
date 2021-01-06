@@ -20,7 +20,16 @@ public class UserDao {
 
     @Transactional
     public UserDto signUp(UserRequest request) {
-        UserEntity userEntity = converter.userRequestConvert(request);
+        UserEntity userEntity = UserEntity.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .nickName(request.getNickName())
+                .profileImagePath(request.getProfileImagePath())
+                .gender(request.getGender())
+                .status(request.getStatus())
+                .role(request.getRole())
+                .build();
+
         return converter.userConverts(repository.save(userEntity));
     }
 
@@ -57,6 +66,12 @@ public class UserDao {
     public UserEntity findByEmail(String email) {
         return repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No Such Email"));
+    }
+
+    @Transactional
+    public UserEntity availableEmailCheck(String email) {
+        return repository.findByEmail(email)
+                .orElse(null);
     }
 
     @Transactional

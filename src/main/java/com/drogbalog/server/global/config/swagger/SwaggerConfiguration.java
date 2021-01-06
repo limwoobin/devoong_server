@@ -11,6 +11,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.print.Doc;
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {
@@ -18,6 +22,16 @@ public class SwaggerConfiguration {
     @Bean
     public Docket userApi() {
         return getDocket("user-api", "/users/**");
+    }
+
+    @Bean
+    public Docket userAuthApi() {
+        return getDocket("user-auth-api" , "/auth/**");
+    }
+
+    @Bean
+    public Docket testApi() {
+        return getDocket("test-api" , "/test/**");
     }
 
     private Docket getDocket(String groupName, String pathPattern) {

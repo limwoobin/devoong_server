@@ -9,7 +9,7 @@ public class BadRequestException extends DrogbalogException {
     }
 
     public BadRequestException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST , message);
     }
 
     public BadRequestException(HttpStatus status , String message) {

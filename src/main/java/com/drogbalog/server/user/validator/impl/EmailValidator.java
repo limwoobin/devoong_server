@@ -17,7 +17,7 @@ public class EmailValidator implements Validator {
 
     @Override
     public boolean signUpValidator(UserRequest request) {
-        UserEntity userEntity = userDao.findByEmail(request.getEmail());
+        UserEntity userEntity = userDao.availableEmailCheck(request.getEmail());
         if (!StringUtils.isEmpty(userEntity)) {
             throw new BadRequestException(HttpStatus.BAD_REQUEST , "이미 사용중인 이메일 입니다.");
         }

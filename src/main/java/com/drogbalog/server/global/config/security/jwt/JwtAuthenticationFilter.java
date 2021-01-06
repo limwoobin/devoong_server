@@ -21,7 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db" , "/swagger-ui.html"));
+            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db" , "/swagger-ui.html" , "/auth/*"));
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

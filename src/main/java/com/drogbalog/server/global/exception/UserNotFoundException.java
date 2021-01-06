@@ -12,10 +12,6 @@ public class UserNotFoundException extends DrogbalogException {
         super(message);
     }
 
-    public UserNotFoundException(InvalidDataType dataType) {
-        super(dataType.getCode() , dataType.getMessage());
-    }
-
     public UserNotFoundException(HttpStatus status , String message) {
         super(status , message);
     }

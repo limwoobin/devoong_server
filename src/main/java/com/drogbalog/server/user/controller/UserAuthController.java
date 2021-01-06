@@ -19,6 +19,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/auth")
 @Api(tags = "User Auth Api")
 public class UserAuthController {
     private final UserService userService;
@@ -29,7 +30,6 @@ public class UserAuthController {
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
     public ResponseEntity<UserDto> signUp(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @Valid @RequestBody UserRequest request) {
         UserDto userDto = userService.signUp(request);
 
