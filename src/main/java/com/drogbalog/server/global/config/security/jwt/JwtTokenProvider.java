@@ -1,6 +1,7 @@
 package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.user.domain.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -53,11 +54,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateToken(String userPrimaryKey) {
+    private String generateAccessToken(String userPrimaryKey) {
         return doGenerateToken(userPrimaryKey , tokenValidTime);
     }
 
-    public String generateRefreshToken(String userPrimaryKey) {
+    private String generateRefreshToken(String userPrimaryKey) {
         return doGenerateToken(userPrimaryKey , refreshTokenValidTime);
     }
 
@@ -66,17 +67,17 @@ public class JwtTokenProvider {
         return new Date(now.getTime() + tokenValidTime);
     }
 
-    public Authentication getAuthentication(String token) {
+    Authentication getAuthentication(String token) {
         String userPrimaryKey = this.getUserPrimaryKey(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userPrimaryKey);
         return new UsernamePasswordAuthenticationToken(userDetails , "" , userDetails.getAuthorities());
     }
 
-    public String getUserPrimaryKey(String token) {
+    String getUserPrimaryKey(String token) {
         return getClaimFromToken(token , Claims::getSubject);
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+    <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
@@ -85,12 +86,19 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    public String resolveToken(HttpServletRequest request) {
+    String resolveToken(HttpServletRequest request) {
         return request.getHeader(DR_HEADER_TOKEN);
     }
 
-    public boolean validateToken(String jwtToken) {
+    boolean validateToken(String jwtToken) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
         return !claimsJws.getBody().getExpiration().before(new Date());
+    }
+
+    public UserDto generateTokens(UserDto userDto) {
+        userDto.setAccessToken(this.generateAccessToken(userDto.getEmail()));
+        userDto.setRefreshToken(this.generateRefreshToken(userDto.getEmail()));
+
+        return userDto;
     }
 }

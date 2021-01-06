@@ -6,6 +6,10 @@ import com.drogbalog.server.global.config.security.auth.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel(value = "User Api Request Model")
@@ -18,6 +22,8 @@ public class UserRequest {
     @ApiModelProperty(value = "사용자 id")
     private long id;
 
+    @NotNull
+    @Email
     @ApiModelProperty(value = "사용자 이메일")
     private String email;
 

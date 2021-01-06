@@ -1,12 +1,9 @@
 package com.drogbalog.server.global.config.security.jwt;
 
-import com.drogbalog.server.global.exception.InvalidJwtTokenException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,7 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db"));
+            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db" , "/swagger-ui.html" , "/auth/*"));
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

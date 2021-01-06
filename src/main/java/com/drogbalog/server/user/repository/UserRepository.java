@@ -14,5 +14,7 @@ public interface UserRepository extends DefaultRepository<UserEntity , Long> {
     Optional<UserEntity> findByEmail(String email);
 
     UserEntity findByNickName(String nickName);
+
+    Optional<UserEntity> findByEmailAndPassword(String email , String password);
 }
 

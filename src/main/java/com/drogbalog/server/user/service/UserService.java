@@ -23,6 +23,11 @@ public class UserService {
         return userDto;
     }
 
+    public UserDto login(UserRequest request) {
+        UserDto userDto = userDao.login(request.getEmail() , passwordEncoder.encode(request.getPassword()));
+        return userDto;
+    }
+
     public UserDto getUserInfo(long userId) {
         UserDto userDto = userDao.getUserInfo(userId);
         return userDto;

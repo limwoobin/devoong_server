@@ -5,6 +5,7 @@ import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import com.drogbalog.server.user.domain.request.UserRequest;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @DynamicInsert
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 public class UserEntity extends BaseTimeEntity {
 
@@ -26,7 +27,7 @@ public class UserEntity extends BaseTimeEntity {
     @Column(length = 30)
     private String email;
 
-    @Column(length = 50)
+    @Column(length = 200)
     private String password;
 
     @Column(length = 20)
@@ -48,11 +49,13 @@ public class UserEntity extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public UserEntity(String email , String password , String nickName , String profileImagePath , Role role) {
+    public UserEntity(String email , String password , String nickName , String profileImagePath , Gender gender , Status status ,  Role role) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.profileImagePath = profileImagePath;
+        this.gender = gender;
+        this.status = status;
         this.role = role;
     }
 
@@ -67,6 +70,12 @@ public class UserEntity extends BaseTimeEntity {
         this.password = request.getPassword();
         this.nickName = request.getNickName();
         this.profileImagePath = request.getProfileImagePath();
+
+        return this;
+    }
+
+    public UserEntity updateStatus(Status status) {
+        this.status = status;
 
         return this;
     }
