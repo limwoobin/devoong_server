@@ -3,7 +3,7 @@ package com.drogbalog.server.user.service;
 import com.drogbalog.server.user.dao.UserDao;
 import com.drogbalog.server.user.domain.dto.UserDto;
 import com.drogbalog.server.user.domain.request.UserRequest;
-import com.drogbalog.server.user.validator.UserValidator;
+import com.drogbalog.server.user.service.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

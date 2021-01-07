@@ -29,8 +29,7 @@ public class UserAuthController {
 
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
-    public ResponseEntity<UserDto> signUp(
-            @Valid @RequestBody UserRequest request) {
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserRequest request) {
         UserDto userDto = userService.signUp(request);
 
         return new ResponseEntity<>(userDto , HttpStatus.CREATED);
@@ -38,8 +37,7 @@ public class UserAuthController {
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "로그인")
-    public ResponseEntity<UserDto> login(
-            @Valid @RequestBody UserRequest request) {
+    public ResponseEntity<UserDto> login(@Valid @RequestBody UserRequest request) {
         UserDto userDto = userService.login(request);
         userDto = jwtTokenProvider.generateTokens(userDto);
 
@@ -48,8 +46,7 @@ public class UserAuthController {
 
     @GetMapping(value = "/logout")
     @ApiOperation(value = "로그아웃")
-    public ResponseEntity<HttpStatus> logout(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+    public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
         logger.info(token);
         // todo: redis 연동
 

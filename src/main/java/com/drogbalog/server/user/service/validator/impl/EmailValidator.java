@@ -1,10 +1,10 @@
-package com.drogbalog.server.user.validator.impl;
+package com.drogbalog.server.user.service.validator.impl;
 
 import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.user.dao.UserDao;
 import com.drogbalog.server.user.domain.entity.UserEntity;
 import com.drogbalog.server.user.domain.request.UserRequest;
-import com.drogbalog.server.user.validator.Validator;
+import com.drogbalog.server.user.service.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
