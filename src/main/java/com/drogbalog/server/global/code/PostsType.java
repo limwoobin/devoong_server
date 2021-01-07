@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PostType implements CodeInfo {
+public enum PostsType implements CodeInfo {
     JAVA("java"),
     SPRING("spring"),
     NETWORK("network"),
