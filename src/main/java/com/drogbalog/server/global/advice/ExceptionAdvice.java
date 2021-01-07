@@ -2,37 +2,47 @@ package com.drogbalog.server.global.advice;
 
 import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.EmptyDataException;
+import com.drogbalog.server.global.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class ExceptionAdvice {
+public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DrogbalogException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<DrogbalogException> handleException(Exception e) {
-        DrogbalogException exception = new DrogbalogException();
-        exception.setMessage(e.getMessage());
-        exception.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        exception.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(exception , HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(e.getMessage());
+        errorResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse , HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<DrogbalogException> badRequestException(Exception e) {
-        DrogbalogException exception = makeExceptionObject(HttpStatus.BAD_REQUEST , e);
-        return new ResponseEntity<>(exception , HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> badRequestException(Exception e) {
+        ErrorResponse errorResponse = makeExceptionObject(HttpStatus.BAD_REQUEST , e);
+        return new ResponseEntity<>(errorResponse , HttpStatus.BAD_REQUEST);
     }
 
-    private DrogbalogException makeExceptionObject(HttpStatus status , Exception e) {
-        DrogbalogException exception = new DrogbalogException();
-        exception.setStatus(status);
-        exception.setCode(status.value());
-        exception.setMessage(e.getMessage());
-        return exception;
+    @ExceptionHandler(EmptyDataException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> notFoundException(Exception e) {
+        ErrorResponse errorResponse = makeExceptionObject(HttpStatus.NOT_FOUND , e);
+        return new ResponseEntity<>(errorResponse , HttpStatus.NOT_FOUND);
+    }
+
+    private ErrorResponse makeExceptionObject(HttpStatus status , Exception e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setStatus(status);
+        errorResponse.setCode(status.value());
+        errorResponse.setMessage(e.getMessage());
+        return errorResponse;
     }
 }

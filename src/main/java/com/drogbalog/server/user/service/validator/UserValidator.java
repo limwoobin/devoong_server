@@ -1,9 +1,9 @@
-package com.drogbalog.server.user.validator;
+package com.drogbalog.server.user.service.validator;
 
 import com.drogbalog.server.user.dao.UserDao;
 import com.drogbalog.server.user.domain.request.UserRequest;
-import com.drogbalog.server.user.validator.impl.EmailValidator;
-import com.drogbalog.server.user.validator.impl.NickNameValidator;
+import com.drogbalog.server.user.service.validator.impl.EmailValidator;
+import com.drogbalog.server.user.service.validator.impl.NickNameValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
