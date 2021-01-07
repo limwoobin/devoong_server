@@ -73,7 +73,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails , "" , userDetails.getAuthorities());
     }
 
-    String getUserPrimaryKey(String token) {
+    public String getUserPrimaryKey(String token) {
         return getClaimFromToken(token , Claims::getSubject);
     }
 

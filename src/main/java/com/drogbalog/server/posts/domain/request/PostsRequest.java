@@ -3,6 +3,7 @@ package com.drogbalog.server.posts.domain.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.data.domain.Pageable;
 
 @Data
 @ApiModel(value = "Posts Request Model")
@@ -19,4 +20,7 @@ public class PostsRequest {
 
     @ApiModelProperty(value = "내용")
     private String contents;
+
+    @ApiModelProperty(value = "page")
+    private Pageable pageable;
 }

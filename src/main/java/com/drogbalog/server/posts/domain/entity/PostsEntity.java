@@ -1,6 +1,7 @@
 package com.drogbalog.server.posts.domain.entity;
 
 import com.drogbalog.server.global.code.PostsType;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,6 +36,10 @@ public class PostsEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PostsType postsType;
 
+    @Column(length = 7)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Builder
     public PostsEntity(String email , String subject , String contents) {
         this.email = email;
@@ -45,6 +50,12 @@ public class PostsEntity extends BaseTimeEntity {
     public PostsEntity update(String subject , String contents) {
         this.subject = subject;
         this.contents = contents;
+
+        return this;
+    }
+
+    public PostsEntity updateStatus(Status status) {
+        this.status = status;
 
         return this;
     }

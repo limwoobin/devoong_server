@@ -1,9 +1,12 @@
 package com.drogbalog.server.posts.repository;
 
-import com.drogbalog.server.global.config.jpa.PagingAndSortRepository;
+import com.drogbalog.server.global.code.PostsType;
+import com.drogbalog.server.global.config.jpa.DefaultRepository;
 import com.drogbalog.server.posts.domain.entity.PostsEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostsRepository extends PagingAndSortRepository<PostsEntity, Long> {
+public interface PostsRepository extends DefaultRepository<PostsEntity, Long> {
+    Page<PostsEntity> findAllByPostsType(PostsType postsType);
 }

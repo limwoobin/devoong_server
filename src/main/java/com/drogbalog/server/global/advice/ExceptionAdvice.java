@@ -2,6 +2,7 @@ package com.drogbalog.server.global.advice;
 
 import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,13 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> badRequestException(Exception e) {
         ErrorResponse errorResponse = makeExceptionObject(HttpStatus.BAD_REQUEST , e);
         return new ResponseEntity<>(errorResponse , HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyDataException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> notFoundException(Exception e) {
+        ErrorResponse errorResponse = makeExceptionObject(HttpStatus.NOT_FOUND , e);
+        return new ResponseEntity<>(errorResponse , HttpStatus.NOT_FOUND);
     }
 
     private ErrorResponse makeExceptionObject(HttpStatus status , Exception e) {
