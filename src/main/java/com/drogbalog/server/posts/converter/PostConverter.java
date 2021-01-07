@@ -1,4 +1,4 @@
-package com.drogbalog.server.post.converter;
+package com.drogbalog.server.posts.converter;
 
 import org.mapstruct.Mapper;
 
