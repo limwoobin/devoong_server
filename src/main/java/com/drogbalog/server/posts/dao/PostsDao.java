@@ -12,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import retrofit2.Converter;
+
+import java.io.IOException;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +26,13 @@ public class PostsDao {
     @Transactional
     public Page<PostsDto> findAll(Pageable pageable) {
         Page<PostsEntity> postsEntities = repository.findAll(pageable);
-        return null;
+        return postsEntities.map(converter::convertEntity);
     }
 
     @Transactional
     public Page<PostsDto> findAllByPostsType(PostsType postsType) {
         Page<PostsEntity> postsEntities = repository.findAllByPostsType(postsType);
-        return null;
+        return postsEntities.map(converter::convertEntity);
     }
 
     @Transactional
