@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RestController
@@ -36,7 +34,9 @@ public class PostsController {
 
     @GetMapping(value = "/{postsType}")
     @ApiOperation(value = "카테고리 별 게시글 목록 조회")
-    public ResponseEntity<Page<PostsDto>> getPostsListByPostsType(@PathVariable(name = "postsType") PostsType postsType) {
+    public ResponseEntity<Page<PostsDto>> getPostsListByPostsType(
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
+            @PathVariable(name = "postsType") PostsType postsType) {
         Page<PostsDto> postsList = postsService.getPostsListByPostsType(postsType);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
