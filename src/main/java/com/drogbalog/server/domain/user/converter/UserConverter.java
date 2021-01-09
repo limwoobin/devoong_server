@@ -1,7 +1,7 @@
 package com.drogbalog.server.domain.user.converter;
 
-import com.drogbalog.server.domain.user.domain.dto.UserDto;
-import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.response.UserResponse;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -13,5 +13,5 @@ public interface UserConverter {
             @Mapping(target = "accessToken", ignore = true),
             @Mapping(target = "refreshToken", ignore = true)
     })
-    UserDto userConverts(UserEntity userEntity);
+    UserResponse userConverts(User user);
 }

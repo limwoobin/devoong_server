@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.user.api;
 
-import com.drogbalog.server.domain.user.domain.dto.UserDto;
+import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.UserService;
@@ -21,7 +21,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @RequiredArgsConstructor
 @RequestMapping(value = "/auth")
 @Api(tags = "User Auth Api")
-public class UserAuthController {
+public class UserAuthApi {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -29,19 +29,19 @@ public class UserAuthController {
 
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserRequest request) {
-        UserDto userDto = userService.signUp(request);
+    public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserRequest request) {
+        UserResponse userResponse = userService.signUp(request);
 
-        return new ResponseEntity<>(userDto , HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "로그인")
-    public ResponseEntity<UserDto> login(@Valid @RequestBody UserRequest request) {
-        UserDto userDto = userService.login(request);
-        userDto = jwtTokenProvider.generateTokens(userDto);
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody UserRequest request) {
+        UserResponse userResponse = userService.login(request);
+        userResponse = jwtTokenProvider.generateTokens(userResponse);
 
-        return new ResponseEntity<>(userDto , HttpStatus.OK);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = "/logout")

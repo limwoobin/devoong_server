@@ -4,8 +4,8 @@ import com.drogbalog.server.domain.user.converter.UserConverter;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.BadRequestException;
-import com.drogbalog.server.domain.user.domain.dto.UserDto;
-import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.response.UserResponse;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,8 +19,8 @@ public class UserDao {
     private final UserConverter converter;
 
     @Transactional
-    public UserDto signUp(UserRequest request) {
-        UserEntity userEntity = UserEntity.builder()
+    public UserResponse signUp(UserRequest request) {
+        User user = User.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .nickName(request.getNickName())
@@ -30,52 +30,52 @@ public class UserDao {
                 .role(request.getRole())
                 .build();
 
-        return converter.userConverts(repository.save(userEntity));
+        return converter.userConverts(repository.save(user));
     }
 
     @Transactional
-    public UserDto login(String email , String password) {
-        UserEntity userEntity = repository.findByEmailAndPassword(email , password)
+    public UserResponse login(String email , String password) {
+        User user = repository.findByEmailAndPassword(email , password)
                 .orElseThrow(() -> new BadRequestException("로그인 정보를 다시 확인해주세요."));
 
-        return converter.userConverts(userEntity);
+        return converter.userConverts(user);
     }
 
     @Transactional
-    public UserDto getUserInfo(long userId) {
-        UserEntity userEntity = repository.findById(userId);
-        return converter.userConverts(userEntity);
+    public UserResponse getUserInfo(long userId) {
+        User user = repository.findById(userId);
+        return converter.userConverts(user);
     }
 
     @Transactional
-    public UserDto updateUserInfo(UserRequest request) {
-        UserEntity userEntity = repository.findById(request.getId());
-        userEntity.update(request);
-        repository.save(userEntity);
-        return converter.userConverts(userEntity);
+    public UserResponse updateUserInfo(UserRequest request) {
+        User user = repository.findById(request.getId());
+        user.update(request);
+        repository.save(user);
+        return converter.userConverts(user);
     }
 
     @Transactional
     public void deleteUser(long userId) {
-        UserEntity userEntity = repository.findById(userId);
-        userEntity.updateStatus(Status.DISABLE);
-        repository.save(userEntity);
+        User user = repository.findById(userId);
+        user.updateStatus(Status.DISABLE);
+        repository.save(user);
     }
 
     @Transactional
-    public UserEntity findByEmail(String email) {
+    public User findByEmail(String email) {
         return repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No Such Email"));
     }
 
     @Transactional
-    public UserEntity availableEmailCheck(String email) {
+    public User availableEmailCheck(String email) {
         return repository.findByEmail(email)
                 .orElse(null);
     }
 
     @Transactional
-    public UserEntity findByNickName(String nickName) {
+    public User findByNickName(String nickName) {
         return repository.findByNickName(nickName);
     }
 }

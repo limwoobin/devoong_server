@@ -17,7 +17,7 @@ import javax.persistence.*;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
-public class UserEntity extends BaseTimeEntity {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class UserEntity extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public UserEntity(String email , String password , String nickName , String profileImagePath , Gender gender , Status status ,  Role role) {
+    public User(String email , String password , String nickName , String profileImagePath , Gender gender , Status status , Role role) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
@@ -59,14 +59,14 @@ public class UserEntity extends BaseTimeEntity {
         this.role = role;
     }
 
-    public UserEntity update(String nickName , String profileImagePath) {
+    public User update(String nickName , String profileImagePath) {
         this.nickName = nickName;
         this.profileImagePath = profileImagePath;
 
         return this;
     }
 
-    public UserEntity update(UserRequest request) {
+    public User update(UserRequest request) {
         this.password = request.getPassword();
         this.nickName = request.getNickName();
         this.profileImagePath = request.getProfileImagePath();
@@ -74,7 +74,7 @@ public class UserEntity extends BaseTimeEntity {
         return this;
     }
 
-    public UserEntity updateStatus(Status status) {
+    public User updateStatus(Status status) {
         this.status = status;
 
         return this;

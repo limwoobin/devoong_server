@@ -1,6 +1,6 @@
 package com.drogbalog.server;
 
-import com.drogbalog.server.domain.user.api.UserController;
+import com.drogbalog.server.domain.user.api.UserApi;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(controllers = UserApi.class)
 public class UserControllerTest {
 
     @Autowired

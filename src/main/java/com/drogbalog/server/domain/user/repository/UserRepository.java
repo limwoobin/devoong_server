@@ -1,20 +1,20 @@
 package com.drogbalog.server.domain.user.repository;
 
 import com.drogbalog.server.global.config.jpa.DefaultRepository;
-import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 
 @Repository
-public interface UserRepository extends DefaultRepository<UserEntity , Long> {
-    UserEntity findById(long id);
+public interface UserRepository extends DefaultRepository<User, Long> {
+    User findById(long id);
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
-    UserEntity findByNickName(String nickName);
+    User findByNickName(String nickName);
 
-    Optional<UserEntity> findByEmailAndPassword(String email , String password);
+    Optional<User> findByEmailAndPassword(String email , String password);
 }
 

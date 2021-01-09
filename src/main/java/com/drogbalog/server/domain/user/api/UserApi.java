@@ -1,7 +1,7 @@
 package com.drogbalog.server.domain.user.api;
 
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
-import com.drogbalog.server.domain.user.domain.dto.UserDto;
+import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -19,7 +19,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Api(tags = "User Api")
-public class UserController {
+public class UserApi {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -27,20 +27,20 @@ public class UserController {
 
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
-    public ResponseEntity<UserDto> getUserInfo(
+    public ResponseEntity<UserResponse> getUserInfo(
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @PathVariable(name = "userId") long userId) {
-        UserDto userDto = userService.getUserInfo(userId);
-        return new ResponseEntity<>(userDto , HttpStatus.OK);
+        UserResponse userResponse = userService.getUserInfo(userId);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @PutMapping(value = "")
     @ApiOperation(value = "회원정보 수정")
-    public ResponseEntity<UserDto> updateUser(
+    public ResponseEntity<UserResponse> updateUser(
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @RequestBody UserRequest request) {
-        UserDto userDto = userService.updateUserInfo(request);
-        return new ResponseEntity<>(userDto , HttpStatus.OK);
+        UserResponse userResponse = userService.updateUserInfo(request);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{userId}")

@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.security.auth;
 
-import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -41,8 +41,8 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public UserEntity toEntity() {
-        return UserEntity.builder()
+    public User toEntity() {
+        return User.builder()
                     .email(email)
                     .nickName(nickName)
                     .profileImagePath(profileImagePath)

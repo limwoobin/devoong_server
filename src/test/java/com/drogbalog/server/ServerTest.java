@@ -1,6 +1,6 @@
 package com.drogbalog.server;
 
-import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ServerTest {
 //        repository.save(userEntity);
 //        UserEntity user = repository.findById(1L);
 //        assertEquals("drogba" , user.getNickName());
-        UserEntity entity = repository.findByEmail("azaz")
+        User entity = repository.findByEmail("azaz")
                 .orElseThrow(RuntimeException::new);
 
         System.out.println(entity.getEmail());

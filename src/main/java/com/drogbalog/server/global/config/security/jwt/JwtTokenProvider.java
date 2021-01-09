@@ -1,7 +1,7 @@
 package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.auth.Role;
-import com.drogbalog.server.domain.user.domain.dto.UserDto;
+import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -95,10 +95,10 @@ public class JwtTokenProvider {
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
-    public UserDto generateTokens(UserDto userDto) {
-        userDto.setAccessToken(this.generateAccessToken(userDto.getEmail()));
-        userDto.setRefreshToken(this.generateRefreshToken(userDto.getEmail()));
+    public UserResponse generateTokens(UserResponse userResponse) {
+        userResponse.setAccessToken(this.generateAccessToken(userResponse.getEmail()));
+        userResponse.setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
 
-        return userDto;
+        return userResponse;
     }
 }

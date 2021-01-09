@@ -1,19 +1,14 @@
-package com.drogbalog.server.domain.user.domain.dto;
+package com.drogbalog.server.domain.user.domain.response;
 
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
-import com.drogbalog.server.global.config.security.auth.Role;
-import com.drogbalog.server.global.util.DateTimeUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @ApiModel(value = "사용자 데이터 모델")
-public class UserDto {
+public class UserResponse {
 
     @ApiModelProperty(value = "id")
     private long id;
