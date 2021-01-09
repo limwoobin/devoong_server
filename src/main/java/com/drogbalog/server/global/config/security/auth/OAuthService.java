@@ -1,8 +1,8 @@
 package com.drogbalog.server.global.config.security.auth;
 
 import com.drogbalog.server.global.config.security.auth.dto.SessionUser;
-import com.drogbalog.server.user.domain.entity.UserEntity;
-import com.drogbalog.server.user.repository.UserRepository;
+import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

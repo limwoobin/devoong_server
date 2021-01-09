@@ -1,6 +1,6 @@
 package com.drogbalog.server;
 
-import com.drogbalog.server.user.domain.dto.UserDto;
+import com.drogbalog.server.domain.user.domain.dto.UserDto;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

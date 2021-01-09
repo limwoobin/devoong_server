@@ -1,7 +1,7 @@
 package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.auth.Role;
-import com.drogbalog.server.user.domain.dto.UserDto;
+import com.drogbalog.server.domain.user.domain.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

@@ -2,8 +2,8 @@ package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.exception.UserNotFoundException;
-import com.drogbalog.server.user.domain.entity.UserEntity;
-import com.drogbalog.server.user.repository.UserRepository;
+import com.drogbalog.server.domain.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
