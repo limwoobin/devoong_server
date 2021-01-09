@@ -1,8 +1,8 @@
 package com.drogbalog.server.global.config.security.auth;
 
 import com.drogbalog.server.global.config.security.auth.dto.SessionUser;
-import com.drogbalog.server.user.domain.entity.UserEntity;
-import com.drogbalog.server.user.repository.UserRepository;
+import com.drogbalog.server.domain.user.domain.entity.User;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -34,20 +34,20 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest , OAuth
         OAuthAttributes attributes = OAuthAttributes.
                 of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        UserEntity userEntity = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(userEntity));
+        User user = saveOrUpdate(attributes);
+        httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(userEntity.getRoleDescription())),
+                Collections.singleton(new SimpleGrantedAuthority(user.getRoleDescription())),
                 attributes.getAttributes(),
                 attributes.getEmailAttributeKey());
     }
 
-    private UserEntity saveOrUpdate(OAuthAttributes attributes) {
-        UserEntity userEntity = repository.findByEmail(attributes.getEmail())
+    private User saveOrUpdate(OAuthAttributes attributes) {
+        User user = repository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getNickName(), attributes.getProfileImagePath()))
                 .orElse(attributes.toEntity());
 
-        return userEntity;
+        return user;
     }
 }

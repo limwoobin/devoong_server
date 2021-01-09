@@ -1,13 +1,12 @@
 package com.drogbalog.server.global.config.security.jwt;
 
-import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.exception.UserNotFoundException;
-import com.drogbalog.server.user.domain.entity.UserEntity;
-import com.drogbalog.server.user.repository.UserRepository;
+import com.drogbalog.server.domain.user.domain.entity.User;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,10 +22,10 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity userEntity = repository.findByEmail(email)
+        User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Not Found UserName"));
 
-        return new User(userEntity.getEmail() , userEntity.getPassword() , getGrantedAuthorities());
+        return new org.springframework.security.core.userdetails.User(user.getEmail() , user.getPassword() , getGrantedAuthorities());
     }
 
     private Set<GrantedAuthority> getGrantedAuthorities() {

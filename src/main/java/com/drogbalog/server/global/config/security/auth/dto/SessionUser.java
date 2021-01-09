@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.security.auth.dto;
 
-import com.drogbalog.server.user.domain.entity.UserEntity;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -11,9 +11,9 @@ public class SessionUser implements Serializable {
     private String nickName;
     private String profileImagePath;
 
-    public SessionUser(UserEntity userEntity) {
-        this.email = userEntity.getEmail();
-        this.nickName = userEntity.getNickName();
-        this.profileImagePath = userEntity.getProfileImagePath();
+    public SessionUser(User user) {
+        this.email = user.getEmail();
+        this.nickName = user.getNickName();
+        this.profileImagePath = user.getProfileImagePath();
     }
 }
