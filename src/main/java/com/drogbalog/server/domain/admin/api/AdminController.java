@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.admin.api;
 
-import com.drogbalog.server.domain.posts.domain.dto.PostsDto;
+import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
@@ -19,19 +19,19 @@ public class AdminController {
 
     @PostMapping(value = "/posts")
     @ApiOperation(value = "게시글 작성")
-    public ResponseEntity<PostsDto> createPosts(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-                                                @RequestBody PostsRequest request) {
-        PostsDto postsDto = postsService.createPosts(request);
+    public ResponseEntity<PostsResponse> createPosts(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+                                                     @RequestBody PostsRequest request) {
+        PostsResponse postsDto = postsService.createPosts(request);
         return new ResponseEntity<>(postsDto , HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/posts/{postsId}")
     @ApiOperation(value = "게시글 수정")
-    public ResponseEntity<PostsDto> updatePosts(
+    public ResponseEntity<PostsResponse> updatePosts(
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token,
             @PathVariable(name = "postsId") long postsId , @RequestBody PostsRequest request) {
         request.setId(postsId);
-        PostsDto postsDto = postsService.updatePosts(request);
+        PostsResponse postsDto = postsService.updatePosts(request);
         return new ResponseEntity<>(postsDto , HttpStatus.OK);
     }
 }

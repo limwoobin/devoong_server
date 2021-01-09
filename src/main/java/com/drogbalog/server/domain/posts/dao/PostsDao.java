@@ -1,10 +1,10 @@
 package com.drogbalog.server.domain.posts.dao;
 
 import com.drogbalog.server.domain.posts.converter.PostsConverter;
+import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
+import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.global.code.PostsType;
 import com.drogbalog.server.global.exception.EmptyDataException;
-import com.drogbalog.server.domain.posts.domain.dto.PostsDto;
-import com.drogbalog.server.domain.posts.domain.entity.PostsEntity;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,42 +20,42 @@ public class PostsDao {
     private final PostsConverter converter;
 
     @Transactional
-    public Page<PostsDto> findAll(Pageable pageable) {
-        Page<PostsEntity> postsEntities = repository.findAll(pageable);
+    public Page<PostsResponse> findAll(Pageable pageable) {
+        Page<Posts> postsEntities = repository.findAll(pageable);
         return postsEntities.map(converter::convertEntity);
     }
 
     @Transactional
-    public Page<PostsDto> findAllByPostsType(PostsType postsType) {
-        Page<PostsEntity> postsEntities = repository.findAllByPostsType(postsType);
+    public Page<PostsResponse> findAllByPostsType(PostsType postsType) {
+        Page<Posts> postsEntities = repository.findAllByPostsType(postsType);
         return postsEntities.map(converter::convertEntity);
     }
 
     @Transactional
-    public PostsDto findById(long postsId) {
-        PostsEntity postsEntity = repository.findById(postsId)
+    public PostsResponse findById(long postsId) {
+        Posts Posts = repository.findById(postsId)
                 .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
 
-        return converter.convertEntity(postsEntity);
+        return converter.convertEntity(Posts);
     }
 
     @Transactional
-    public PostsDto save(PostsRequest request) {
-        PostsEntity postsEntity = PostsEntity.builder()
+    public PostsResponse save(PostsRequest request) {
+        Posts posts = Posts.builder()
                 .email(request.getEmail())
                 .subject(request.getSubject())
                 .contents(request.getContents())
                 .build();
 
-        return converter.convertEntity(repository.save(postsEntity));
+        return converter.convertEntity(repository.save(posts));
     }
 
     @Transactional
-    public PostsDto update(PostsRequest request) {
-        PostsEntity postsEntity = repository.findById(request.getId())
+    public PostsResponse update(PostsRequest request) {
+        Posts Posts = repository.findById(request.getId())
                 .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
 
-        postsEntity.update(request.getSubject() , request.getContents());
-        return converter.convertEntity(postsEntity);
+        Posts.update(request.getSubject() , request.getContents());
+        return converter.convertEntity(Posts);
     }
 }

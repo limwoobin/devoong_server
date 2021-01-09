@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "게시글 데이터 모델")
-public class PostsDto {
+public class PostsResponse {
 
     @ApiModelProperty(value = "id")
     private long id;
