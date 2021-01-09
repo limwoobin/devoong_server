@@ -1,5 +1,6 @@
 package com.drogbalog.server.global.config.security;
 
+import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.config.security.jwt.CustomUserDetailService;
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationFilter;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
@@ -43,9 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-//                .antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
 //                .antMatchers("/user/**").hasRole(Role.USER.toString())
-//                .antMatchers("/**")
             .anyRequest().permitAll()
             .and();
 

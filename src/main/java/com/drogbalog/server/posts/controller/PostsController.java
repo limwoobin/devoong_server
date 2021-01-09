@@ -47,22 +47,4 @@ public class PostsController {
         PostsDto postsDto = postsService.getPosts(postsId);
         return new ResponseEntity<>(postsDto , HttpStatus.OK);
     }
-
-    @PostMapping(value = "")
-    @ApiOperation(value = "게시글 작성")
-    public ResponseEntity<PostsDto> createPosts(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-    @RequestBody PostsRequest request) {
-        PostsDto postsDto = postsService.createPosts(request);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/{postsId}")
-    @ApiOperation(value = "게시글 수정")
-    public ResponseEntity<PostsDto> updatePosts(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token,
-            @PathVariable(name = "postsId") long postsId , @RequestBody PostsRequest request) {
-        request.setId(postsId);
-        PostsDto postsDto = postsService.updatePosts(request);
-        return new ResponseEntity<>(postsDto , HttpStatus.OK);
-    }
 }
