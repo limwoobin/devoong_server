@@ -1,6 +1,5 @@
 package com.drogbalog.server.global.config.security;
 
-import com.drogbalog.server.global.config.security.auth.Role;
 import com.drogbalog.server.global.config.security.jwt.CustomUserDetailService;
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationFilter;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;

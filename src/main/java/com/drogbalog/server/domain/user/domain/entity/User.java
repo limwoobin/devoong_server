@@ -2,7 +2,7 @@ package com.drogbalog.server.domain.user.domain.entity;
 
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
-import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import lombok.AccessLevel;
@@ -49,13 +49,13 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public User(String email , String password , String nickName , String profileImagePath , Gender gender , Status status , Role role) {
+    public User(String email , String password , String nickName , String profileImagePath , Gender gender , Role role) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.profileImagePath = profileImagePath;
         this.gender = gender;
-        this.status = status;
+        this.status = Status.ACTIVE;
         this.role = role;
     }
 

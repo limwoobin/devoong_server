@@ -7,8 +7,7 @@ import com.drogbalog.server.domain.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,10 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @RequiredArgsConstructor
 @RequestMapping(value = "/auth")
 @Api(tags = "User Auth Api")
+@Log4j2
 public class UserAuthApi {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
@@ -47,7 +45,6 @@ public class UserAuthApi {
     @GetMapping(value = "/logout")
     @ApiOperation(value = "로그아웃")
     public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
-        logger.info(token);
         // todo: redis 연동
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -2,11 +2,10 @@ package com.drogbalog.server.domain.user.domain.request;
 
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
-import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.config.security.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.security.jwt;
 
-import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.exception.UserNotFoundException;
 import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.repository.UserRepository;

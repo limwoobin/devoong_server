@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.config.security.auth;
+package com.drogbalog.server.global.config.security;
 
 import com.drogbalog.server.global.code.CodeInfo;
 import lombok.AllArgsConstructor;

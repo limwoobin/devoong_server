@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Status implements CodeInfo {
-    ACTIVE("active" , "ACTIVE"),
-    DISABLE("disable" , "DISABLE");
+public enum OrderByType implements CodeInfo {
+    ID("id"),
+    CREATED_DATE("createdDate"),
+    MODIFIED_DATE("modifiedDate");
 
     private final String description;
-    private final String strValue;
 }

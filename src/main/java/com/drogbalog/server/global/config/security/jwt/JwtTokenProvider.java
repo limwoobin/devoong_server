@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.security.jwt;
 
-import com.drogbalog.server.global.config.security.auth.Role;
+import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
