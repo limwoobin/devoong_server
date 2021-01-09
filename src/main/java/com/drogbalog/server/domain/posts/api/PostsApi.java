@@ -2,7 +2,6 @@ package com.drogbalog.server.domain.posts.api;
 
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.global.code.PostsType;
-import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostsApi {
     private final PostsService postsService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping(value = "")
     @ApiOperation(value = "게시글 목록 조회")

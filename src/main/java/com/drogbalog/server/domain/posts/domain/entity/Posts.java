@@ -23,16 +23,16 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false , length = 20)
     private long id;
 
-    @Column(length = 30)
+    @Column(nullable = false , length = 30)
     private String email;
 
-    @Column(length = 50)
+    @Column(nullable = false , length = 50)
     private String subject;
 
-    @Column(length = 1000)
+    @Lob
     private String contents;
 
-    @Column(length = 10)
+    @Column(nullable = false , length = 10)
     @Enumerated(EnumType.STRING)
     private PostsType postsType;
 
@@ -45,18 +45,17 @@ public class Posts extends BaseTimeEntity {
         this.email = email;
         this.subject = subject;
         this.contents = contents;
+        this.status = Status.ACTIVE;
     }
 
     public Posts update(String subject , String contents) {
         this.subject = subject;
         this.contents = contents;
-
         return this;
     }
 
     public Posts updateStatus(Status status) {
         this.status = status;
-
         return this;
     }
 }
