@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @Getter
@@ -40,6 +41,9 @@ public class Posts extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column
+    private BigInteger views;
+
     @Builder
     public Posts(String email , String subject , String contents) {
         this.email = email;
@@ -56,6 +60,11 @@ public class Posts extends BaseTimeEntity {
 
     public Posts updateStatus(Status status) {
         this.status = status;
+        return this;
+    }
+
+    public Posts addPostsViews() {
+        this.views = views.add(BigInteger.ONE);
         return this;
     }
 }

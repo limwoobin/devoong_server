@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,6 +22,9 @@ public class PostsResponse {
 
     @ApiModelProperty(value = "contents")
     private String contents;
+
+    @ApiModelProperty(value = "views")
+    private BigInteger views;
 
     @ApiModelProperty(value = "createdDate")
     private LocalDateTime createdDate;

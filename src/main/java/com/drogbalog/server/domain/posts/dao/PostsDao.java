@@ -33,10 +33,16 @@ public class PostsDao {
 
     @Transactional
     public PostsResponse findById(long postsId) {
-        Posts Posts = repository.findById(postsId)
+        Posts posts = repository.findById(postsId)
                 .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
+        this.addPostsViews(posts);
 
-        return converter.convertEntity(Posts);
+        return converter.convertEntity(posts);
+    }
+
+    public void addPostsViews(Posts posts) {
+        posts.addPostsViews();
+        repository.save(posts);
     }
 
     @Transactional
