@@ -62,4 +62,9 @@ public class Posts extends BaseTimeEntity {
         this.status = status;
         return this;
     }
+
+    public Posts addPostsViews() {
+        this.views = views.add(BigInteger.ONE);
+        return this;
+    }
 }

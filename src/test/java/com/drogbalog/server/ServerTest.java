@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.math.BigInteger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -13,19 +15,20 @@ public class ServerTest {
     @Autowired
     private UserRepository repository;
 
+    private BigInteger bigInteger = BigInteger.ZERO;
+
+
     @Test
     public void test() {
-//        UserEntity userEntity = UserEntity.builder()
-//                .email("drogba02@naver.com")
-//                .password("zzz")
-//                .nickName("drogba")
-//                .build();
-//        repository.save(userEntity);
-//        UserEntity user = repository.findById(1L);
-//        assertEquals("drogba" , user.getNickName());
-        User entity = repository.findByEmail("azaz")
-                .orElseThrow(RuntimeException::new);
+        this.bigInteger = bigInteger.add(BigInteger.ONE);
+        this.bigInteger = bigInteger.add(BigInteger.ONE);
+        this.bigInteger = bigInteger.add(BigInteger.ONE);
+        this.bigInteger = bigInteger.add(BigInteger.ONE);
+        this.bigInteger = bigInteger.add(BigInteger.ONE);
 
-        System.out.println(entity.getEmail());
+        System.out.println(bigInteger);
+
+        int a = Integer.parseInt(bigInteger.toString());
+        assertEquals(5 , a);
     }
 }
