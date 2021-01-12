@@ -1,9 +1,6 @@
 package com.drogbalog.server.global.advice;
 
-import com.drogbalog.server.global.exception.BadRequestException;
-import com.drogbalog.server.global.exception.DrogbalogException;
-import com.drogbalog.server.global.exception.EmptyDataException;
-import com.drogbalog.server.global.exception.ErrorResponse;
+import com.drogbalog.server.global.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +34,15 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = makeExceptionObject(HttpStatus.NOT_FOUND , e);
         return new ResponseEntity<>(errorResponse , HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UnAuthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorResponse> unAuthorizedException(Exception e) {
+        ErrorResponse errorResponse = makeExceptionObject(HttpStatus.UNAUTHORIZED , e);
+        return new ResponseEntity<>(errorResponse , HttpStatus.UNAUTHORIZED);
+    }
+
+
 
     private ErrorResponse makeExceptionObject(HttpStatus status , Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
