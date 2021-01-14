@@ -1,7 +1,6 @@
 package com.drogbalog.server.domain.posts.api;
 
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
-import com.drogbalog.server.global.code.PostsType;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +28,12 @@ public class PostsApi {
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{postsType}")
+    @GetMapping(value = "/{category}")
     @ApiOperation(value = "카테고리 별 게시글 목록 조회")
-    public ResponseEntity<Page<PostsResponse>> getPostsListByPostsType(
+    public ResponseEntity<Page<PostsResponse>> getPostsListByCategory(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
-            @PathVariable(name = "postsType") PostsType postsType) {
-        Page<PostsResponse> postsList = postsService.getPostsListByPostsType(postsType);
+            @PathVariable(name = "category") String category) {
+        Page<PostsResponse> postsList = postsService.getPostsListByCategory(category);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
