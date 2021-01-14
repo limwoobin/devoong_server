@@ -17,8 +17,8 @@ public class PostsService {
         return postsDao.findAll(pageable);
     }
 
-    public Page<PostsResponse> getPostsListByCategory(String category) {
-        return postsDao.findAllByCategory(category);
+    public Page<PostsResponse> getPostsListByCategory(long categoryId) {
+        return postsDao.findAllByCategory(categoryId);
     }
 
     public PostsResponse getPosts(long postsId) {

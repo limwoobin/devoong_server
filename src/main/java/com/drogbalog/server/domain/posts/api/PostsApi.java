@@ -28,12 +28,12 @@ public class PostsApi {
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{category}")
+    @GetMapping(value = "/{categoryId}")
     @ApiOperation(value = "카테고리 별 게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsListByCategory(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
-            @PathVariable(name = "category") String category) {
-        Page<PostsResponse> postsList = postsService.getPostsListByCategory(category);
+            @PathVariable(name = "categoryId") long categoryId) {
+        Page<PostsResponse> postsList = postsService.getPostsListByCategory(categoryId);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 

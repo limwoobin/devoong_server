@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostsRepository extends DefaultRepository<Posts, Long> {
-    Page<Posts> findAllByCategory(String category);
+    Page<Posts> findAllByCategoryId(long categoryId);
 }
