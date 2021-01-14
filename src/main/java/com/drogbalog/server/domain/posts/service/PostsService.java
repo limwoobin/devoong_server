@@ -1,7 +1,6 @@
 package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
-import com.drogbalog.server.global.code.PostsType;
 import com.drogbalog.server.domain.posts.dao.PostsDao;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,8 @@ public class PostsService {
         return postsDao.findAll(pageable);
     }
 
-    public Page<PostsResponse> getPostsListByPostsType(PostsType postsType) {
-        return postsDao.findAllByPostsType(postsType);
+    public Page<PostsResponse> getPostsListByCategory(long categoryId) {
+        return postsDao.findAllByCategory(categoryId);
     }
 
     public PostsResponse getPosts(long postsId) {

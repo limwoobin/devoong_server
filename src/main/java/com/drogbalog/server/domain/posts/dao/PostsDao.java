@@ -3,7 +3,6 @@ package com.drogbalog.server.domain.posts.dao;
 import com.drogbalog.server.domain.posts.converter.PostsConverter;
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
-import com.drogbalog.server.global.code.PostsType;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
@@ -26,8 +25,8 @@ public class PostsDao {
     }
 
     @Transactional
-    public Page<PostsResponse> findAllByPostsType(PostsType postsType) {
-        Page<Posts> postsEntities = repository.findAllByPostsType(postsType);
+    public Page<PostsResponse> findAllByCategory(long categoryId) {
+        Page<Posts> postsEntities = repository.findAllByCategoryId(categoryId);
         return postsEntities.map(converter::convertEntity);
     }
 
