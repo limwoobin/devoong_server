@@ -39,6 +39,11 @@ public class CategoriesDao {
     }
 
     @Transactional
+    public void deleteCategory(long categoryId) {
+        repository.deleteById(categoryId);
+    }
+
+    @Transactional
     public List<CategoriesResponse> getCategories() {
         List<Categories> categories = repository.findAllByOrderByIdDesc();
         List<CategoriesResponse> categoriesResponses = converter.categoriesConverts(categories);

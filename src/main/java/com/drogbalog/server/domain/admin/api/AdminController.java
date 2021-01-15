@@ -41,9 +41,10 @@ public class AdminController {
 
     @DeleteMapping(value = "/categories/{categoryId}")
     @ApiOperation(value = "카테고리 삭제")
-    public ResponseEntity<CategoriesResponse> deleteCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+    public ResponseEntity<Void> deleteCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
                                                                @PathVariable(name = "categoryId") long categoryId) {
 
+        categoriesService.deleteCategory(categoryId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
