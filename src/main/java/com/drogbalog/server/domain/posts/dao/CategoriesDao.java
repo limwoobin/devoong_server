@@ -3,8 +3,10 @@ package com.drogbalog.server.domain.posts.dao;
 import com.drogbalog.server.domain.posts.converter.CategoriesConverter;
 import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Categories;
+import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
 import com.drogbalog.server.domain.posts.repository.CategoriesRepository;
 import com.drogbalog.server.global.code.Status;
+import com.drogbalog.server.global.exception.EmptyDataException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +26,16 @@ public class CategoriesDao {
                 .status(Status.ACTIVE)
                 .build();
 
-        CategoriesResponse categoriesResponse = converter.categoryConverts(repository.save(categories));
-        return categoriesResponse;
+        return converter.categoryConverts(repository.save(categories));
+    }
+
+    @Transactional
+    public CategoriesResponse updateCategory(CategoriesRequest request) {
+        Categories categories = repository.findById(request.getId())
+                .orElseThrow(() -> new EmptyDataException("No Such CategoryId"));
+
+        categories.update(request.getName() , request.getStatus());
+        return converter.categoryConverts(categories);
     }
 
     @Transactional

@@ -2,6 +2,7 @@ package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.dao.CategoriesDao;
 import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
+import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,10 @@ public class CategoriesService {
 
     public CategoriesResponse saveCategory(String category) {
         return categoriesDao.saveCategory(category);
+    }
+
+    public CategoriesResponse updateCategory(CategoriesRequest request) {
+        return categoriesDao.updateCategory(request);
     }
 
     public List<CategoriesResponse> getCategories() {

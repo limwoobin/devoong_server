@@ -35,7 +35,8 @@ public class AdminController {
     public ResponseEntity<CategoriesResponse> updateCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
                                                                @RequestBody CategoriesRequest request) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        CategoriesResponse categoriesResponse = categoriesService.updateCategory(request);
+        return new ResponseEntity<>(categoriesResponse , HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/categories/{categoryId}")
