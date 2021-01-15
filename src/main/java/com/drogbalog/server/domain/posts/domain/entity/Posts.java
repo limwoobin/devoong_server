@@ -47,14 +47,16 @@ public class Posts extends BaseTimeEntity {
     private Categories categories;
 
     @Builder
-    public Posts(String email , String subject , String contents) {
+    public Posts(String email , long categoryId , String subject , String contents) {
         this.email = email;
+        this.categoryId = categoryId;
         this.subject = subject;
         this.contents = contents;
         this.status = Status.ACTIVE;
     }
 
-    public Posts update(String subject , String contents) {
+    public Posts update(long categoryId , String subject , String contents) {
+        this.categoryId = categoryId;
         this.subject = subject;
         this.contents = contents;
         return this;

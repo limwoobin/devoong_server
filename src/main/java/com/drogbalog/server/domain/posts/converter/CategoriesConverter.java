@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoriesConverter {
     List<CategoriesResponse> categoriesConverts(List<Categories> categoriesList);
+
+    CategoriesResponse categoryConverts(Categories categories);
 }

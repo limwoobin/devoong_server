@@ -12,6 +12,10 @@ import java.util.List;
 public class CategoriesService {
     private final CategoriesDao categoriesDao;
 
+    public CategoriesResponse saveCategory(String category) {
+        return categoriesDao.saveCategory(category);
+    }
+
     public List<CategoriesResponse> getCategories() {
         return categoriesDao.getCategories();
     }

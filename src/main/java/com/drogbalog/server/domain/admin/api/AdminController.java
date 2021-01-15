@@ -4,6 +4,7 @@ import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
+import com.drogbalog.server.domain.posts.service.CategoriesService;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,15 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @RequiredArgsConstructor
 public class AdminController {
     private final PostsService postsService;
+    private final CategoriesService categoriesService;
 
     @PostMapping(value = "/categories/{category}")
     @ApiOperation(value = "카테고리 추가")
     public ResponseEntity<CategoriesResponse> createCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
                                                                @PathVariable(name = "category") String category) {
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        CategoriesResponse categoriesResponse = categoriesService.saveCategory(category);
+        return new ResponseEntity<>(categoriesResponse , HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/categories")
