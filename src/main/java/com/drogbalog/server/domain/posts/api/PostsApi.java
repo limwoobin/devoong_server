@@ -30,10 +30,10 @@ public class PostsApi {
 
     @GetMapping(value = "/{categoryId}")
     @ApiOperation(value = "카테고리 별 게시글 목록 조회")
-    public ResponseEntity<Page<PostsResponse>> getPostsListByCategory(
+    public ResponseEntity<Page<PostsResponse>> getPostsListByCategoryId(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
             @PathVariable(name = "categoryId") long categoryId) {
-        Page<PostsResponse> postsList = postsService.getPostsListByCategory(categoryId);
+        Page<PostsResponse> postsList = postsService.getPostsListByCategoryId(categoryId);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 

@@ -25,7 +25,7 @@ public class PostsDao {
     }
 
     @Transactional
-    public Page<PostsResponse> findAllByCategory(long categoryId) {
+    public Page<PostsResponse> findAllByCategoryId(long categoryId) {
         Page<Posts> postsEntities = repository.findAllByCategoryId(categoryId);
         return postsEntities.map(converter::convertEntity);
     }
