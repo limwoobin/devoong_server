@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 @Log4j2
-public class CategoryApi {
+public class CategoriesApi {
     private final CategoriesService categoriesService;
 
     @GetMapping(value = "/")
