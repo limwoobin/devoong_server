@@ -25,7 +25,7 @@ public class PostsDao {
     }
 
     @Transactional
-    public Page<PostsResponse> findAllByCategory(long categoryId) {
+    public Page<PostsResponse> findAllByCategoryId(long categoryId) {
         Page<Posts> postsEntities = repository.findAllByCategoryId(categoryId);
         return postsEntities.map(converter::convertEntity);
     }
@@ -60,7 +60,7 @@ public class PostsDao {
         Posts Posts = repository.findById(request.getId())
                 .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
 
-        Posts.update(request.getSubject() , request.getContents());
+        Posts.update(request.getCategoryId() , request.getSubject() , request.getContents());
         return converter.convertEntity(Posts);
     }
 }

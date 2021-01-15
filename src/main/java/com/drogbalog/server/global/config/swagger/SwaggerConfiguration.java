@@ -34,6 +34,21 @@ public class SwaggerConfiguration {
         return getDocket("test-api" , "/test/**");
     }
 
+    @Bean
+    public Docket adminApi() {
+        return getDocket("admin-api" , "/admin/**");
+    }
+
+    @Bean
+    public Docket categoryApi() {
+        return getDocket("categories-api" , "/categories/**");
+    }
+
+    @Bean
+    public Docket postsApi() {
+        return getDocket("posts-api" , "/posts/**");
+    }
+
     private Docket getDocket(String groupName, String pathPattern) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(groupName)
