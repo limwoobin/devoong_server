@@ -20,32 +20,27 @@ import java.util.List;
 public class SwaggerConfiguration {
 
     @Bean
-    public Docket userApi() {
+    public Docket userSwagger() {
         return getDocket("user-api", "/users/**");
     }
 
     @Bean
-    public Docket userAuthApi() {
+    public Docket usersAuthSwagger() {
         return getDocket("user-auth-api" , "/auth/**");
     }
 
     @Bean
-    public Docket testApi() {
-        return getDocket("test-api" , "/test/**");
-    }
-
-    @Bean
-    public Docket adminApi() {
+    public Docket adminSwagger() {
         return getDocket("admin-api" , "/admin/**");
     }
 
     @Bean
-    public Docket categoryApi() {
+    public Docket categorySwagger() {
         return getDocket("categories-api" , "/categories/**");
     }
 
     @Bean
-    public Docket postsApi() {
+    public Docket postsSwagger() {
         return getDocket("posts-api" , "/posts/**");
     }
 
