@@ -30,7 +30,8 @@ dependencies {
 
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.h2database:h2'
+    compile 'mysql:mysql-connector-java'
+    testRuntime 'com.h2database:h2'
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -82,4 +83,9 @@ configurations {
 
 test {
     useJUnitPlatform()
+}
+
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
 }

@@ -33,7 +33,7 @@ public class PostsApi {
     public ResponseEntity<Page<PostsResponse>> getPostsListByCategoryId(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
             @PathVariable(name = "categoryId") long categoryId) {
-        Page<PostsResponse> postsList = postsService.getPostsListByCategoryId(categoryId);
+        Page<PostsResponse> postsList = postsService.getPostsListByCategoryId(categoryId , pageable);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
