@@ -3,6 +3,7 @@ server:
 
 spring:
   profiles:
+    active: local
     include: oauth
   h2:
     console:
@@ -16,6 +17,14 @@ spring:
       password: 1234
   jpa:
     show_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: email , profileImagePath
 
 ## logging ##
 logging:
