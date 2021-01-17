@@ -17,7 +17,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @RestController
 @RequestMapping(value = "/admin")
 @RequiredArgsConstructor
-public class AdminController {
+public class AdminApi {
     private final PostsService postsService;
     private final CategoriesService categoriesService;
 

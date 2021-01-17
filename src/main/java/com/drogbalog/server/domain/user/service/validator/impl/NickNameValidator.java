@@ -1,12 +1,12 @@
 package com.drogbalog.server.domain.user.service.validator.impl;
 
-import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.domain.user.dao.UserDao;
 import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.validator.Validator;
+import com.drogbalog.server.global.exception.DuplicateDataException;
+import com.drogbalog.server.global.exception.DuplicateStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -19,7 +19,9 @@ public class NickNameValidator implements Validator {
     public boolean signUpValidator(UserRequest request) {
         User user = userDao.findByNickName(request.getNickName());
         if (!StringUtils.isEmpty(user)) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST , "이미 사용중인 닉네임 입니다.");
+            throw new DuplicateDataException(
+                    DuplicateStatus.NICKNAME_DUPLICATED.getCode(),
+                    DuplicateStatus.NICKNAME_DUPLICATED.getMessage());
         }
 
         return true;
