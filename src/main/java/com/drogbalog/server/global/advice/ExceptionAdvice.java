@@ -1,6 +1,7 @@
 package com.drogbalog.server.global.advice;
 
 import com.drogbalog.server.global.exception.*;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,13 +13,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DrogbalogException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleException(DrogbalogException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
-        errorResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(errorResponse , HttpStatus.INTERNAL_SERVER_ERROR);
+        errorResponse.setCode(e.getCode());
+        errorResponse.setStatus(e.getStatus());
+        return new ResponseEntity<>(errorResponse , e.getStatus());
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -42,6 +42,12 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse , HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> duplicateKeyException(Exception e) {
+        ErrorResponse errorResponse = makeExceptionObject(HttpStatus.CONFLICT , e);
+        return new ResponseEntity<>(errorResponse , HttpStatus.CONFLICT);
+    }
 
 
     private ErrorResponse makeExceptionObject(HttpStatus status , Exception e) {
