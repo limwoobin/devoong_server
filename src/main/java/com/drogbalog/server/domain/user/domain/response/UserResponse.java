@@ -17,7 +17,7 @@ public class UserResponse {
     private String email;
 
     @ApiModelProperty(value = "사용자 닉네임")
-    private String nickName;
+    private String nickname;
 
     @ApiModelProperty(value = "사용자 프로필 이미지")
     private String profileImagePath;

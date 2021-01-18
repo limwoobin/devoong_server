@@ -30,7 +30,7 @@ public class UserRequest {
     private String password;
 
     @ApiModelProperty(value = "닉네임")
-    private String nickName;
+    private String nickname;
 
     @ApiModelProperty(value = "프로필 이미지")
     private String profileImagePath;

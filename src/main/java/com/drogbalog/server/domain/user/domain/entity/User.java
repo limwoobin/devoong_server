@@ -22,7 +22,7 @@ public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false , length = 20)
-    private long id;
+    private Long id;
 
     @Column(length = 30)
     private String email;
@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity {
     private String password;
 
     @Column(length = 20)
-    private String nickName;
+    private String nickname;
 
     @Column(length = 100)
     private String profileImagePath;
@@ -49,18 +49,18 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public User(String email , String password , String nickName , String profileImagePath , Gender gender , Role role) {
+    public User(String email , String password , String nickname , String profileImagePath , Gender gender , Role role) {
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.profileImagePath = profileImagePath;
         this.gender = gender;
         this.status = Status.ACTIVE;
         this.role = role;
     }
 
-    public User update(String nickName , String profileImagePath) {
-        this.nickName = nickName;
+    public User update(String nickname , String profileImagePath) {
+        this.nickname = nickname;
         this.profileImagePath = profileImagePath;
 
         return this;
@@ -68,7 +68,7 @@ public class User extends BaseTimeEntity {
 
     public User update(UserRequest request) {
         this.password = request.getPassword();
-        this.nickName = request.getNickName();
+        this.nickname = request.getNickname();
         this.profileImagePath = request.getProfileImagePath();
 
         return this;
