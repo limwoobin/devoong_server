@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,22 +16,19 @@ import java.util.List;
 public class UserValidator {
     private final UserDao userDao;
 
-    public boolean signUpValidationCheck(UserRequest request) {
+    public void signUpValidationCheck(UserRequest request) {
         List<Validator> validators = Arrays.asList(new EmailValidator(userDao) , new NickNameValidator(userDao));
-        return this.validatorLoop(validators , request);
+        this.validatorLoop(validators, request);
     }
 
-    public boolean userUpdateValidationCheck(UserRequest request) {
-        List<Validator> validators = Arrays.asList(new NickNameValidator(userDao));
-        return this.validatorLoop(validators , request);
+    public void userUpdateValidationCheck(UserRequest request) {
+        List<Validator> validators = Collections.singletonList(new NickNameValidator(userDao));
+        this.validatorLoop(validators, request);
     }
 
-    private boolean validatorLoop(List<Validator> validators , UserRequest request) {
-        boolean isRequest = false;
+    private void validatorLoop(List<Validator> validators , UserRequest request) {
         for (Validator validator : validators) {
-            isRequest = validator.signUpValidator(request);
+            validator.signUpValidator(request);
         }
-
-        return isRequest;
     }
 }

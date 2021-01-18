@@ -5,15 +5,14 @@ import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Getter
+//@Getter
+@Data
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")

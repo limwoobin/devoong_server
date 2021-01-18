@@ -7,6 +7,7 @@ import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +20,7 @@ public class UserService {
         userValidator.signUpValidationCheck(request);
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        UserResponse userResponse = userDao.signUp(request);
-        return userResponse;
+        return userDao.signUp(request);
     }
 
     public UserResponse login(UserRequest request) {

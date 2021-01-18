@@ -23,7 +23,6 @@ public class CategoriesDao {
     public CategoriesResponse saveCategory(String category) {
         Categories categories = Categories.builder()
                 .name(category)
-                .status(Status.ACTIVE)
                 .build();
 
         return converter.categoryConverts(repository.save(categories));
@@ -45,7 +44,7 @@ public class CategoriesDao {
 
     @Transactional
     public List<CategoriesResponse> getCategories() {
-        List<Categories> categories = repository.findAllByOrderByIdDesc();
+        List<Categories> categories = repository.findAll();
         List<CategoriesResponse> categoriesResponses = converter.categoriesConverts(categories);
         return categoriesResponses;
     }

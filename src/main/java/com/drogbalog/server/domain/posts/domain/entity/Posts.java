@@ -15,7 +15,7 @@ import java.math.BigInteger;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "post")
+@Table(name = "posts")
 public class Posts extends BaseTimeEntity {
 
     @Id
