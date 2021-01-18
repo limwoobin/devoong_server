@@ -31,9 +31,9 @@ public class Categories extends BaseTimeEntity {
     private Status status;
 
     @Builder
-    public Categories(String name , Status status) {
+    public Categories(String name) {
         this.name = name;
-        this.status = status;
+        this.status = Status.ACTIVE;
     }
 
     public Categories update(String name , Status status) {

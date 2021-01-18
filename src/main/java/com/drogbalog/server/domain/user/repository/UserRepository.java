@@ -6,14 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface UserRepository extends DefaultRepository<User, Long> {
     User findById(long id);
 
     Optional<User> findByEmail(String email);
 
-    User findByNickName(String nickName);
+    User findByNickname(String nickname);
 
     Optional<User> findByEmailAndPassword(String email , String password);
 }

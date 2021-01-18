@@ -9,10 +9,10 @@ import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class UserDao {
     private final UserRepository repository;
@@ -23,7 +23,7 @@ public class UserDao {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .nickName(request.getNickName())
+                .nickname(request.getNickname())
                 .profileImagePath(request.getProfileImagePath())
                 .gender(request.getGender())
                 .role(request.getRole())
@@ -74,7 +74,7 @@ public class UserDao {
     }
 
     @Transactional
-    public User findByNickName(String nickName) {
-        return repository.findByNickName(nickName);
+    public User findByNickname(String nickname) {
+        return repository.findByNickname(nickname);
     }
 }

@@ -13,7 +13,7 @@ public class SessionUser implements Serializable {
 
     public SessionUser(User user) {
         this.email = user.getEmail();
-        this.nickName = user.getNickName();
+        this.nickName = user.getNickname();
         this.profileImagePath = user.getProfileImagePath();
     }
 }

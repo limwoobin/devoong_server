@@ -17,7 +17,7 @@ public class NickNameValidator implements Validator {
 
     @Override
     public boolean signUpValidator(UserRequest request) {
-        User user = userDao.findByNickName(request.getNickName());
+        User user = userDao.findByNickname(request.getNickname());
         if (!StringUtils.isEmpty(user)) {
             throw new DuplicateDataException(
                     DuplicateStatus.NICKNAME_DUPLICATED.getCode(),

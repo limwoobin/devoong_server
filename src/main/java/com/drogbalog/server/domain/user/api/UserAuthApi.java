@@ -29,7 +29,6 @@ public class UserAuthApi {
     @ApiOperation(value = "회원가입")
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserRequest request) {
         UserResponse userResponse = userService.signUp(request);
-
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
