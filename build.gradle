@@ -30,12 +30,16 @@ dependencies {
 
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'mysql:mysql-connector-java'
-    testRuntime 'com.h2database:h2'
+    implementation("org.springframework.boot:spring-boot-starter-jdbc") {
+        exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
+    }
+    implementation 'mysql:mysql-connector-java'
+    testCompile 'com.h2database:h2'
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    testCompile("org.springframework.security:spring-security-test")
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
