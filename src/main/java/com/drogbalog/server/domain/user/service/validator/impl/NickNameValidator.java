@@ -16,14 +16,12 @@ public class NickNameValidator implements Validator {
     private final UserDao userDao;
 
     @Override
-    public boolean signUpValidator(UserRequest request) {
+    public void execute(UserRequest request) {
         User user = userDao.findByNickname(request.getNickname());
         if (!StringUtils.isEmpty(user)) {
             throw new DuplicateDataException(
                     DuplicateStatus.NICKNAME_DUPLICATED.getCode(),
                     DuplicateStatus.NICKNAME_DUPLICATED.getMessage());
         }
-
-        return true;
     }
 }

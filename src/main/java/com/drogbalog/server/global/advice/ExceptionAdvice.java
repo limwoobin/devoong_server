@@ -4,6 +4,7 @@ import com.drogbalog.server.global.exception.*;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -35,7 +36,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse , HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UnAuthorizedException.class)
+    @ExceptionHandler({UnAuthorizedException.class , AuthenticationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ErrorResponse> unAuthorizedException(Exception e) {
         ErrorResponse errorResponse = makeExceptionObject(HttpStatus.UNAUTHORIZED , e);

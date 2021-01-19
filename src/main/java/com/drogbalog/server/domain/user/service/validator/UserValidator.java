@@ -4,6 +4,7 @@ import com.drogbalog.server.domain.user.service.validator.impl.NickNameValidator
 import com.drogbalog.server.domain.user.dao.UserDao;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.validator.impl.EmailValidator;
+import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class UserValidator {
 
     private void validatorLoop(List<Validator> validators , UserRequest request) {
         for (Validator validator : validators) {
-            validator.signUpValidator(request);
+            validator.execute(request);
         }
     }
 }

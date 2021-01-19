@@ -16,14 +16,12 @@ public class EmailValidator implements Validator {
     private final UserDao userDao;
 
     @Override
-    public boolean signUpValidator(UserRequest request) {
+    public void execute(UserRequest request) {
         User user = userDao.availableEmailCheck(request.getEmail());
         if (!StringUtils.isEmpty(user)) {
             throw new DuplicateDataException(
                     DuplicateStatus.EMAIL_DUPLICATED.getCode(),
                     DuplicateStatus.EMAIL_DUPLICATED.getMessage());
         }
-
-        return true;
     }
 }
