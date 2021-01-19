@@ -3,15 +3,17 @@ package com.drogbalog.server.domain.user.dao;
 import com.drogbalog.server.domain.user.converter.UserConverter;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.global.code.Status;
-import com.drogbalog.server.global.exception.BadRequestException;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
+import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserDao {
@@ -30,14 +32,6 @@ public class UserDao {
                 .build();
 
         return converter.userConverts(repository.save(user));
-    }
-
-    @Transactional
-    public UserResponse login(String email , String password) {
-        User user = repository.findByEmailAndPassword(email , password)
-                .orElseThrow(() -> new BadRequestException("로그인 정보를 다시 확인해주세요."));
-
-        return converter.userConverts(user);
     }
 
     @Transactional
@@ -62,9 +56,19 @@ public class UserDao {
     }
 
     @Transactional
-    public User findByEmail(String email) {
-        return repository.findByEmail(email)
+    public UserResponse findByEmail(String email) {
+        User user =  repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No Such Email"));
+
+        return converter.userConverts(user);
+    }
+
+    @Transactional
+    public String getUserPassword(String email) {
+        User user =  repository.findByEmail(email)
+                .orElseThrow(() -> new UnAuthorizedException("로그인 정보가 잘못되었습니다."));
+
+        return user.getPassword();
     }
 
     @Transactional

@@ -4,6 +4,8 @@ import com.drogbalog.server.domain.user.dao.UserDao;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.validator.UserValidator;
+import com.drogbalog.server.domain.user.service.validator.Validator;
+import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,31 +15,30 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse signUp(UserRequest request) {
         userValidator.signUpValidationCheck(request);
-
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         return userDao.signUp(request);
     }
 
+    @Transactional
     public UserResponse login(UserRequest request) {
-        UserResponse userResponse = userDao.login(request.getEmail() , passwordEncoder.encode(request.getPassword()));
-        return userResponse;
+        Validator validator = new PasswordValidator(userDao , passwordEncoder);
+        validator.execute(request);
+
+        return userDao.findByEmail(request.getEmail());
     }
 
     public UserResponse getUserInfo(long userId) {
-        UserResponse userResponse = userDao.getUserInfo(userId);
-        return userResponse;
+        return userDao.getUserInfo(userId);
     }
 
     public UserResponse updateUserInfo(UserRequest request) {
         userValidator.userUpdateValidationCheck(request);
-
-        UserResponse userResponse = userDao.updateUserInfo(request);
-        return userResponse;
+        return userDao.updateUserInfo(request);
     }
 
     public void deleteUser(long userId) {
