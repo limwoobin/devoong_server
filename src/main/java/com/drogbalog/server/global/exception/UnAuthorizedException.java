@@ -8,10 +8,6 @@ public class UnAuthorizedException extends DrogbalogException {
     }
 
     public UnAuthorizedException(String message) {
-        super(message);
-    }
-
-    public UnAuthorizedException(HttpStatus status , String message) {
-        super(status , message);
+        super(HttpStatus.UNAUTHORIZED , message);
     }
 }
