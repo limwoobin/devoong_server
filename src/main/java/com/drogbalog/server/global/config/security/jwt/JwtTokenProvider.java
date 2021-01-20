@@ -9,6 +9,7 @@ import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @Log4j2
 public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
+    private final RedisTemplate<String , Object> redisTemplate;
 
     @Value("${jwt.secret_key}")
     private String secretKey;
@@ -116,11 +118,19 @@ public class JwtTokenProvider {
     }
 
     public UserResponse generateTokens(UserResponse userResponse) {
+        String accessToken = this.generateAccessToken(userResponse.getEmail());
+        String refreshToken = this.generateRefreshToken(userResponse.getEmail());
+
         JwtResponse jwtResponse = new JwtResponse();
-        jwtResponse.setAccessToken(this.generateAccessToken(userResponse.getEmail()));
-        jwtResponse.setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
+        jwtResponse.setAccessToken(accessToken);
+        jwtResponse.setRefreshToken(refreshToken);
+        saveRefreshToken(userResponse.getEmail() , refreshToken);
 
         userResponse.setJwtResponse(jwtResponse);
         return userResponse;
+    }
+
+    private void saveRefreshToken(String email , String refreshToken) {
+        redisTemplate.opsForValue().set(email , refreshToken);
     }
 }
