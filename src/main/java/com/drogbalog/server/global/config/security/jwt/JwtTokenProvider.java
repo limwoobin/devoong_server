@@ -2,11 +2,10 @@ package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.drogbalog.server.global.exception.UnAuthorizedException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +23,7 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RequiredArgsConstructor
 @Component
+@Log4j2
 public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
 
@@ -55,10 +55,12 @@ public class JwtTokenProvider {
     }
 
     private String generateAccessToken(String userPrimaryKey) {
+        log.info("accessToken_validTime: " + tokenValidTime);
         return doGenerateToken(userPrimaryKey , tokenValidTime);
     }
 
     private String generateRefreshToken(String userPrimaryKey) {
+        log.info("refreshToken_validTime: " + refreshTokenValidTime);
         return doGenerateToken(userPrimaryKey , refreshTokenValidTime);
     }
 
@@ -91,7 +93,14 @@ public class JwtTokenProvider {
     }
 
     boolean validateToken(String jwtToken) {
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        Jws<Claims> claimsJws = null;
+        try {
+            claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        } catch (MalformedJwtException | SignatureException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(e.getMessage());
+        }
+
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
