@@ -58,7 +58,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private String generateAccessToken(String userPrimaryKey) {
+    public String generateAccessToken(String userPrimaryKey) {
         log.info("accessTokenExpiredTime: " + accessTokenExpiredTime);
         return doGenerateToken(userPrimaryKey , accessTokenExpiredTime);
     }
@@ -132,5 +132,10 @@ public class JwtTokenProvider {
 
     private void saveRefreshToken(String email , String refreshToken) {
         redisTemplate.opsForValue().set(email , refreshToken);
+    }
+
+    public boolean refreshTokenVerification(String email , String refreshToken) {
+        String targetRefreshToken = (String) redisTemplate.opsForValue().get(email);
+        return refreshToken.equals(targetRefreshToken) && validateToken(targetRefreshToken);
     }
 }

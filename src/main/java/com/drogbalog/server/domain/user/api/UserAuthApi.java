@@ -1,7 +1,6 @@
 package com.drogbalog.server.domain.user.api;
 
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
-import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,11 +44,12 @@ public class UserAuthApi {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/logout")
-    @ApiOperation(value = "로그아웃")
-    public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
-        // todo: redis 연동
+    @PostMapping(value = "/accessToken")
+    @ApiOperation(value = "access token 재발급 요청")
+    public ResponseEntity<String> getAccessToken(@RequestParam String email ,
+                                                       @RequestParam String refreshToken) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        String newAccessToken = userService.getAccessToken(email, refreshToken);
+        return new ResponseEntity<>(newAccessToken , HttpStatus.OK);
     }
 }

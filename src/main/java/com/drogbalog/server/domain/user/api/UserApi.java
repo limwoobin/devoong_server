@@ -4,7 +4,6 @@ import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.UserService;
-import com.drogbalog.server.global.exception.UnAuthorizedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +48,14 @@ public class UserApi {
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @PathVariable(name = "userId") long userId) {
         userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/logout")
+    @ApiOperation(value = "로그아웃")
+    public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+        // todo: redis 연동
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

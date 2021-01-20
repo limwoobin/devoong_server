@@ -7,6 +7,8 @@ import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
+import com.drogbalog.server.global.exception.Jwt.JwtCode;
+import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,5 +51,13 @@ public class UserService {
 
     public void deleteUser(long userId) {
         userDao.deleteUser(userId);
+    }
+
+    public String getAccessToken(String email , String refreshToken) {
+        if (!jwtTokenProvider.refreshTokenVerification(email , refreshToken)) {
+            throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , "RefreshToken is Expired.");
+        }
+
+        return jwtTokenProvider.generateAccessToken(email);
     }
 }
