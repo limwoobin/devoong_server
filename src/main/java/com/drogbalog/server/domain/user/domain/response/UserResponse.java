@@ -28,9 +28,6 @@ public class UserResponse {
     @ApiModelProperty(value = "사용자 상태")
     private Status status;
 
-    @ApiModelProperty(value = "access_token")
-    private String accessToken;
-
-    @ApiModelProperty(value = "refresh_token")
-    private String refreshToken;
+    @ApiModelProperty(value = "jwt token")
+    private JwtResponse jwtResponse;
 }
