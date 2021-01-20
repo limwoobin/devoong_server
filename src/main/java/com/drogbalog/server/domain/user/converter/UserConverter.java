@@ -9,9 +9,6 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface UserConverter {
 
-    @Mappings({
-            @Mapping(target = "accessToken", ignore = true),
-            @Mapping(target = "refreshToken", ignore = true)
-    })
+    @Mapping(target = "jwtResponse" , ignore = true)
     UserResponse userConverts(User user);
 }

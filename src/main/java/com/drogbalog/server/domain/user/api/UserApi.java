@@ -26,9 +26,10 @@ public class UserApi {
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
     public ResponseEntity<UserResponse> getUserInfo(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-            @PathVariable(name = "userId") long userId) {
-        UserResponse userResponse = userService.getUserInfo(userId);
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+
+        String email = jwtTokenProvider.getUserPrimaryKey(token);
+        UserResponse userResponse = userService.getUserInfo(email);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
@@ -47,6 +48,14 @@ public class UserApi {
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
             @PathVariable(name = "userId") long userId) {
         userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/logout")
+    @ApiOperation(value = "로그아웃")
+    public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+        // todo: redis 연동
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

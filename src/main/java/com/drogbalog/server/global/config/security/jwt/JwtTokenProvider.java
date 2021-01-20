@@ -1,13 +1,15 @@
 package com.drogbalog.server.global.config.security.jwt;
 
+import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.drogbalog.server.global.exception.Jwt.JwtCode;
+import com.drogbalog.server.global.exception.UnAuthorizedException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,24 +26,26 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 
 @RequiredArgsConstructor
 @Component
+@Log4j2
 public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
+    private final RedisTemplate<String , Object> redisTemplate;
 
     @Value("${jwt.secret_key}")
     private String secretKey;
 
-    @Value("${jwt.token_valid_time}")
-    private long tokenValidTime;
+    @Value("${jwt.access_token.validate_time}")
+    private long accessTokenExpiredTime;
 
-    @Value("${jwt.refreshToken_valid_time}")
-    private long refreshTokenValidTime;
+    @Value("${jwt.refresh_token.validate_time}")
+    private long refreshTokenExpiredTime;
 
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    private String doGenerateToken(String userPrimaryKey , long validTime) {
+    private String doGenerateToken(String userPrimaryKey , long expiredTime) {
         Claims claims = Jwts.claims().setSubject(userPrimaryKey);
         claims.put("role" , Role.USER);
         Date now = new Date();
@@ -49,17 +53,19 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(createExpiredTime(validTime))
+                .setExpiration(createExpiredTime(expiredTime))
                 .signWith(SignatureAlgorithm.HS256 , secretKey)
                 .compact();
     }
 
-    private String generateAccessToken(String userPrimaryKey) {
-        return doGenerateToken(userPrimaryKey , tokenValidTime);
+    public String generateAccessToken(String userPrimaryKey) {
+        log.info("accessTokenExpiredTime: " + accessTokenExpiredTime);
+        return doGenerateToken(userPrimaryKey , accessTokenExpiredTime);
     }
 
     private String generateRefreshToken(String userPrimaryKey) {
-        return doGenerateToken(userPrimaryKey , refreshTokenValidTime);
+        log.info("refreshTokenExpiredTime: " + refreshTokenExpiredTime);
+        return doGenerateToken(userPrimaryKey , refreshTokenExpiredTime);
     }
 
     private static Date createExpiredTime(long tokenValidTime) {
@@ -91,14 +97,45 @@ public class JwtTokenProvider {
     }
 
     boolean validateToken(String jwtToken) {
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        Jws<Claims> claimsJws = null;
+        try {
+            claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        } catch (MalformedJwtException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.MALFORMED.getCode() , e.getMessage());
+        } catch (SignatureException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.SIGNATURE.getCode() , e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.UNSUPPORTED.getCode() , e.getMessage());
+        }
+
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
     public UserResponse generateTokens(UserResponse userResponse) {
-        userResponse.setAccessToken(this.generateAccessToken(userResponse.getEmail()));
-        userResponse.setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
+        String accessToken = this.generateAccessToken(userResponse.getEmail());
+        String refreshToken = this.generateRefreshToken(userResponse.getEmail());
 
+        JwtResponse jwtResponse = new JwtResponse();
+        jwtResponse.setAccessToken(accessToken);
+        jwtResponse.setRefreshToken(refreshToken);
+        saveRefreshToken(userResponse.getEmail() , refreshToken);
+
+        userResponse.setJwtResponse(jwtResponse);
         return userResponse;
+    }
+
+    private void saveRefreshToken(String email , String refreshToken) {
+        redisTemplate.opsForValue().set(email , refreshToken);
+    }
+
+    public boolean refreshTokenVerification(String email , String refreshToken) {
+        String targetRefreshToken = (String) redisTemplate.opsForValue().get(email);
+        return refreshToken.equals(targetRefreshToken) && validateToken(targetRefreshToken);
     }
 }
