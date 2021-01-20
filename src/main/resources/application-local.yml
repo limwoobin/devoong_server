@@ -53,6 +53,6 @@ logging:
 jwt:
   secret_key: dlog_secret_key
   access_token:
-    expired_time: 86400000
+    validate_time: 86400000
   refresh_token:
-    expired_time: 2592000000
+    validate_time: 2592000000

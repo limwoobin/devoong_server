@@ -1,5 +1,6 @@
 package com.drogbalog.server.global.config.security.jwt;
 
+import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.global.exception.Jwt.JwtCode;
@@ -31,10 +32,10 @@ public class JwtTokenProvider {
     @Value("${jwt.secret_key}")
     private String secretKey;
 
-    @Value("${jwt.access_token.expired_time}")
+    @Value("${jwt.access_token.validate_time}")
     private long accessTokenExpiredTime;
 
-    @Value("${jwt.refresh_token.expired_time}")
+    @Value("${jwt.refresh_token.validate_time}")
     private long refreshTokenExpiredTime;
 
     @PostConstruct
@@ -106,15 +107,20 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             log.info("error message: " + e.getMessage());
             throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.UNSUPPORTED.getCode() , e.getMessage());
         }
 
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
     public UserResponse generateTokens(UserResponse userResponse) {
-        userResponse.getJwtResponse().setAccessToken(this.generateAccessToken(userResponse.getEmail()));
-        userResponse.getJwtResponse().setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
+        JwtResponse jwtResponse = new JwtResponse();
+        jwtResponse.setAccessToken(this.generateAccessToken(userResponse.getEmail()));
+        jwtResponse.setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
 
+        userResponse.setJwtResponse(jwtResponse);
         return userResponse;
     }
 }

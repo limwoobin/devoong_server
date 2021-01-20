@@ -4,6 +4,7 @@ import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.UserService;
+import com.drogbalog.server.global.exception.UnAuthorizedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,10 @@ public class UserApi {
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
     public ResponseEntity<UserResponse> getUserInfo(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-            @PathVariable(name = "userId") long userId) {
-        UserResponse userResponse = userService.getUserInfo(userId);
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+
+        String email = jwtTokenProvider.getUserPrimaryKey(token);
+        UserResponse userResponse = userService.getUserInfo(email);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 

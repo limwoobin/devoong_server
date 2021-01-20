@@ -35,12 +35,6 @@ public class UserDao {
     }
 
     @Transactional
-    public UserResponse getUserInfo(long userId) {
-        User user = repository.findById(userId);
-        return converter.userConverts(user);
-    }
-
-    @Transactional
     public UserResponse updateUserInfo(UserRequest request) {
         User user = repository.findById(request.getId());
         user.update(request);

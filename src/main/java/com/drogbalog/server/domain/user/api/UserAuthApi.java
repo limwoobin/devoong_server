@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
@@ -23,7 +24,13 @@ import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
 @Log4j2
 public class UserAuthApi {
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
+
+    @GetMapping(value = "/test")
+    public ResponseEntity<String> test(HttpSession session) {
+        log.info(session.getAttribute("*"));
+        log.info(session.getAttributeNames());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
@@ -36,8 +43,6 @@ public class UserAuthApi {
     @ApiOperation(value = "로그인")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody UserRequest request) {
         UserResponse userResponse = userService.login(request);
-        userResponse = jwtTokenProvider.generateTokens(userResponse);
-
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
