@@ -2,6 +2,7 @@ package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
+import com.drogbalog.server.global.exception.Jwt.JwtCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -30,18 +31,18 @@ public class JwtTokenProvider {
     @Value("${jwt.secret_key}")
     private String secretKey;
 
-    @Value("${jwt.token_valid_time}")
-    private long tokenValidTime;
+    @Value("${jwt.access_token.expired_time}")
+    private long accessTokenExpiredTime;
 
-    @Value("${jwt.refreshToken_valid_time}")
-    private long refreshTokenValidTime;
+    @Value("${jwt.refresh_token.expired_time}")
+    private long refreshTokenExpiredTime;
 
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    private String doGenerateToken(String userPrimaryKey , long validTime) {
+    private String doGenerateToken(String userPrimaryKey , long expiredTime) {
         Claims claims = Jwts.claims().setSubject(userPrimaryKey);
         claims.put("role" , Role.USER);
         Date now = new Date();
@@ -49,19 +50,19 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(createExpiredTime(validTime))
+                .setExpiration(createExpiredTime(expiredTime))
                 .signWith(SignatureAlgorithm.HS256 , secretKey)
                 .compact();
     }
 
     private String generateAccessToken(String userPrimaryKey) {
-        log.info("accessToken_validTime: " + tokenValidTime);
-        return doGenerateToken(userPrimaryKey , tokenValidTime);
+        log.info("accessTokenExpiredTime: " + accessTokenExpiredTime);
+        return doGenerateToken(userPrimaryKey , accessTokenExpiredTime);
     }
 
     private String generateRefreshToken(String userPrimaryKey) {
-        log.info("refreshToken_validTime: " + refreshTokenValidTime);
-        return doGenerateToken(userPrimaryKey , refreshTokenValidTime);
+        log.info("refreshTokenExpiredTime: " + refreshTokenExpiredTime);
+        return doGenerateToken(userPrimaryKey , refreshTokenExpiredTime);
     }
 
     private static Date createExpiredTime(long tokenValidTime) {
@@ -96,17 +97,23 @@ public class JwtTokenProvider {
         Jws<Claims> claimsJws = null;
         try {
             claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-        } catch (MalformedJwtException | SignatureException e) {
+        } catch (MalformedJwtException e) {
             log.info("error message: " + e.getMessage());
-            throw new UnAuthorizedException(e.getMessage());
+            throw new UnAuthorizedException(JwtCode.MALFORMED.getCode() , e.getMessage());
+        } catch (SignatureException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.SIGNATURE.getCode() , e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.info("error message: " + e.getMessage());
+            throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , e.getMessage());
         }
 
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
     public UserResponse generateTokens(UserResponse userResponse) {
-        userResponse.setAccessToken(this.generateAccessToken(userResponse.getEmail()));
-        userResponse.setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
+        userResponse.getJwtResponse().setAccessToken(this.generateAccessToken(userResponse.getEmail()));
+        userResponse.getJwtResponse().setRefreshToken(this.generateRefreshToken(userResponse.getEmail()));
 
         return userResponse;
     }

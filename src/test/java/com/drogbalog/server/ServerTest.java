@@ -1,33 +1,23 @@
 package com.drogbalog.server;
 
 import com.drogbalog.server.domain.user.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DataJpaTest
+@Log4j2
 public class ServerTest {
-    @Autowired
-    private UserRepository repository;
-
-    private BigInteger bigInteger = BigInteger.ZERO;
-
 
     @Test
     public void test() {
-        this.bigInteger = bigInteger.add(BigInteger.ONE);
-        this.bigInteger = bigInteger.add(BigInteger.ONE);
-        this.bigInteger = bigInteger.add(BigInteger.ONE);
-        this.bigInteger = bigInteger.add(BigInteger.ONE);
-        this.bigInteger = bigInteger.add(BigInteger.ONE);
-
-        System.out.println(bigInteger);
-
-        int a = Integer.parseInt(bigInteger.toString());
-        assertEquals(5 , a);
+        long a = 1611122008666L;
+        long b = 1000L;
+        System.out.println(a/b);
     }
 }
