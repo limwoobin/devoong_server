@@ -54,8 +54,8 @@ public class UserApi {
     @GetMapping(value = "/logout")
     @ApiOperation(value = "로그아웃")
     public ResponseEntity<HttpStatus> logout(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
-        // todo: redis 연동
-
+        String email = jwtTokenProvider.getUserPrimaryKey(token);
+        userService.logout(email , token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

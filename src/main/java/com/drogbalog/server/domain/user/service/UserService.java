@@ -11,9 +11,13 @@ import com.drogbalog.server.global.exception.Jwt.JwtCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Service
@@ -23,6 +27,7 @@ public class UserService {
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTemplate<String , Object> redisTemplate;
 
     public UserResponse signUp(UserRequest request) {
         userValidator.signUpValidationCheck(request);
@@ -38,6 +43,17 @@ public class UserService {
         UserResponse userResponse = userDao.findByEmail(request.getEmail());
         userResponse = jwtTokenProvider.generateTokens(userResponse);
         return userResponse;
+    }
+
+    public void logout(String email , String accessToken) {
+        redisTemplate.delete(email);
+        this.addBlackList(accessToken);
+    }
+
+    private void addBlackList(String accessToken) {
+        Date expirationDate = jwtTokenProvider.getExpirationDate(accessToken);
+        redisTemplate.opsForValue().set(accessToken , true);
+        redisTemplate.expire(accessToken , expirationDate.getTime() - System.currentTimeMillis() , TimeUnit.MILLISECONDS);
     }
 
     public UserResponse getUserInfo(String email) {

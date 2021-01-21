@@ -11,7 +11,8 @@ public enum JwtCode {
     MALFORMED(20003),
     PREMATURE(20004),
     SIGNATURE(20005),
-    UNSUPPORTED(20006);
+    UNSUPPORTED(20006),
+    LOGOUT(20007);
 
     private final int code;
 }

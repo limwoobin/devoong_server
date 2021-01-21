@@ -1,10 +1,8 @@
 package com.drogbalog.server.global.config.web;
 
-import com.drogbalog.server.global.config.security.auth.LoginUserArgumentResolver;
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    private final LoginUserArgumentResolver loginUserArgumentResolver;
     private final JwtAuthenticationInterceptor interceptor;
 
     private static final List<String> EXCLUDE_URL =
@@ -28,8 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods(Arrays.toString(MethodType.values()))
-                .allowCredentials(true)
                 .allowedHeaders("*")
+                .allowCredentials(true)
                 .maxAge(MAX_SECONDS);
     }
 
@@ -40,10 +37,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/users/**")
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns(EXCLUDE_URL);
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(loginUserArgumentResolver);
     }
 }
