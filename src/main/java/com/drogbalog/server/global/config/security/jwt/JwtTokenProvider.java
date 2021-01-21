@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
@@ -117,6 +118,11 @@ public class JwtTokenProvider {
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
+    public Date getExpirationDate(String accessToken) {
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken);
+        return claimsJws.getBody().getExpiration();
+    }
+
     public UserResponse generateTokens(UserResponse userResponse) {
         String accessToken = this.generateAccessToken(userResponse.getEmail());
         String refreshToken = this.generateRefreshToken(userResponse.getEmail());
@@ -132,6 +138,7 @@ public class JwtTokenProvider {
 
     private void saveRefreshToken(String email , String refreshToken) {
         redisTemplate.opsForValue().set(email , refreshToken);
+        redisTemplate.expire(email , 30 , TimeUnit.DAYS);
     }
 
     public boolean refreshTokenVerification(String email , String refreshToken) {
