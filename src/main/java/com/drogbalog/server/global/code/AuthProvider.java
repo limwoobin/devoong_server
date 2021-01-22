@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SocialType {
+public enum AuthProvider {
+    DEFAULT("default"),
     GOOGLE("google"),
     NAVER("naver"),
     KAKAO("kakao"),

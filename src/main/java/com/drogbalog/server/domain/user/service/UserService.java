@@ -1,13 +1,14 @@
 package com.drogbalog.server.domain.user.service;
 
 import com.drogbalog.server.domain.user.dao.UserDao;
+import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
-import com.drogbalog.server.global.exception.Jwt.JwtCode;
+import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +42,8 @@ public class UserService {
         validator.execute(request);
 
         UserResponse userResponse = userDao.findByEmail(request.getEmail());
-        userResponse = jwtTokenProvider.generateTokens(userResponse);
+        JwtResponse jwtResponse = jwtTokenProvider.generateTokens(request.getEmail());
+        userResponse.setJwtResponse(jwtResponse);
         return userResponse;
     }
 
@@ -71,7 +73,7 @@ public class UserService {
 
     public String getAccessToken(String email , String refreshToken) {
         if (!jwtTokenProvider.refreshTokenVerification(email , refreshToken)) {
-            throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , "RefreshToken is Expired.");
+            throw new UnAuthorizedException(AuthExceptionCode.EXPIRED.getCode() , "RefreshToken is Expired.");
         }
 
         return jwtTokenProvider.generateAccessToken(email);

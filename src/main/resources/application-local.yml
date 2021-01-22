@@ -13,12 +13,12 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    generate-ddl: true
+    generate-ddl: false
     show_sql: true
     open-in-view: false
     properties:
       hibernate:
-        ddl-auto: update
+        ddl-auto: validate
         show_sql: true
         use_sql_comments: false
         format_sql: true
@@ -53,3 +53,7 @@ jwt:
     validate_time: 86400000
   refresh_token:
     validate_time: 2592000000
+
+app:
+  oauth2:
+    authorizedRedirectUris: http://localhost:3000/oauth2/redirect , http://localhost:3100/oauth2/redirect

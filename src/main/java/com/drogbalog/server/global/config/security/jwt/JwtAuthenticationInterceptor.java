@@ -1,6 +1,6 @@
 package com.drogbalog.server.global.config.security.jwt;
 
-import com.drogbalog.server.global.exception.Jwt.JwtCode;
+import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,7 +36,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
     private void checkLogoutToken(String accessToken) {
         if (redisTemplate.opsForValue().get(accessToken) != null) {
-            throw new UnAuthorizedException(JwtCode.LOGOUT.getCode() , "Already Logout Token");
+            throw new UnAuthorizedException(AuthExceptionCode.LOGOUT.getCode() , "Already Logout Token");
         }
     }
 }

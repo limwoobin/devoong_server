@@ -30,7 +30,7 @@ public class UserJpaTest {
                 .email("drogbacuty@gmail.com")
                 .password("wjqhsaoal22")
                 .nickname("cutydrogba")
-                .profileImagePath("deault")
+                .imageUri("deault")
                 .gender(Gender.MALE)
                 .role(Role.USER)
                 .build();

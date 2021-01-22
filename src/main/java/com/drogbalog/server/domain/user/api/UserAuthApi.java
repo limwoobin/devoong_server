@@ -23,13 +23,6 @@ import javax.validation.Valid;
 public class UserAuthApi {
     private final UserService userService;
 
-    @GetMapping(value = "/test")
-    public ResponseEntity<String> test(HttpSession session) {
-        log.info(session.getAttribute("*"));
-        log.info(session.getAttributeNames());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PostMapping(value = "/signUp")
     @ApiOperation(value = "회원가입")
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserRequest request) {
