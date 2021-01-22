@@ -26,7 +26,7 @@ public class UserDao {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .nickname(request.getNickname())
-                .profileImagePath(request.getProfileImagePath())
+                .imageUri(request.getImageUri())
                 .gender(request.getGender())
                 .role(request.getRole())
                 .build();

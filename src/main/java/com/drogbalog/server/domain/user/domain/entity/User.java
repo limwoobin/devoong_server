@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.user.domain.entity;
 
+import com.drogbalog.server.global.code.AuthProvider;
 import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
@@ -11,8 +12,7 @@ import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-//@Getter
-@Data
+@Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
     private String nickname;
 
     @Column(length = 100)
-    private String profileImagePath;
+    private String imageUri;
 
     @Column(length = 6)
     @Enumerated(EnumType.STRING)
@@ -47,20 +47,30 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(length = 10)
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    @Column(length = 10)
+    private String providerId;
+
     @Builder
-    public User(String email , String password , String nickname , String profileImagePath , Gender gender , Role role) {
+    public User(String email , String password , String nickname , String imageUri
+            , Gender gender , Role role , AuthProvider provider , String providerId) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.profileImagePath = profileImagePath;
+        this.imageUri = imageUri;
         this.gender = gender;
         this.status = Status.ACTIVE;
         this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
-    public User update(String nickname , String profileImagePath) {
+    public User update(String nickname , String imageUri) {
         this.nickname = nickname;
-        this.profileImagePath = profileImagePath;
+        this.imageUri = imageUri;
 
         return this;
     }
@@ -68,7 +78,7 @@ public class User extends BaseTimeEntity {
     public User update(UserRequest request) {
         this.password = request.getPassword();
         this.nickname = request.getNickname();
-        this.profileImagePath = request.getProfileImagePath();
+        this.imageUri = request.getImageUri();
 
         return this;
     }

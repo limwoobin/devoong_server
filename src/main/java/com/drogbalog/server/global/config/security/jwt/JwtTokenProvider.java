@@ -3,7 +3,7 @@ package com.drogbalog.server.global.config.security.jwt;
 import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
-import com.drogbalog.server.global.exception.Jwt.JwtCode;
+import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -60,12 +60,12 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(String userPrimaryKey) {
-        log.info("accessTokenExpiredTime: " + accessTokenExpiredTime);
+        log.info("accessTokenExpiredTime: {}" , accessTokenExpiredTime);
         return doGenerateToken(userPrimaryKey , accessTokenExpiredTime);
     }
 
     private String generateRefreshToken(String userPrimaryKey) {
-        log.info("refreshTokenExpiredTime: " + refreshTokenExpiredTime);
+        log.info("refreshTokenExpiredTime: {}" , refreshTokenExpiredTime);
         return doGenerateToken(userPrimaryKey , refreshTokenExpiredTime);
     }
 
@@ -102,17 +102,17 @@ public class JwtTokenProvider {
         try {
             claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
         } catch (MalformedJwtException e) {
-            log.info("error message: " + e.getMessage());
-            throw new UnAuthorizedException(JwtCode.MALFORMED.getCode() , e.getMessage());
+            log.info("error message: {}" , e.getMessage());
+            throw new UnAuthorizedException(AuthExceptionCode.MALFORMED.getCode() , e.getMessage());
         } catch (SignatureException e) {
-            log.info("error message: " + e.getMessage());
-            throw new UnAuthorizedException(JwtCode.SIGNATURE.getCode() , e.getMessage());
+            log.info("error message: {}" , e.getMessage());
+            throw new UnAuthorizedException(AuthExceptionCode.SIGNATURE.getCode() , e.getMessage());
         } catch (ExpiredJwtException e) {
-            log.info("error message: " + e.getMessage());
-            throw new UnAuthorizedException(JwtCode.EXPIRED.getCode() , e.getMessage());
+            log.info("error message: {}" , e.getMessage());
+            throw new UnAuthorizedException(AuthExceptionCode.EXPIRED.getCode() , e.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.info("error message: " + e.getMessage());
-            throw new UnAuthorizedException(JwtCode.UNSUPPORTED.getCode() , e.getMessage());
+            log.info("error message: {}" , e.getMessage());
+            throw new UnAuthorizedException(AuthExceptionCode.UNSUPPORTED.getCode() , e.getMessage());
         }
 
         return !claimsJws.getBody().getExpiration().before(new Date());
@@ -123,17 +123,15 @@ public class JwtTokenProvider {
         return claimsJws.getBody().getExpiration();
     }
 
-    public UserResponse generateTokens(UserResponse userResponse) {
-        String accessToken = this.generateAccessToken(userResponse.getEmail());
-        String refreshToken = this.generateRefreshToken(userResponse.getEmail());
+    public JwtResponse generateTokens(String email) {
+        String accessToken = this.generateAccessToken(email);
+        String refreshToken = this.generateRefreshToken(email);
 
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setAccessToken(accessToken);
         jwtResponse.setRefreshToken(refreshToken);
-        saveRefreshToken(userResponse.getEmail() , refreshToken);
-
-        userResponse.setJwtResponse(jwtResponse);
-        return userResponse;
+        saveRefreshToken(email , refreshToken);
+        return jwtResponse;
     }
 
     private void saveRefreshToken(String email , String refreshToken) {
