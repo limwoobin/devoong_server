@@ -20,7 +20,7 @@ public class UserResponse {
     private String nickname;
 
     @ApiModelProperty(value = "사용자 프로필 이미지")
-    private String profileImagePath;
+    private String imageUri;
 
     @ApiModelProperty(value = "사용자 성별")
     private Gender gender;

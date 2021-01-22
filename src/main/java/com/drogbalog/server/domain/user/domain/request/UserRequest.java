@@ -33,7 +33,7 @@ public class UserRequest {
     private String nickname;
 
     @ApiModelProperty(value = "프로필 이미지")
-    private String profileImagePath;
+    private String imageUri;
 
     @ApiModelProperty(value = "성별")
     private Gender gender;
