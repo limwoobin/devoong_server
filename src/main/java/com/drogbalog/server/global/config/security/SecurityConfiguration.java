@@ -1,7 +1,6 @@
 package com.drogbalog.server.global.config.security;
 
 import com.drogbalog.server.global.config.security.jwt.CustomUserDetailService;
-import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationInterceptor;
 import com.drogbalog.server.global.config.security.oauth.CustomOAuth2UserService;
 import com.drogbalog.server.global.config.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.drogbalog.server.global.config.security.oauth.OAuth2AuthenticationFailureHandler;
@@ -20,9 +19,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.Filter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,8 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-    private final HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
-    private final JwtAuthenticationInterceptor jwtAuthenticationInterceptor;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,27 +59,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .httpBasic().disable()
-            .csrf().disable()
-            .formLogin().disable()
-            .cors().and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+            .httpBasic()
+                .disable()
+            .csrf()
+                .disable()
+            .formLogin()
+                .disable()
+            .cors()
+                .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
             .authorizeRequests()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
                 .antMatchers("/users/**").hasRole(Role.USER.toString())
-            .anyRequest().permitAll()
-            .and()
-                .oauth2Login()
-                    .authorizationEndpoint()
-                        .baseUri("/oauth2/authorize/*")
-                        .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
-                        .and()
-                    .redirectionEndpoint()
-                        .baseUri("/oauth2/callback/*")
-                        .and()
-                    .successHandler(oAuth2AuthenticationSuccessHandler)
-                    .failureHandler(oAuth2AuthenticationFailureHandler);
+                .anyRequest().permitAll()
+                .and()
+            .oauth2Login()
+                .authorizationEndpoint()
+                    .baseUri("/oauth2/authorize")
+                    .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
+                    .and()
+                .redirectionEndpoint()
+                    .baseUri("/oauth2/code/*")
+                    .and()
+                .userInfoEndpoint()
+                    .userService(customOAuth2UserService)
+                    .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
     }
 
     @Override

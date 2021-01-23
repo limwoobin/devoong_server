@@ -9,7 +9,6 @@ import com.drogbalog.server.global.config.security.oauth.user.OAuth2UserInfoFact
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
