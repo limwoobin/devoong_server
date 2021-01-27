@@ -57,7 +57,7 @@ public abstract class RetrofitFactory<S> {
     }
 
     private Map<String , String> defaultHeaders() {
-        Map<String, String> defaultHeader = new HashMap<>();
+        final Map<String, String> defaultHeader = new HashMap<>();
         defaultHeader.put("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         defaultHeader.put("Cache-Control", "no-cache");
 

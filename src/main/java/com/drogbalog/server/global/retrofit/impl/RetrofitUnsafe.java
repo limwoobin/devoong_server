@@ -40,10 +40,9 @@ public class RetrofitUnsafe<S> extends RetrofitFactory<S> {
 
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+            return new OkHttpClient.Builder()
                     .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
                     .hostnameVerifier((hostname, session) -> true);
-            return builder;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
