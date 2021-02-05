@@ -1,13 +1,10 @@
 package com.drogbalog.server.domain.visit.service;
 
 import com.drogbalog.server.domain.visit.domain.VisitResponse;
-import io.lettuce.core.RedisConnectionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +37,7 @@ public class VisitService {
 
     private VisitResponse defaultVisitResponse() {
         VisitResponse visitResponse = new VisitResponse();
-        visitResponse.setToday(0);
-        visitResponse.setAllDay(0);
+        visitResponse.reset();
         return visitResponse;
     }
 }
