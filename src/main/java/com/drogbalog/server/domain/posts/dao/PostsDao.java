@@ -3,6 +3,7 @@ package com.drogbalog.server.domain.posts.dao;
 import com.drogbalog.server.domain.posts.converter.PostsConverter;
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostsDao {
     private final PostsRepository repository;
     private final PostsConverter converter;
+    private final PostsRepositorySupport postsRepositorySupport;
 
     @Transactional
     public Page<PostsResponse> findAll(Pageable pageable) {
@@ -66,7 +68,6 @@ public class PostsDao {
 
     @Transactional
     public Page<PostsResponse> findAllByKeyword(String keyword , Pageable pageable) {
-
         return null;
     }
 }

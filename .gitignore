@@ -30,7 +30,7 @@ out
 .idea
 gradle
 logs
-generated
+src/main/generated/*
 
 ### setting files ###
 gradlew
