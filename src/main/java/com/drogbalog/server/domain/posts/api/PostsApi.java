@@ -43,4 +43,14 @@ public class PostsApi {
         PostsResponse PostsResponse = postsService.getPosts(postsId);
         return new ResponseEntity<>(PostsResponse , HttpStatus.OK);
     }
+
+    @GetMapping(value = "/search/{keyword}")
+    @ApiOperation(value = "게시글 검색")
+    public ResponseEntity<PostsResponse> getPostsListByKeyword(
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
+            @PathVariable(name = "keyword") String keyword) {
+
+        Page<PostsResponse> postsList = postsService.getPostsListByKeyword(keyword , pageable);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

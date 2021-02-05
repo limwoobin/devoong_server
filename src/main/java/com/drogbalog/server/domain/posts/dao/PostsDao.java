@@ -63,4 +63,10 @@ public class PostsDao {
         Posts.update(request.getCategoryId() , request.getSubject() , request.getContents());
         return converter.convertEntity(Posts);
     }
+
+    @Transactional
+    public Page<PostsResponse> findAllByKeyword(String keyword , Pageable pageable) {
+
+        return null;
+    }
 }
