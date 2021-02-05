@@ -55,11 +55,10 @@ public class Posts extends BaseTimeEntity {
         this.status = Status.ACTIVE;
     }
 
-    public Posts update(long categoryId , String subject , String contents) {
+    public void update(long categoryId , String subject , String contents) {
         this.categoryId = categoryId;
         this.subject = subject;
         this.contents = contents;
-        return this;
     }
 
     public Posts updateStatus(Status status) {
@@ -67,8 +66,7 @@ public class Posts extends BaseTimeEntity {
         return this;
     }
 
-    public Posts addPostsViews() {
+    public void addPostsViews() {
         this.views = views.add(BigInteger.ONE);
-        return this;
     }
 }

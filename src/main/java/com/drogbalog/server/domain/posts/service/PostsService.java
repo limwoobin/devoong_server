@@ -32,4 +32,8 @@ public class PostsService {
     public PostsResponse updatePosts(PostsRequest request) {
         return postsDao.update(request);
     }
+
+    public Page<PostsResponse> searchAll(String keyword , Pageable pageable) {
+        return postsDao.searchAll(keyword , pageable);
+    }
 }

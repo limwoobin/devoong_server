@@ -21,7 +21,7 @@ public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false , length = 20)
-    private Long id;
+    private long id;
 
     @Column(length = 30)
     private String email;
@@ -68,25 +68,21 @@ public class User extends BaseTimeEntity {
         this.providerId = providerId;
     }
 
-    public User update(String nickname , String imageUri) {
+    public void update(String nickname , String imageUri) {
         this.nickname = nickname;
         this.imageUri = imageUri;
 
-        return this;
     }
 
-    public User update(UserRequest request) {
+    public void update(UserRequest request) {
         this.password = request.getPassword();
         this.nickname = request.getNickname();
         this.imageUri = request.getImageUri();
 
-        return this;
     }
 
-    public User updateStatus(Status status) {
+    public void updateStatus(Status status) {
         this.status = status;
-
-        return this;
     }
 
     public String getRoleDescription() {

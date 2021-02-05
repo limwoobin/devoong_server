@@ -3,6 +3,7 @@ package com.drogbalog.server.domain.posts.dao;
 import com.drogbalog.server.domain.posts.converter.PostsConverter;
 import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostsDao {
     private final PostsRepository repository;
     private final PostsConverter converter;
+    private final PostsRepositorySupport postsRepositorySupport;
 
     @Transactional
     public Page<PostsResponse> findAll(Pageable pageable) {
@@ -57,10 +59,16 @@ public class PostsDao {
 
     @Transactional
     public PostsResponse update(PostsRequest request) {
-        Posts Posts = repository.findById(request.getId())
+        Posts posts = repository.findById(request.getId())
                 .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
 
-        Posts.update(request.getCategoryId() , request.getSubject() , request.getContents());
-        return converter.convertEntity(Posts);
+        posts.update(request.getCategoryId() , request.getSubject() , request.getContents());
+        return converter.convertEntity(posts);
+    }
+
+    @Transactional
+    public Page<PostsResponse> searchAll(String keyword , Pageable pageable) {
+        Page<Posts> postsPage = postsRepositorySupport.searchAll(keyword , pageable);
+        return postsPage.map(converter::convertEntity);
     }
 }
