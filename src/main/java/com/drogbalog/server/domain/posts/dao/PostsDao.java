@@ -68,7 +68,6 @@ public class PostsDao {
 
     @Transactional
     public Page<PostsResponse> searchAll(String keyword , Pageable pageable) {
-        Page<Posts> postsPage = postsRepositorySupport.searchAll(keyword , pageable);
-        return postsPage.map(converter::convertEntity);
+        return postsRepositorySupport.searchAllResponse(keyword , pageable);
     }
 }

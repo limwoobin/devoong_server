@@ -1,8 +1,10 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
+import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,5 +34,18 @@ public class PostsRepositorySupport  {
                 .fetchResults();
 
         return new PageImpl<>(postsQueryResults.getResults() , pageable , postsQueryResults.getTotal());
+    }
+
+    public Page<PostsResponse> searchAllResponse(String keyword , Pageable pageable) {
+            QueryResults<PostsResponse> postsResponses = queryFactory
+                .from(posts)
+                .select(Projections.constructor(PostsResponse.class))
+                .where(posts.subject.contains(keyword)
+                                .or(posts.contents.contains(keyword))
+                        ,posts.status.eq(Status.ACTIVE))
+                .orderBy(posts.id.desc())
+                .fetchResults();
+
+            return new PageImpl<>(postsResponses.getResults() , pageable , postsResponses.getTotal());
     }
 }
