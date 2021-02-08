@@ -44,8 +44,7 @@ public class CategoriesDao {
 
     @Transactional
     public List<CategoriesResponse> getCategories() {
-        List<Categories> categories = repository.findAll();
-        List<CategoriesResponse> categoriesResponses = converter.categoriesConverts(categories);
-        return categoriesResponses;
+        List<Categories> categories = repository.findAllByStatus(Status.ACTIVE);
+        return converter.categoriesConverts(categories);
     }
 }
