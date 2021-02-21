@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: test
+  h2:
+    console:
+      enabled: true
+      path: /test_db
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      username: test
+      password: 1234
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: create
