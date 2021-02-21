@@ -2,7 +2,6 @@ package com.drogbalog.server.global.config.security.jwt;
 
 import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.global.config.security.Role;
-import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;

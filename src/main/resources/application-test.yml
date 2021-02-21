@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: test
+    include: oauth
   h2:
     console:
       enabled: true
@@ -15,3 +16,15 @@ spring:
     show_sql: true
     hibernate:
       ddl-auto: create
+
+## jwt ##
+jwt:
+  secret_key: dlog_secret_key
+  access_token:
+    validate_time: 86400000
+  refresh_token:
+    validate_time: 2592000000
+
+app:
+  oauth2:
+    authorizedRedirectUris: http://localhost:3000/oauth2/redirect , http://localhost:3100/oauth2/redirect
