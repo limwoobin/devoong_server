@@ -36,11 +36,10 @@ public class Categories extends BaseTimeEntity {
         this.status = Status.ACTIVE;
     }
 
-    public Categories update(String name , Status status) {
+    public void update(String name , Status status) {
         this.name = name;
         this.status = status;
 
-        return this;
     }
 
     @OneToMany(mappedBy = "categories", cascade = CascadeType.PERSIST, orphanRemoval = true)

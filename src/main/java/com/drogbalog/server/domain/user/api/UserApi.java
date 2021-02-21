@@ -26,7 +26,8 @@ public class UserApi {
     @GetMapping(value = "/{userId}")
     @ApiOperation(value = "회원정보 조회")
     public ResponseEntity<UserResponse> getUserInfo(
-            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token) {
+            @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
+            @PathVariable(name = "userId") long userId) {
 
         String email = jwtTokenProvider.getUserPrimaryKey(token);
         UserResponse userResponse = userService.getUserInfo(email);
