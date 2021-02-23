@@ -53,4 +53,9 @@ public class PostsApi {
         Page<PostsResponse> postsList = postsService.searchAll(keyword , pageable);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
+
+    @GetMapping(value = "/test")
+    public ResponseEntity<Void> test() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
