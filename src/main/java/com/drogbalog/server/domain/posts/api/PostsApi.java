@@ -55,7 +55,8 @@ public class PostsApi {
     }
 
     @GetMapping(value = "/test")
-    public ResponseEntity<Void> test() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> test() {
+        String testData = "testData";
+        return new ResponseEntity<>(testData , HttpStatus.OK);
     }
 }
