@@ -4,5 +4,10 @@
       "name": "spring.h2.datasource.hikari.driver-class-name",
       "type": "java.lang.String",
       "description": "Description for spring.h2.datasource.hikari.driver-class-name."
-  }
-] }
+    },
+    {
+      "name": "jwt.secret_key",
+      "type": "java.lang.String",
+      "description": "Description for jwt.secret_key."
+    }
+  ] }
