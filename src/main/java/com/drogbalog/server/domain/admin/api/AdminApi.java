@@ -52,8 +52,8 @@ public class AdminApi {
     @ApiOperation(value = "게시글 작성")
     public ResponseEntity<PostsResponse> createPosts(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
                                                      @RequestBody PostsRequest request) {
-        PostsResponse postsDto = postsService.createPosts(request);
-        return new ResponseEntity<>(postsDto , HttpStatus.CREATED);
+        PostsResponse postsResponse = postsService.createPosts(request);
+        return new ResponseEntity<>(postsResponse , HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/posts/{postsId}")
@@ -62,7 +62,7 @@ public class AdminApi {
             @RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token,
             @PathVariable(name = "postsId") long postsId , @RequestBody PostsRequest request) {
         request.setId(postsId);
-        PostsResponse postsDto = postsService.updatePosts(request);
-        return new ResponseEntity<>(postsDto , HttpStatus.OK);
+        PostsResponse postsResponse = postsService.updatePosts(request);
+        return new ResponseEntity<>(postsResponse , HttpStatus.OK);
     }
 }

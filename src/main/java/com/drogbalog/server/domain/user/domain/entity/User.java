@@ -9,6 +9,7 @@ import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -23,6 +24,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false , length = 20)
     private long id;
 
+    @Email
     @Column(length = 30)
     private String email;
 
