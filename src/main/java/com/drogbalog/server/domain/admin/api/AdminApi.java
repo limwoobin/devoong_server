@@ -1,9 +1,9 @@
 package com.drogbalog.server.domain.admin.api;
 
-import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
-import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
+import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
+import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.service.CategoriesService;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;

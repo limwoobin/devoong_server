@@ -1,7 +1,7 @@
 package com.drogbalog.server.domain.posts.converter;
 
-import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Categories;
+import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

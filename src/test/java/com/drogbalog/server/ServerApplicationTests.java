@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
         },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@ActiveProfiles(value = "test")
 class ServerApplicationTests {
 
     @Value("value")

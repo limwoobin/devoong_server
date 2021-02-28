@@ -1,7 +1,6 @@
 package com.drogbalog.server.posts;
 
 import com.drogbalog.server.domain.posts.api.PostsApi;
-import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import com.drogbalog.server.global.config.security.SecurityConfiguration;
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationInterceptor;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;

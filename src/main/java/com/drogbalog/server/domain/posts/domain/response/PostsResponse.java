@@ -1,4 +1,4 @@
-package com.drogbalog.server.domain.posts.domain.dto;
+package com.drogbalog.server.domain.posts.domain.response;
 
 import com.drogbalog.server.global.util.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;

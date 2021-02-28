@@ -1,8 +1,8 @@
 package com.drogbalog.server.domain.posts.dao;
 
 import com.drogbalog.server.domain.posts.converter.PostsConverter;
-import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;

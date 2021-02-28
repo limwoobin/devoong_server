@@ -1,8 +1,8 @@
 package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.dao.CategoriesDao;
-import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
+import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.drogbalog.server.domain.posts.domain.dto;
+package com.drogbalog.server.domain.posts.domain.response;
 
 import com.drogbalog.server.global.code.Status;
 import io.swagger.annotations.ApiModel;

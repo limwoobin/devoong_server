@@ -1,8 +1,8 @@
 package com.drogbalog.server.domain.posts.service;
 
-import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.dao.PostsDao;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
+import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

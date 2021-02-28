@@ -1,9 +1,9 @@
 package com.drogbalog.server.domain.posts.dao;
 
 import com.drogbalog.server.domain.posts.converter.CategoriesConverter;
-import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Categories;
 import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
+import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
 import com.drogbalog.server.domain.posts.repository.CategoriesRepository;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.EmptyDataException;

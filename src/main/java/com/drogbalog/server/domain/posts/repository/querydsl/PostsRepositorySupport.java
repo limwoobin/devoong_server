@@ -1,7 +1,7 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
-import com.drogbalog.server.domain.posts.domain.dto.PostsResponse;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;

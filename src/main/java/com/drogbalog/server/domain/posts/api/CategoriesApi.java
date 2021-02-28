@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.posts.api;
 
-import com.drogbalog.server.domain.posts.domain.dto.CategoriesResponse;
+import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
 import com.drogbalog.server.domain.posts.service.CategoriesService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
