@@ -40,16 +40,14 @@ public class VisitorApiTest {
     @Autowired
     private WebApplicationContext context;
 
-    @MockBean
-    private VisitService visitService;
-
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private JwtAuthenticationInterceptor interceptor;
 
-
+    @MockBean
+    private VisitService visitService;
 
     @BeforeEach
     public void setUp() {
