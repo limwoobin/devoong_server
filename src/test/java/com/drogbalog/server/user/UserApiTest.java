@@ -1,8 +1,10 @@
 package com.drogbalog.server.user;
 
+import com.drogbalog.server.domain.user.api.UserApi;
 import com.drogbalog.server.domain.user.service.UserService;
 import com.drogbalog.server.global.config.security.SecurityConfiguration;
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationInterceptor;
+import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Log4j2
 @WebMvcTest(
-        controllers = UserApiTest.class,
+        controllers = UserApi.class,
         excludeFilters = {
                 @ComponentScan.Filter(
                         type = FilterType.ASSIGNABLE_TYPE,
@@ -47,6 +49,9 @@ public class UserApiTest {
 
     @MockBean
     private JwtAuthenticationInterceptor interceptor;
+
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
 
     @BeforeEach
     public void setUp() {
