@@ -98,4 +98,17 @@ public class UserApiTest {
         actions
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void logout_test() throws Exception {
+        log.info("Logout Test");
+
+        final ResultActions actions = mvc.perform(get("/users/logout")
+                .header("X-AUTH-TOKEN" , "jwtTokenTest"));
+
+        actions
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }
