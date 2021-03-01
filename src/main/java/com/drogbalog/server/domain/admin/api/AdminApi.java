@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.drogbalog.server.global.util.StaticInfo.DR_HEADER_TOKEN;
+import static com.drogbalog.server.global.util.Constants.DR_HEADER_TOKEN;
 
 @RestController
 @RequestMapping(value = "/admin")
