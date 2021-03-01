@@ -86,9 +86,15 @@ public class PostsApiTest {
         given(postsService.searchAll(keyword , pageRequest))
             .willReturn(null);
 
-        // then
-        mvc.perform(get("/posts/search/" + keyword))
+        // when
+        final ResultActions actions = mvc.perform(get("/posts/search/" + keyword))
                 .andExpect(status().isOk())
                 .andDo(print());
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andDo(print());
+
     }
 }
