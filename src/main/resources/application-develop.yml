@@ -4,7 +4,7 @@ server:
 spring:
   profiles:
     active: develop
-    include: oauth
+    include: oauth , email
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://127.0.0.1:3306/dlog?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&allowMultiQueries=true&autoReconnect=true&serverTimezone=Asia/Seoul
