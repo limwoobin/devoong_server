@@ -16,4 +16,8 @@ public class DuplicateDataException extends DrogbalogException {
     public DuplicateDataException(int code , String message) {
         super(HttpStatus.CONFLICT , code , message);
     }
+
+    public DuplicateDataException(DuplicateStatus duplicateStatus) {
+        super(HttpStatus.CONFLICT , duplicateStatus.getCode() , duplicateStatus.getMessage());
+    }
 }
