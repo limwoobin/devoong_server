@@ -6,4 +6,5 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @Log4j2
 @DataJpaTest
 public class PostsJpaTest {
+
 }
