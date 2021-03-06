@@ -2,6 +2,8 @@ package com.drogbalog.server.domain.posts.api;
 
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.service.PostsService;
+import com.drogbalog.server.global.mail.MailService;
+import com.drogbalog.server.global.mail.vo.MailVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -54,10 +56,16 @@ public class PostsApi {
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
+    private final MailService mailService;
+
     @GetMapping(value = "/test")
     public ResponseEntity<TestVO> test() {
-        TestVO testVO = new TestVO();
-        testVO.setTest("testData");
-        return new ResponseEntity<>(testVO , HttpStatus.OK);
+        MailVo mailVo = new MailVo();
+        mailVo.setToAddress("drogba02@naver.com");
+        mailVo.setSubject("zzz");
+        mailVo.setBody("bodyzzzzzzzzzz");
+
+        mailService.sendMessage(mailVo);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
