@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Log4j2
 public class VisitService {
     private final RedisTemplate<String , Object> redisTemplate;
-    private static final String REDIS_TODAY_KEY = "today";
-    private static final String REDIS_FULL_DATE_KEY = "fullDate";
+    private static final String NUMBER_OF_VISITORS_TODAY = "today";
+    private static final String NUMBER_OF_VISITORS_FULL_DATE = "fullDate";
 
     public VisitResponse updateVisit() {
         VisitResponse visitResponse = new VisitResponse();
@@ -28,11 +28,11 @@ public class VisitService {
     }
 
     private Long getToday() {
-        return redisTemplate.opsForValue().increment(REDIS_TODAY_KEY);
+        return redisTemplate.opsForValue().increment(NUMBER_OF_VISITORS_TODAY);
     }
 
     private Long getFullDate() {
-        return redisTemplate.opsForValue().increment(REDIS_FULL_DATE_KEY);
+        return redisTemplate.opsForValue().increment(NUMBER_OF_VISITORS_FULL_DATE);
     }
 
     private VisitResponse defaultVisitResponse() {
