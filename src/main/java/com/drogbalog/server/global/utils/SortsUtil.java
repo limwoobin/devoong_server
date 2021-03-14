@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.util;
+package com.drogbalog.server.global.utils;
 
 import com.drogbalog.server.global.code.OrderByType;
 import org.springframework.data.domain.Sort;

@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.util;
+package com.drogbalog.server.global.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

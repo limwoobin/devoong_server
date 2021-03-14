@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.util;
+package com.drogbalog.server.global.utils;
 
 import org.springframework.util.SerializationUtils;
 import org.springframework.util.StringUtils;
