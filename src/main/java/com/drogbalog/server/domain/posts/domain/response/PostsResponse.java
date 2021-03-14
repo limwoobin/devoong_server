@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.posts.domain.response;
 
-import com.drogbalog.server.global.util.DateTimeUtil;
+import com.drogbalog.server.global.utils.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

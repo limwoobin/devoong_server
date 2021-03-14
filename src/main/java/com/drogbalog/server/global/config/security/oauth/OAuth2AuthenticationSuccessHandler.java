@@ -3,7 +3,7 @@ package com.drogbalog.server.global.config.security.oauth;
 import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.global.exception.BadRequestException;
-import com.drogbalog.server.global.util.CookieUtils;
+import com.drogbalog.server.global.utils.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;

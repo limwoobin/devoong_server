@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import static com.drogbalog.server.global.util.Constants.DR_HEADER_TOKEN;
+import static com.drogbalog.server.global.utils.Constants.DR_HEADER_TOKEN;
 
 @RequiredArgsConstructor
 @Component
