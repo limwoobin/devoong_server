@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.posts.dao;
 
-import com.drogbalog.server.domain.posts.converter.PostsConverter;
+import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostsDao {
     private final PostsRepository repository;
-    private final PostsConverter converter;
+    private final PostsMapper postsMapper;
     private final PostsRepositorySupport postsRepositorySupport;
 
     @Transactional
     public Page<PostsResponse> findAll(Pageable pageable) {
         Page<Posts> postsEntities = repository.findAll(pageable);
-        return postsEntities.map(converter::convertEntity);
+        return postsEntities.map(postsMapper::toPostsResponse);
     }
 
     @Transactional
@@ -33,7 +33,7 @@ public class PostsDao {
                 .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
         this.addPostsViews(posts);
 
-        return converter.convertEntity(posts);
+        return postsMapper.toPostsResponse(posts);
     }
 
     public void addPostsViews(Posts posts) {
@@ -49,7 +49,7 @@ public class PostsDao {
                 .contents(request.getContents())
                 .build();
 
-        return converter.convertEntity(repository.save(posts));
+        return postsMapper.toPostsResponse(repository.save(posts));
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class PostsDao {
                 .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
 
         posts.update(request.getSubject() , request.getContents());
-        return converter.convertEntity(posts);
+        return postsMapper.toPostsResponse(posts);
     }
 
     @Transactional

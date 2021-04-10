@@ -1,10 +1,10 @@
-package com.drogbalog.server.domain.posts.converter;
+package com.drogbalog.server.domain.posts.mapper;
 
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface PostsConverter {
-    PostsResponse convertEntity(Posts postsEntity);
+public interface PostsMapper {
+    PostsResponse toPostsResponse(Posts postsEntity);
 }

@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.user.dao;
 
-import com.drogbalog.server.domain.user.converter.UserConverter;
+import com.drogbalog.server.domain.user.mapper.UserMapper;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserDao {
     private final UserRepository repository;
-    private final UserConverter converter;
+    private final UserMapper userMapper;
 
     @Transactional
     public UserResponse signUp(UserRequest request) {
@@ -31,7 +31,7 @@ public class UserDao {
                 .role(request.getRole())
                 .build();
 
-        return converter.userConverts(repository.save(user));
+        return userMapper.toUserResponse(repository.save(user));
     }
 
     @Transactional
@@ -39,7 +39,7 @@ public class UserDao {
         User user = repository.findById(request.getId());
         user.update(request);
         repository.save(user);
-        return converter.userConverts(user);
+        return userMapper.toUserResponse(user);
     }
 
     @Transactional
@@ -54,7 +54,7 @@ public class UserDao {
         User user =  repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No Such Email"));
 
-        return converter.userConverts(user);
+        return userMapper.toUserResponse(user);
     }
 
     @Transactional

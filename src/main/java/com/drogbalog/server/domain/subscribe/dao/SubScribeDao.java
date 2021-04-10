@@ -1,6 +1,6 @@
 package com.drogbalog.server.domain.subscribe.dao;
 
-import com.drogbalog.server.domain.subscribe.converter.SubscribeConverter;
+import com.drogbalog.server.domain.subscribe.mapper.SubscribeMapper;
 import com.drogbalog.server.domain.subscribe.domain.entity.SubScribe;
 import com.drogbalog.server.domain.subscribe.domain.response.SubScribeResponse;
 import com.drogbalog.server.domain.subscribe.repository.SubScribeRepository;
@@ -15,18 +15,18 @@ import java.util.List;
 @Service
 public class SubScribeDao {
     private final SubScribeRepository subScribeRepository;
-    private final SubscribeConverter subscribeConverter;
+    private final SubscribeMapper subscribeMapper;
 
     @Transactional
     public List<SubScribeResponse> getSubscribeList() {
         List<SubScribe> subScribes = subScribeRepository.findAllByStatus(Status.ACTIVE);
-        return subscribeConverter.convertList(subScribes);
+        return subscribeMapper.toSubScribeResponseList(subScribes);
     }
 
     @Transactional
     public SubScribeResponse findByEmail(String email) {
         SubScribe subScribe = subScribeRepository.findByEmail(email);
-        return subscribeConverter.converts(subScribe);
+        return subscribeMapper.toSubScribeResponse(subScribe);
     }
 
     @Transactional
@@ -36,7 +36,7 @@ public class SubScribeDao {
                 .build();
 
         subScribe = subScribeRepository.save(subScribe);
-        return subscribeConverter.converts(subScribe);
+        return subscribeMapper.toSubScribeResponse(subScribe);
     }
 
     @Transactional
