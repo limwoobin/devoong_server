@@ -5,7 +5,7 @@ import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.global.exception.DuplicateDataException;
-import com.drogbalog.server.global.exception.DuplicateStatus;
+import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,8 +20,8 @@ public class EmailValidator implements Validator {
         User user = userDao.availableEmailCheck(request.getEmail());
         if (!StringUtils.isEmpty(user)) {
             throw new DuplicateDataException(
-                    DuplicateStatus.EMAIL_DUPLICATED.getCode(),
-                    DuplicateStatus.EMAIL_DUPLICATED.getMessage());
+                    DuplicateExceptionType.EMAIL_DUPLICATED.getCode(),
+                    DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
         }
     }
 }

@@ -7,6 +7,7 @@ import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupp
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
+import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class PostsDao {
     @Transactional
     public PostsResponse findById(long postsId) {
         Posts posts = repository.findById(postsId)
-                .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
         this.addPostsViews(posts);
 
         return converter.convertEntity(posts);
@@ -54,7 +55,7 @@ public class PostsDao {
     @Transactional
     public PostsResponse update(PostsRequest request) {
         Posts posts = repository.findById(request.getId())
-                .orElseThrow(() -> new EmptyDataException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
 
         posts.update(request.getSubject() , request.getContents());
         return converter.convertEntity(posts);

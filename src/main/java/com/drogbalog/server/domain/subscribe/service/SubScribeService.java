@@ -3,7 +3,7 @@ package com.drogbalog.server.domain.subscribe.service;
 import com.drogbalog.server.domain.subscribe.dao.SubScribeDao;
 import com.drogbalog.server.domain.subscribe.domain.response.SubScribeResponse;
 import com.drogbalog.server.global.exception.DuplicateDataException;
-import com.drogbalog.server.global.exception.DuplicateStatus;
+import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,7 +22,7 @@ public class SubScribeService {
     public SubScribeResponse subscribe(String email) {
         SubScribeResponse subScribeResponse = subScribeDao.findByEmail(email);
         if (!StringUtils.isEmpty(subScribeResponse)) {
-            throw new DuplicateDataException(DuplicateStatus.ALREADY_EXISTS_SUBSCRIBER);
+            throw new DuplicateDataException(DuplicateExceptionType.ALREADY_EXISTS_SUBSCRIBER);
         }
 
         return subScribeDao.subscribe(email);
@@ -32,7 +32,7 @@ public class SubScribeService {
         SubScribeResponse subScribeResponse = subScribeDao.findByEmail(email);
 
         if (StringUtils.isEmpty(subScribeResponse)) {
-            throw new DuplicateDataException(DuplicateStatus.NON_EXISTS_SUBSCRIBER);
+            throw new DuplicateDataException(DuplicateExceptionType.NON_EXISTS_SUBSCRIBER);
         }
 
         subScribeDao.unSubscribe(email);

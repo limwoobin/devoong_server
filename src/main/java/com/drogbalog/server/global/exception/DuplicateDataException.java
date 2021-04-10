@@ -1,6 +1,7 @@
 package com.drogbalog.server.global.exception;
 
 
+import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import org.springframework.http.HttpStatus;
 
 public class DuplicateDataException extends DrogbalogException {
@@ -17,7 +18,7 @@ public class DuplicateDataException extends DrogbalogException {
         super(HttpStatus.CONFLICT , code , message);
     }
 
-    public DuplicateDataException(DuplicateStatus duplicateStatus) {
-        super(HttpStatus.CONFLICT , duplicateStatus.getCode() , duplicateStatus.getMessage());
+    public DuplicateDataException(DuplicateExceptionType duplicateExceptionType) {
+        super(HttpStatus.CONFLICT , duplicateExceptionType.getCode() , duplicateExceptionType.getMessage());
     }
 }
