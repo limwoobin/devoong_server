@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.tags.domain.entity;
 
+import com.drogbalog.server.global.code.Status;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

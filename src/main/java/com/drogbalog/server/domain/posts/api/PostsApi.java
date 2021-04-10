@@ -55,17 +55,4 @@ public class PostsApi {
         Page<PostsResponse> postsList = postsService.searchAll(keyword , pageable);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
-
-    private final MailService mailService;
-
-    @GetMapping(value = "/test")
-    public ResponseEntity<TestVO> test() {
-        MailVo mailVo = new MailVo();
-        mailVo.setToAddress("drogba02@naver.com");
-        mailVo.setSubject("zzz");
-        mailVo.setBody("bodyzzzzzzzzzz");
-
-        mailService.sendMessage(mailVo);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
