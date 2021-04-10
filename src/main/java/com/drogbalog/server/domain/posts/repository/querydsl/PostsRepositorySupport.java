@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +37,7 @@ public class PostsRepositorySupport  {
         return new PageImpl<>(postsQueryResults.getResults() , pageable , postsQueryResults.getTotal());
     }
 
-    public Page<PostsResponse> searchAllResponse(String keyword , Pageable pageable) {
+    public Page<PostsResponse> searchAllResponse(PageRequest pageRequest , String keyword) {
             QueryResults<PostsResponse> postsResponses = queryFactory
                 .from(posts)
                 .select(Projections.constructor(PostsResponse.class))
@@ -46,6 +47,6 @@ public class PostsRepositorySupport  {
                 .orderBy(posts.id.desc())
                 .fetchResults();
 
-            return new PageImpl<>(postsResponses.getResults() , pageable , postsResponses.getTotal());
+            return new PageImpl<>(postsResponses.getResults() , pageRequest , postsResponses.getTotal());
     }
 }

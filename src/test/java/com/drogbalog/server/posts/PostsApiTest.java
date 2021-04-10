@@ -83,7 +83,7 @@ public class PostsApiTest {
         final PageRequest pageRequest = PageRequest.of(5 , 5);
 
         // given
-        given(postsService.searchAll(keyword , pageRequest))
+        given(postsService.searchAll(pageRequest , keyword))
             .willReturn(null);
 
         // when

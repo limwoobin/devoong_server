@@ -1,6 +1,5 @@
 package com.drogbalog.server.domain.tags.domain.entity;
 
-import com.drogbalog.server.global.code.Status;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "posts")
+@Table(name = "tags")
 public class Tags {
 
     @Id

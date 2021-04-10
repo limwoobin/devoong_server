@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.posts.domain.response;
 
+import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
 import com.drogbalog.server.global.utils.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,7 @@ import lombok.Data;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @ApiModel(value = "게시글 데이터 모델")
@@ -35,4 +37,7 @@ public class PostsResponse {
     @ApiModelProperty(value = "modifiedDate")
     @JsonFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
     private LocalDateTime modifiedDate;
+
+    @ApiModelProperty(value = "tags")
+    private List<TagsResponse> tagsResponseList;
 }

@@ -5,7 +5,7 @@ import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 public class PostsService {
     private final PostsDao postsDao;
 
-    public Page<PostsResponse> getPostsList(Pageable pageable) {
-        return postsDao.findAll(pageable);
+    public Page<PostsResponse> getPostsList(PageRequest pageRequest) {
+        return postsDao.findAll(pageRequest);
+    }
+
+    public Page<PostsResponse> getPostsListByTagsId(PageRequest pageRequest , long tagsId) {
+        return postsDao.findAllByTagsId(pageRequest , tagsId);
     }
 
     public PostsResponse getPosts(long postsId) {
@@ -29,7 +33,7 @@ public class PostsService {
         return postsDao.update(request);
     }
 
-    public Page<PostsResponse> searchAll(String keyword , Pageable pageable) {
-        return postsDao.searchAll(keyword , pageable);
+    public Page<PostsResponse> searchAll(PageRequest pageRequest , String keyword) {
+        return postsDao.searchAll(pageRequest , keyword);
     }
 }

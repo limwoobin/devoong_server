@@ -2,18 +2,18 @@ package com.drogbalog.server.domain.posts.api;
 
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.service.PostsService;
-import com.drogbalog.server.global.mail.MailService;
-import com.drogbalog.server.global.mail.vo.MailVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -25,9 +25,18 @@ public class PostsApi {
     @GetMapping(value = "")
     @ApiOperation(value = "게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsList(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable) {
-        Page<PostsResponse> postsList = postsService.getPostsList(pageable);
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest) {
+        Page<PostsResponse> postsList = postsService.getPostsList(pageRequest);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{tagsId}")
+    @ApiOperation(value = "태그별 게시글 목록 조회")
+    public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest,
+            @PathVariable(name = "tagsId") long tagsId) {
+        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageRequest , tagsId);
+        return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
 
     @GetMapping(value = "/{postsId}")
@@ -40,10 +49,10 @@ public class PostsApi {
     @GetMapping(value = "/search/{keyword}")
     @ApiOperation(value = "게시글 검색")
     public ResponseEntity<Page<PostsResponse>> getPostsListByKeyword(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest ,
             @PathVariable(name = "keyword") String keyword) {
 
-        Page<PostsResponse> postsList = postsService.searchAll(keyword , pageable);
+        Page<PostsResponse> postsList = postsService.searchAll(pageRequest , keyword);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 }

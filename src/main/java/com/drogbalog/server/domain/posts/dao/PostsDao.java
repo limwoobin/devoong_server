@@ -10,7 +10,7 @@ import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +22,15 @@ public class PostsDao {
     private final PostsRepositorySupport postsRepositorySupport;
 
     @Transactional
-    public Page<PostsResponse> findAll(Pageable pageable) {
-        Page<Posts> postsEntities = repository.findAll(pageable);
+    public Page<PostsResponse> findAll(PageRequest pageRequest) {
+        Page<Posts> postsEntities = repository.findAll(pageRequest);
         return postsEntities.map(postsMapper::toPostsResponse);
+    }
+
+    @Transactional
+    public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , long tagsId) {
+
+        return null;
     }
 
     @Transactional
@@ -62,7 +68,7 @@ public class PostsDao {
     }
 
     @Transactional
-    public Page<PostsResponse> searchAll(String keyword , Pageable pageable) {
-        return postsRepositorySupport.searchAllResponse(keyword , pageable);
+    public Page<PostsResponse> searchAll(PageRequest pageRequest , String keyword) {
+        return postsRepositorySupport.searchAllResponse(pageRequest , keyword);
     }
 }
