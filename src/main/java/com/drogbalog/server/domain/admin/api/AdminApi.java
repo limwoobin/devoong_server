@@ -1,10 +1,7 @@
 package com.drogbalog.server.domain.admin.api;
 
-import com.drogbalog.server.domain.posts.domain.request.CategoriesRequest;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
-import com.drogbalog.server.domain.posts.domain.response.CategoriesResponse;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
-import com.drogbalog.server.domain.posts.service.CategoriesService;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,34 +16,6 @@ import static com.drogbalog.server.global.utils.Constants.DR_HEADER_TOKEN;
 @RequiredArgsConstructor
 public class AdminApi {
     private final PostsService postsService;
-    private final CategoriesService categoriesService;
-
-    @PostMapping(value = "/categories/{category}")
-    @ApiOperation(value = "카테고리 추가")
-    public ResponseEntity<CategoriesResponse> createCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-                                                               @PathVariable(name = "category") String category) {
-
-        CategoriesResponse categoriesResponse = categoriesService.saveCategory(category);
-        return new ResponseEntity<>(categoriesResponse , HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/categories")
-    @ApiOperation(value = "카테고리 수정")
-    public ResponseEntity<CategoriesResponse> updateCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-                                                               @RequestBody CategoriesRequest request) {
-
-        CategoriesResponse categoriesResponse = categoriesService.updateCategory(request);
-        return new ResponseEntity<>(categoriesResponse , HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/categories/{categoryId}")
-    @ApiOperation(value = "카테고리 삭제")
-    public ResponseEntity<Void> deleteCategories(@RequestHeader(value = DR_HEADER_TOKEN , defaultValue = "") String token ,
-                                                               @PathVariable(name = "categoryId") long categoryId) {
-
-        categoriesService.deleteCategory(categoryId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @PostMapping(value = "/posts")
     @ApiOperation(value = "게시글 작성")

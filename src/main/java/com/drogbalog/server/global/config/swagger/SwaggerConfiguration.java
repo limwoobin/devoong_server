@@ -35,8 +35,8 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    public Docket categorySwagger() {
-        return getDocket("categories-api" , "/categories/**");
+    public Docket tagSwagger() {
+        return getDocket("tag-api" , "/tag/**");
     }
 
     @Bean

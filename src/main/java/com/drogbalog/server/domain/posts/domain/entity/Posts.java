@@ -23,9 +23,6 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false , length = 20)
     private long id;
 
-    @Column(name = "category_id", length = 20, nullable = false)
-    private long categoryId;
-
     @Column(nullable = false , length = 30)
     private String email;
 
@@ -42,21 +39,15 @@ public class Posts extends BaseTimeEntity {
     @Column
     private BigInteger views;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
-    private Categories categories;
-
     @Builder
-    public Posts(String email , long categoryId , String subject , String contents) {
+    public Posts(String email , String subject , String contents) {
         this.email = email;
-        this.categoryId = categoryId;
         this.subject = subject;
         this.contents = contents;
         this.status = Status.ACTIVE;
     }
 
-    public void update(long categoryId , String subject , String contents) {
-        this.categoryId = categoryId;
+    public void update(String subject , String contents) {
         this.subject = subject;
         this.contents = contents;
     }

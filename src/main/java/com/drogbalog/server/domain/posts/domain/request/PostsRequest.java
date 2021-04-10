@@ -12,9 +12,6 @@ public class PostsRequest {
     @ApiModelProperty(value = "게시글 id")
     private long id;
 
-    @ApiModelProperty(value = "카테고리 id")
-    private long categoryId;
-
     @ApiModelProperty(value = "작성자")
     private String email;
 
