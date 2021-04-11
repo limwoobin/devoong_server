@@ -1,9 +1,12 @@
 package com.drogbalog.server.domain.posts.dao;
 
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.domain.tags.mapper.TagsMapper;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
@@ -14,12 +17,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PostsDao {
     private final PostsRepository postsRepository;
     private final PostsMapper postsMapper;
     private final PostsRepositorySupport postsRepositorySupport;
+    private final TagsMapper tagsMapper;
 
     @Transactional
     public Page<PostsResponse> findAll(PageRequest pageRequest) {
@@ -36,7 +43,15 @@ public class PostsDao {
     @Transactional
     public PostsResponse findById(long postsId) {
         this.addPostsViews(postsId);
-        return postsRepositorySupport.findById(postsId);
+        Posts posts = postsRepositorySupport.findById(postsId);
+        PostsResponse postsResponse = postsMapper.toPostsResponse(posts);
+
+        List<Tags> tagsList = posts.getPostsTagsMappingList()
+                .stream()
+                .map(PostsTagsMapping::getTags)
+                .collect(Collectors.toList());
+        postsResponse.addTagsList(tagsMapper.toTagResponseList(tagsList));
+        return postsResponse;
     }
 
     public void addPostsViews(long postsId) {

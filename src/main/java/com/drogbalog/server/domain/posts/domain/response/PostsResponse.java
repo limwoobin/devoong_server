@@ -18,9 +18,6 @@ public class PostsResponse {
     @ApiModelProperty(value = "id")
     private long id;
 
-    @ApiModelProperty(value = "email")
-    private String email;
-
     @ApiModelProperty(value = "subject")
     private String subject;
 
@@ -40,4 +37,8 @@ public class PostsResponse {
 
     @ApiModelProperty(value = "tags")
     private List<TagsResponse> tagsResponseList;
+
+    public void addTagsList(List<TagsResponse> tagsResponseList) {
+        this.tagsResponseList = tagsResponseList;
+    }
 }

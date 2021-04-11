@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
+import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
@@ -53,10 +54,10 @@ public class PostsRepositorySupport  {
         return new PageImpl<>(postsResponseList.getResults() , pageRequest , postsResponseList.getTotal());
     }
 
-    public PostsResponse findById(long postsId) {
+    public Posts findById(long postsId) {
         return queryFactory
                 .from(posts)
-                .select(Projections.constructor(PostsResponse.class))
+                .select(posts)
                 .where(posts.id.eq(postsId))
                 .fetchOne();
     }

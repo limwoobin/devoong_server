@@ -28,20 +28,20 @@ public class PostsApi {
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{tagsId}")
+    @GetMapping(value = "/{postsId}")
+    @ApiOperation(value = "게시글 조회")
+    public ResponseEntity<PostsResponse> getPostsDetail(@PathVariable(name = "postsId") long postsId) {
+        PostsResponse PostsResponse = postsService.getPosts(postsId);
+        return new ResponseEntity<>(PostsResponse , HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/tags/{tagsId}")
     @ApiOperation(value = "태그별 게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest,
             @PathVariable(name = "tagsId") long tagsId) {
         Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageRequest , tagsId);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{postsId}")
-    @ApiOperation(value = "게시글 조회")
-    public ResponseEntity<PostsResponse> getPostsDetail(@PathVariable(name = "postsId") long postsId) {
-        PostsResponse PostsResponse = postsService.getPosts(postsId);
-        return new ResponseEntity<>(PostsResponse , HttpStatus.OK);
     }
 
     @GetMapping(value = "/search/{keyword}")
