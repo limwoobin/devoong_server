@@ -1,8 +1,10 @@
 package com.drogbalog.server.domain.posts.dao;
 
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
+import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.posts.repository.querydsl.PostsRepositorySupport;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
@@ -14,12 +16,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PostsDao {
     private final PostsRepository repository;
     private final PostsMapper postsMapper;
     private final PostsRepositorySupport postsRepositorySupport;
+    private final PostsTagsMappingRepository postsTagsMappingRepository;
 
     @Transactional
     public Page<PostsResponse> findAll(PageRequest pageRequest) {
@@ -29,8 +35,13 @@ public class PostsDao {
 
     @Transactional
     public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , long tagsId) {
+        List<PostsTagsMapping> postsTagsMappingList = postsTagsMappingRepository.findAllByTagsId(tagsId);
+        List<Long> postsIds = postsTagsMappingList
+                .stream()
+                .map(PostsTagsMapping::getPostsId)
+                .collect(Collectors.toList());
 
-        return null;
+        return postsRepositorySupport.findAllByTagsId(pageRequest, postsIds);
     }
 
     @Transactional
