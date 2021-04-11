@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper
-public interface TagMapper {
+public interface TagsMapper {
     List<TagsResponse> toTagResponseList(List<Tags> tags);
 }
