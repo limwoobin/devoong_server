@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +40,9 @@ public class Posts extends BaseTimeEntity {
     @Column
     private BigInteger views;
 
+    @OneToMany(mappedBy = "posts")
+    private List<PostsTagsMapping> postsTagsMappingList;
+
     @Builder
     public Posts(String email , String subject , String contents) {
         this.email = email;
@@ -50,11 +54,6 @@ public class Posts extends BaseTimeEntity {
     public void update(String subject , String contents) {
         this.subject = subject;
         this.contents = contents;
-    }
-
-    public Posts updateStatus(Status status) {
-        this.status = status;
-        return this;
     }
 
     public void addPostsViews() {

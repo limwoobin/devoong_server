@@ -11,9 +11,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
+import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.postsTagsMapping;
 
 /**
  * Created by Drogba on 2021-02-05
@@ -26,26 +26,38 @@ public class PostsRepositorySupport  {
     private final JPAQueryFactory queryFactory;
 
     public Page<PostsResponse> searchAllResponse(PageRequest pageRequest , String keyword) {
-            QueryResults<PostsResponse> postsResponses = queryFactory
-                .from(posts)
-                .select(Projections.constructor(PostsResponse.class))
-                .where(posts.subject.contains(keyword)
-                                .or(posts.contents.contains(keyword))
-                        ,posts.status.eq(Status.ACTIVE))
-                .orderBy(posts.id.desc())
-                .fetchResults();
+        QueryResults<PostsResponse> postsResponseList = queryFactory
+            .from(posts)
+            .select(Projections.constructor(PostsResponse.class))
+            .where(posts.subject.contains(keyword)
+                            .or(posts.contents.contains(keyword))
+                    ,posts.status.eq(Status.ACTIVE))
+            .orderBy(posts.id.desc())
+            .fetchResults();
 
-            return new PageImpl<>(postsResponses.getResults() , pageRequest , postsResponses.getTotal());
+        return new PageImpl<>(postsResponseList.getResults() , pageRequest , postsResponseList.getTotal());
     }
 
-    public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , List<Long> postsIds) {
-            QueryResults<PostsResponse> postsResponse = queryFactory
+    public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , long tagsId) {
+        QueryResults<PostsResponse> postsResponseList = queryFactory
                 .from(posts)
                 .select(Projections.constructor(PostsResponse.class))
-                .where(posts.id.in(postsIds))
+                .where(posts.id.in(
+                        queryFactory.from(postsTagsMapping)
+                        .select(postsTagsMapping.posts.id)
+                        .where(postsTagsMapping.tags.id.eq(tagsId))
+                ))
                 .orderBy(posts.id.desc())
                 .fetchResults();
 
-            return new PageImpl<>(postsResponse.getResults() , pageRequest , postsResponse.getTotal());
+        return new PageImpl<>(postsResponseList.getResults() , pageRequest , postsResponseList.getTotal());
+    }
+
+    public PostsResponse findById(long postsId) {
+        return queryFactory
+                .from(posts)
+                .select(Projections.constructor(PostsResponse.class))
+                .where(posts.id.eq(postsId))
+                .fetchOne();
     }
 }

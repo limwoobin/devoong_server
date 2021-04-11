@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.posts.domain.entity;
 
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,9 +21,11 @@ public class PostsTagsMapping extends BaseTimeEntity {
     @Column(nullable = false , length = 20)
     private long id;
 
-    @Column(nullable = false , length = 20)
-    private long postsId;
+    @ManyToOne
+    @JoinColumn(name = "posts_id")
+    private Posts posts;
 
-    @Column(nullable = false , length = 20)
-    private long tagsId;
+    @ManyToOne
+    @JoinColumn(name = "tags_id")
+    private Tags tags;
 }

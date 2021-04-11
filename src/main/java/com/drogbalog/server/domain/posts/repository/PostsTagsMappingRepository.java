@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PostsTagsMappingRepository extends DefaultRepository<PostsTagsMapping , Long> {
     List<PostsTagsMapping> findAllByTagsId(long tagsId);
+    List<PostsTagsMapping> findAllByPostsId(long postsId);
 }
