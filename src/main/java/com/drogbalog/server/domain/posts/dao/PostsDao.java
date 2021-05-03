@@ -14,6 +14,7 @@ import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,21 +30,21 @@ public class PostsDao {
     private final TagsMapper tagsMapper;
 
     @Transactional
-    public Page<PostsResponse> findAll(PageRequest pageRequest) {
-        Page<Posts> postsEntities = postsRepository.findAll(pageRequest);
+    public Page<PostsResponse> findAll(Pageable pageable) {
+        Page<Posts> postsEntities = postsRepository.findAll(pageable);
         return postsEntities.map(postsMapper::toPostsResponse);
     }
 
     @Transactional
-    public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , long tagsId) {
-        Page<PostsResponse> postsResponsePage = postsRepositorySupport.findAllByTagsId(pageRequest , tagsId);
+    public Page<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId) {
+        Page<PostsResponse> postsResponsePage = postsRepositorySupport.findAllByTagsId(pageable , tagsId);
         return postsResponsePage;
     }
 
     @Transactional
     public PostsResponse findById(long postsId) {
         this.addPostsViews(postsId);
-        Posts posts = postsRepositorySupport.findById(postsId);
+        Posts posts = postsRepository.findById(postsId).get();
         PostsResponse postsResponse = postsMapper.toPostsResponse(posts);
 
         List<Tags> tagsList = posts.getPostsTagsMappingList()
@@ -62,27 +63,7 @@ public class PostsDao {
     }
 
     @Transactional
-    public PostsResponse save(PostsRequest request) {
-        Posts posts = Posts.builder()
-                .email(request.getEmail())
-                .subject(request.getSubject())
-                .contents(request.getContents())
-                .build();
-
-        return postsMapper.toPostsResponse(postsRepository.save(posts));
-    }
-
-    @Transactional
-    public PostsResponse update(PostsRequest request) {
-        Posts posts = postsRepository.findById(request.getId())
-                .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
-
-        posts.update(request.getSubject() , request.getContents());
-        return postsMapper.toPostsResponse(posts);
-    }
-
-    @Transactional
-    public Page<PostsResponse> searchAll(PageRequest pageRequest , String keyword) {
-        return postsRepositorySupport.searchAllResponse(pageRequest , keyword);
+    public Page<PostsResponse> searchAll(Pageable pageable , String keyword) {
+        return postsRepositorySupport.searchAllResponse(pageable , keyword);
     }
 }

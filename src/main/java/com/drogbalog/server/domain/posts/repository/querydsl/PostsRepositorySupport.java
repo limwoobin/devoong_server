@@ -9,9 +9,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 
 import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
 import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.postsTagsMapping;
@@ -26,7 +25,7 @@ import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.
 public class PostsRepositorySupport  {
     private final JPAQueryFactory queryFactory;
 
-    public Page<PostsResponse> searchAllResponse(PageRequest pageRequest , String keyword) {
+    public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
             .from(posts)
             .select(Projections.constructor(PostsResponse.class))
@@ -36,13 +35,17 @@ public class PostsRepositorySupport  {
             .orderBy(posts.id.desc())
             .fetchResults();
 
-        return new PageImpl<>(postsResponseList.getResults() , pageRequest , postsResponseList.getTotal());
+        return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());
     }
 
-    public Page<PostsResponse> findAllByTagsId(PageRequest pageRequest , long tagsId) {
+    public PageImpl<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
                 .from(posts)
-                .select(Projections.constructor(PostsResponse.class))
+                .select(Projections.constructor(PostsResponse.class,
+                        posts.id,
+                        posts.subject,
+                        posts.contents,
+                        posts.createdDate))
                 .where(posts.id.in(
                         queryFactory.from(postsTagsMapping)
                         .select(postsTagsMapping.posts.id)
@@ -51,14 +54,6 @@ public class PostsRepositorySupport  {
                 .orderBy(posts.id.desc())
                 .fetchResults();
 
-        return new PageImpl<>(postsResponseList.getResults() , pageRequest , postsResponseList.getTotal());
-    }
-
-    public Posts findById(long postsId) {
-        return queryFactory
-                .from(posts)
-                .select(posts)
-                .where(posts.id.eq(postsId))
-                .fetchOne();
+        return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());
     }
 }
