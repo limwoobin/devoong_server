@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class PostsApi {
     @GetMapping(value = "")
     @ApiOperation(value = "게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsList(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest) {
-        Page<PostsResponse> postsList = postsService.getPostsList(pageRequest);
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable) {
+        Page<PostsResponse> postsList = postsService.getPostsList(pageable);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
@@ -38,19 +39,19 @@ public class PostsApi {
     @GetMapping(value = "/tags/{tagsId}")
     @ApiOperation(value = "태그별 게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest,
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable,
             @PathVariable(name = "tagsId") long tagsId) {
-        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageRequest , tagsId);
+        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , tagsId);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
 
     @GetMapping(value = "/search/{keyword}")
     @ApiOperation(value = "게시글 검색")
     public ResponseEntity<Page<PostsResponse>> getPostsListByKeyword(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final PageRequest pageRequest ,
+            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
             @PathVariable(name = "keyword") String keyword) {
 
-        Page<PostsResponse> postsList = postsService.searchAll(pageRequest , keyword);
+        Page<PostsResponse> postsList = postsService.searchAll(pageable , keyword);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 }

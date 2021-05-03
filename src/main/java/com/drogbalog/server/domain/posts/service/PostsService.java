@@ -1,11 +1,10 @@
 package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.dao.PostsDao;
-import com.drogbalog.server.domain.posts.domain.request.PostsRequest;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,27 +12,19 @@ import org.springframework.stereotype.Service;
 public class PostsService {
     private final PostsDao postsDao;
 
-    public Page<PostsResponse> getPostsList(PageRequest pageRequest) {
-        return postsDao.findAll(pageRequest);
+    public Page<PostsResponse> getPostsList(Pageable pageable) {
+        return postsDao.findAll(pageable);
     }
 
-    public Page<PostsResponse> getPostsListByTagsId(PageRequest pageRequest , long tagsId) {
-        return postsDao.findAllByTagsId(pageRequest , tagsId);
+    public Page<PostsResponse> getPostsListByTagsId(Pageable pageable , long tagsId) {
+        return postsDao.findAllByTagsId(pageable , tagsId);
     }
 
     public PostsResponse getPosts(long postsId) {
         return postsDao.findById(postsId);
     }
 
-    public PostsResponse createPosts(PostsRequest request) {
-        return postsDao.save(request);
-    }
-
-    public PostsResponse updatePosts(PostsRequest request) {
-        return postsDao.update(request);
-    }
-
-    public Page<PostsResponse> searchAll(PageRequest pageRequest , String keyword) {
-        return postsDao.searchAll(pageRequest , keyword);
+    public Page<PostsResponse> searchAll(Pageable pageable , String keyword) {
+        return postsDao.searchAll(pageable , keyword);
     }
 }
