@@ -1,5 +1,6 @@
 package com.drogbalog.server.domain.tags.domain.response;
 
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,4 +14,10 @@ public class TagsResponse {
 
     @ApiModelProperty(value = "태그 이름")
     private String name;
+
+    public TagsResponse toTagsResponse(Tags tags) {
+        this.id = tags.getId();
+        this.name = tags.getName();
+        return this;
+    }
 }
