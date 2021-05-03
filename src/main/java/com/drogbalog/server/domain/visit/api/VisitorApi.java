@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VisitorApi {
     private final VisitService visitService;
 
-    @GetMapping("")
+    @GetMapping("visit")
     public ResponseEntity<VisitResponse> visit() {
         VisitResponse visitResponse = visitService.updateVisit();
         return new ResponseEntity<>(visitResponse , HttpStatus.OK);
