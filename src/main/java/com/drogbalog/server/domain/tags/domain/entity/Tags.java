@@ -20,11 +20,11 @@ public class Tags extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false , length = 20)
-    private long id;
+    private Long id;
 
     @Column(nullable = false , length = 30)
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tags")
     private List<PostsTagsMapping> postsTagsMappingList;
 }
