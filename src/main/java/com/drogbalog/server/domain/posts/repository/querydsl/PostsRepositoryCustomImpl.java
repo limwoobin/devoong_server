@@ -39,7 +39,7 @@ public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
         return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());
     }
 
-    public Page<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId) {
+    public Page<PostsResponse> findAllByTagsId(Pageable pageable , Long tagsId) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
                 .from(posts)
                 .select(Projections.constructor(PostsResponse.class,

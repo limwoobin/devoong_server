@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface PostsRepositoryCustom {
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword);
 
-    public Page<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId);
+    public Page<PostsResponse> findAllByTagsId(Pageable pageable , Long tagsId);
 }
