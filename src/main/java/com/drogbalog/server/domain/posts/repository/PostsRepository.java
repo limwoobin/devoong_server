@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostsRepository extends DefaultRepository<Posts, Long> {
+public interface PostsRepository extends DefaultRepository<Posts, Long> , PostsRepositoryCustom {
 
 }

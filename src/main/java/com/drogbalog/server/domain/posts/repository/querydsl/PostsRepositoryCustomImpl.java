@@ -2,6 +2,7 @@ package com.drogbalog.server.domain.posts.repository.querydsl;
 
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
+import com.drogbalog.server.domain.posts.repository.PostsRepositoryCustom;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -22,7 +23,7 @@ import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.
 
 @Repository
 @RequiredArgsConstructor
-public class PostsRepositorySupport  {
+public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {
@@ -38,7 +39,7 @@ public class PostsRepositorySupport  {
         return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());
     }
 
-    public PageImpl<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId) {
+    public Page<PostsResponse> findAllByTagsId(Pageable pageable , long tagsId) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
                 .from(posts)
                 .select(Projections.constructor(PostsResponse.class,
