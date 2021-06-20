@@ -36,7 +36,6 @@ public class PostsService {
         return postsMapper.toPostsResponse(posts);
     }
 
-
     @Transactional(readOnly = true)
     public Page<PostsResponse> searchAll(Pageable pageable , String keyword) {
         return postsRepository.searchAllResponse(pageable , keyword);

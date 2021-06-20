@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -40,7 +39,7 @@ public class PostsApi {
     @ApiOperation(value = "태그별 게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
             @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable,
-            @PathVariable(name = "tagsId") long tagsId) {
+            @PathVariable(name = "tagsId") Long tagsId) {
         Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , tagsId);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
