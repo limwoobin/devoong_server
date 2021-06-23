@@ -1,7 +1,9 @@
 package com.drogbalog.server.domain.tags.service;
 
-import com.drogbalog.server.domain.tags.dao.TagsDao;
 import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
+import com.drogbalog.server.domain.tags.mapper.TagsMapper;
+import com.drogbalog.server.domain.tags.repository.TagsRepository;
+import com.drogbalog.server.global.code.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,11 @@ import java.util.List;
 @Service
 @Log4j2
 public class TagsService {
-    private final TagsDao tagsDao;
+    private final TagsRepository tagsRepository;
+    private final TagsMapper tagsMapper;
 
     @Transactional
     public List<TagsResponse> getTagsList() {
-        return tagsDao.getTagsList();
+        return tagsMapper.toTagResponseList(tagsRepository.findAllByStatus(Status.ACTIVE));
     }
 }
