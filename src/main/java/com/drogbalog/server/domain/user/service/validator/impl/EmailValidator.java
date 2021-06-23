@@ -1,8 +1,8 @@
 package com.drogbalog.server.domain.user.service.validator.impl;
 
-import com.drogbalog.server.domain.user.dao.UserDao;
 import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.global.exception.DuplicateDataException;
 import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
@@ -13,15 +13,20 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 @Component
 public class EmailValidator implements Validator {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Override
     public void execute(UserRequest request) {
-        User user = userDao.availableEmailCheck(request.getEmail());
+        User user = this.availableEmailCheck(request.getEmail());
         if (!StringUtils.isEmpty(user)) {
             throw new DuplicateDataException(
                     DuplicateExceptionType.EMAIL_DUPLICATED.getCode(),
                     DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
         }
+    }
+
+    private User availableEmailCheck(String email) {
+        return userRepository.findByEmail(email)
+                .orElse(null);
     }
 }

@@ -6,6 +6,7 @@ import com.drogbalog.server.global.config.security.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ public class UserRequest {
     }
 
     @ApiModelProperty(value = "사용자 id")
-    private long id;
+    private Long id;
 
     @NotNull
     @Email
@@ -35,12 +36,14 @@ public class UserRequest {
     @ApiModelProperty(value = "프로필 이미지")
     private String imageUri;
 
-    @ApiModelProperty(value = "성별")
-    private Gender gender;
-
     @ApiModelProperty(value = "사용자 상태")
     private Status status;
 
     @ApiModelProperty(value = "사용자 구분")
     private Role role;
+
+    public void encryptPassword(PasswordEncoder passwordEncoder) {
+        String encryptPassword = this.password;
+        this.password = passwordEncoder.encode(encryptPassword);
+    }
 }

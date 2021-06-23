@@ -76,11 +76,10 @@ public class User extends BaseTimeEntity {
 
     }
 
-    public void update(UserRequest request) {
+    public void updateUserInfo(UserRequest request) {
         this.password = request.getPassword();
         this.nickname = request.getNickname();
         this.imageUri = request.getImageUri();
-
     }
 
     public void updateStatus(Status status) {

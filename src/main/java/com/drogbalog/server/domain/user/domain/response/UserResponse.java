@@ -30,4 +30,8 @@ public class UserResponse {
 
     @ApiModelProperty(value = "jwt token")
     private JwtResponse jwtResponse;
+
+    public void initJwtToken(JwtResponse jwtResponse) {
+        this.jwtResponse = jwtResponse;
+    }
 }

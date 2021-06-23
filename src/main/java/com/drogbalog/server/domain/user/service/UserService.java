@@ -1,13 +1,17 @@
 package com.drogbalog.server.domain.user.service;
 
-import com.drogbalog.server.domain.user.dao.UserDao;
+import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
+import com.drogbalog.server.domain.user.mapper.UserMapper;
+import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
+import com.drogbalog.server.global.exception.UserNotFoundException;
 import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
@@ -20,28 +24,45 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import static com.drogbalog.server.global.exception.messages.CommonExceptionType.NOT_FOUND_USER;
+import static com.drogbalog.server.global.exception.messages.CommonExceptionType.REFRESH_TOKEN_IS_EXPIRED;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserDao userDao;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String , Object> redisTemplate;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
+    @Transactional
     public UserResponse signUp(UserRequest request) {
         userValidator.signUpValidationCheck(request);
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        return userDao.signUp(request);
+        request.encryptPassword(passwordEncoder);
+
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .nickname(request.getNickname())
+                .imageUri(request.getImageUri())
+                .role(request.getRole())
+                .build();
+
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @Transactional
     public UserResponse login(UserRequest request) {
-        Validator validator = new PasswordValidator(userDao , passwordEncoder);
+        Validator validator = new PasswordValidator(userRepository , passwordEncoder);
         validator.execute(request);
 
-        UserResponse userResponse = userDao.findByEmail(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(NOT_FOUND_USER));
+        UserResponse userResponse = userMapper.toUserResponse(user);
+
         JwtResponse jwtResponse = jwtTokenProvider.generateTokens(request.getEmail());
         userResponse.setJwtResponse(jwtResponse);
         return userResponse;
@@ -59,21 +80,30 @@ public class UserService {
     }
 
     public UserResponse getUserInfo(String email) {
-        return userDao.findByEmail(email);
+        User user =  userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(NOT_FOUND_USER));
+
+        return userMapper.toUserResponse(user);
     }
 
     public UserResponse updateUserInfo(UserRequest request) {
         userValidator.userUpdateValidationCheck(request);
-        return userDao.updateUserInfo(request);
+        User user = userRepository.findById(request.getId())
+                .orElseThrow(() -> new UserNotFoundException(NOT_FOUND_USER));
+
+        user.updateUserInfo(request);
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 
     public void deleteUser(long userId) {
-        userDao.deleteUser(userId);
+        User user = userRepository.findById(userId);
+        user.updateStatus(Status.DISABLE);
     }
 
     public String getAccessToken(String email , String refreshToken) {
         if (!jwtTokenProvider.refreshTokenVerification(email , refreshToken)) {
-            throw new UnAuthorizedException(AuthExceptionCode.EXPIRED.getCode() , "RefreshToken is Expired.");
+            throw new UnAuthorizedException(REFRESH_TOKEN_IS_EXPIRED , AuthExceptionCode.EXPIRED);
         }
 
         return jwtTokenProvider.generateAccessToken(email);
