@@ -1,5 +1,6 @@
 package com.drogbalog.server.global.exception;
 
+import com.drogbalog.server.global.exception.messages.ExceptionType;
 import org.springframework.http.HttpStatus;
 
 public class UserNotFoundException extends DrogbalogException {
@@ -12,7 +13,7 @@ public class UserNotFoundException extends DrogbalogException {
         super(message);
     }
 
-    public UserNotFoundException(HttpStatus status , String message) {
-        super(status , message);
+    public UserNotFoundException(ExceptionType exceptionType) {
+        super(HttpStatus.NOT_FOUND , exceptionType.getMessage());
     }
 }
