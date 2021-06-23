@@ -1,40 +1,43 @@
 package com.drogbalog.server.domain.subscribe.service;
 
-import com.drogbalog.server.domain.subscribe.dao.SubScribeDao;
+import com.drogbalog.server.domain.subscribe.domain.entity.SubScribe;
 import com.drogbalog.server.domain.subscribe.domain.response.SubScribeResponse;
+import com.drogbalog.server.domain.subscribe.mapper.SubscribeMapper;
+import com.drogbalog.server.domain.subscribe.repository.SubScribeRepository;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.DuplicateDataException;
 import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class SubScribeService {
-    private final SubScribeDao subScribeDao;
+    private final SubScribeRepository subScribeRepository;
+    private final SubscribeMapper subscribeMapper;
 
+    @Transactional(readOnly = true)
     public List<SubScribeResponse> getSubscribeList() {
-        return subScribeDao.getSubscribeList();
+        List<SubScribe> subScribes = subScribeRepository.findAllByStatus(Status.ACTIVE);
+        return subscribeMapper.toSubScribeResponseList(subScribes);
     }
 
+    @Transactional
     public SubScribeResponse subscribe(String email) {
-        SubScribeResponse subScribeResponse = subScribeDao.findByEmail(email);
-        if (!StringUtils.isEmpty(subScribeResponse)) {
-            throw new DuplicateDataException(DuplicateExceptionType.ALREADY_EXISTS_SUBSCRIBER);
-        }
+        SubScribe subScribe = subScribeRepository.findByEmail(email)
+                .orElseThrow(() -> new DuplicateDataException(DuplicateExceptionType.ALREADY_EXISTS_SUBSCRIBER));
 
-        return subScribeDao.subscribe(email);
+        return subscribeMapper.toSubScribeResponse(subScribe);
     }
 
+    @Transactional
     public void unSubscribe(String email) {
-        SubScribeResponse subScribeResponse = subScribeDao.findByEmail(email);
+        SubScribe subScribe = subScribeRepository.findByEmail(email)
+                .orElseThrow(() -> new DuplicateDataException(DuplicateExceptionType.ALREADY_EXISTS_SUBSCRIBER));
 
-        if (StringUtils.isEmpty(subScribeResponse)) {
-            throw new DuplicateDataException(DuplicateExceptionType.NON_EXISTS_SUBSCRIBER);
-        }
-
-        subScribeDao.unSubscribe(email);
+        subScribeRepository.delete(subScribe);
     }
 }

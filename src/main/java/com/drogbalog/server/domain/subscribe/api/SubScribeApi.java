@@ -23,8 +23,8 @@ public class SubScribeApi {
         return new ResponseEntity<>(subscribeList , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{email}")
-    public ResponseEntity<SubScribeResponse> subscribe(@PathVariable String email) {
+    @PostMapping(value = "")
+    public ResponseEntity<SubScribeResponse> subscribe(@RequestParam String email) {
         return new ResponseEntity<>(subScribeService.subscribe(email) , HttpStatus.CREATED);
     }
 
