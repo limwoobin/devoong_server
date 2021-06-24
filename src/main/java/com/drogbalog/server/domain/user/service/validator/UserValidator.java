@@ -7,7 +7,6 @@ import com.drogbalog.server.domain.user.service.validator.impl.EmailValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class UserValidator {
     private final UserRepository userRepository;
 
     public void signUpValidationCheck(UserRequest request) {
-        List<Validator> validators = Arrays.asList(new EmailValidator(userRepository) , new NickNameValidator(userRepository));
+        List<Validator> validators = List.of(new EmailValidator(userRepository) , new NickNameValidator(userRepository));
         this.validatorLoop(validators, request);
     }
 
