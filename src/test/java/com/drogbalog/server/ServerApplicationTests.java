@@ -17,16 +17,4 @@ import org.springframework.test.context.ActiveProfiles;
 )
 class ServerApplicationTests {
 
-    @Value("value")
-    private String value1;
-
-    @Value("propertyValue")
-    private String value2;
-
-    @Test
-    @DisplayName("임시 테스트")
-    public void test() {
-        log.info(value1);
-        log.info(value2);
-    }
 }
