@@ -1,9 +1,11 @@
 package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
+import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostsService {
     private final PostsRepository postsRepository;
+    private final PostsTagsMappingRepository postsTagsMappingRepository;
     private final PostsMapper postsMapper;
 
     @Transactional(readOnly = true)
@@ -26,7 +29,7 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsListByTagsId(Pageable pageable , Long tagsId) {
-        return postsRepository.findAllByTagsId(pageable, tagsId);
+        return postsTagsMappingRepository.findAllByTagsId(pageable, tagsId);
     }
 
     @Transactional(readOnly = true)

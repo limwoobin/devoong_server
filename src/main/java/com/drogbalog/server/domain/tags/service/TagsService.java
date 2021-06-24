@@ -18,7 +18,7 @@ public class TagsService {
     private final TagsRepository tagsRepository;
     private final TagsMapper tagsMapper;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<TagsResponse> getTagsList() {
         return tagsMapper.toTagResponseList(tagsRepository.findAllByStatus(Status.ACTIVE));
     }

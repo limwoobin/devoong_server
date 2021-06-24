@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostsTagsMappingRepository extends DefaultRepository<PostsTagsMapping , Long> {
-    List<PostsTagsMapping> findAllByTagsId(long tagsId);
-    List<PostsTagsMapping> findAllByPostsId(long postsId);
+public interface PostsTagsMappingRepository extends DefaultRepository<PostsTagsMapping , Long> , PostsTagsMappingCustomRepository {
+
 }
