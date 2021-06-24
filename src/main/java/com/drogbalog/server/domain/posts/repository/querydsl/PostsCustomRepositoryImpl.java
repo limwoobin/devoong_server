@@ -1,7 +1,7 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
-import com.drogbalog.server.domain.posts.repository.PostsRepositoryCustom;
+import com.drogbalog.server.domain.posts.repository.PostsCustomRepository;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -21,7 +21,7 @@ import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
 
 @Repository
 @RequiredArgsConstructor
-public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
+public class PostsCustomRepositoryImpl implements PostsCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {

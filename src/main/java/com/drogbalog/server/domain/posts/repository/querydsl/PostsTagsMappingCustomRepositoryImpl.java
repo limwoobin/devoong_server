@@ -2,6 +2,7 @@ package com.drogbalog.server.domain.posts.repository.querydsl;
 
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingCustomRepository;
+import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -10,9 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.postsTagsMapping;
 
+@Repository
 @RequiredArgsConstructor
 public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCustomRepository {
     private final JPAQueryFactory queryFactory;
@@ -33,5 +38,17 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
                 .fetchResults();
 
         return new PageImpl<>(results.getResults() , pageable , results.getTotal());
+    }
+
+    @Override
+    public List<TagsResponse> findTagsByPostsId(Long postsId) {
+        return queryFactory
+                .select(Projections.constructor(TagsResponse.class,
+                        postsTagsMapping.tags.id,
+                        postsTagsMapping.tags.name))
+                .from(postsTagsMapping)
+                .where(postsTagsMapping.posts.id.eq(postsId)
+                .and(postsTagsMapping.tags.status.eq(Status.ACTIVE)))
+                .fetch();
     }
 }

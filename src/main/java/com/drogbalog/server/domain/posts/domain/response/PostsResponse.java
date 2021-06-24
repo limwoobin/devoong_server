@@ -5,15 +5,14 @@ import com.drogbalog.server.global.utils.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "게시글 데이터 모델")
@@ -52,4 +51,5 @@ public class PostsResponse {
         this.contents = contents;
         this.createdDate = createdDate;
     }
+
 }
