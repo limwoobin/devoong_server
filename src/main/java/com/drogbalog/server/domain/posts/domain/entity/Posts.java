@@ -44,7 +44,8 @@ public class Posts extends BaseTimeEntity {
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Posts(String email , String subject , String contents) {
+    public Posts(Long id , String email , String subject , String contents) {
+        this.id = id;
         this.email = email;
         this.subject = subject;
         this.contents = contents;

@@ -38,7 +38,7 @@ class PostsServiceTest {
 
         @Test
         @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다.")
-        public void getPostsListTest() {
+        public void empty_getPostsListTest() {
             // given
             PageRequest pageRequest = PageRequest.of(0 , 5);
 
@@ -51,9 +51,22 @@ class PostsServiceTest {
         }
 
         @Test
-        @DisplayName("임시 테스트")
-        public void tempTest() {
-            System.out.println("zzz");
+        @DisplayName("리스트에 값이 있으면 정상적으로 반환되어야 한다.")
+        public void getPostsListTest() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 5);
+            Page<Posts> 게시글_목록 = new PageImpl<>(게시글_리스트 , pageRequest, 게시글_리스트.size());
+
+            // when
+            when(postsRepository.findAll(pageRequest)).thenReturn(게시글_목록);
+
+            // then
+            Page<PostsResponse> result = postsService.getPostsList(pageRequest);
+            assertThat(result.getContent().size()).isEqualTo(4);
+            assertThat(result.getContent().get(0).getId()).isEqualTo(1L);
+            assertThat(result.getContent().get(1).getId()).isEqualTo(2L);
+            assertThat(result.getContent().get(2).getId()).isEqualTo(3L);
+            assertThat(result.getContent().get(3).getId()).isEqualTo(4L);
         }
     }
 
@@ -62,11 +75,28 @@ class PostsServiceTest {
 class PostsTestDomain {
     final Posts 널_게시글 = null;
     final Posts posts = Posts.builder()
+            .id(1L)
             .email("test")
             .build();
-//    final Page<Posts> 빈_게시글_목록 = Page.empty();
+
+    final Posts posts2 = Posts.builder()
+            .id(2L)
+            .email("test2")
+            .build();
+
+    final Posts posts3 = Posts.builder()
+            .id(3L)
+            .email("test3")
+            .build();
+
+    final Posts posts4 = Posts.builder()
+            .id(4L)
+            .email("test4")
+            .build();
+
+
 
     final PageRequest pageRequest = PageRequest.of(0 , 5);
 
-    final Page<Posts> 게시글_목록 = new PageImpl<>(List.of(posts), pageRequest, 1);
+    final List<Posts> 게시글_리스트 = List.of(posts , posts2 , posts3 , posts4);
 }

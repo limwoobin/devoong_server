@@ -23,7 +23,7 @@ public class PostsService {
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
         Page<Posts> posts = postsRepository.findAll(pageable);
-        return posts.map(postsMapper::toPostsResponse);
+        return posts.map(postsMapper::converts);
     }
 
     @Transactional(readOnly = true)
@@ -36,7 +36,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(postsId)
                 .orElseThrow(() -> new EmptyDataException(EmptyDataExceptionType.EMPTY_POSTS_DATA));
 
-        PostsResponse postsResponse = postsMapper.toPostsResponse(posts);
+        PostsResponse postsResponse = postsMapper.converts(posts);
         postsResponse.addTagsList(postsTagsMappingRepository.findTagsByPostsId(postsId));
         return postsResponse;
     }

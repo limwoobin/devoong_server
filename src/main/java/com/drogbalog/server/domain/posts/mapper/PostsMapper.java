@@ -16,14 +16,4 @@ public interface PostsMapper {
 
     @Mapping(target = "tagsResponseList"  , ignore = true)
     PostsResponse converts(Posts posts);
-
-    default PostsResponse toPostsResponse(Posts posts) {
-        PostsResponse postsResponse = this.converts(posts);
-        List<TagsResponse> tagsResponseList = posts.getPostsTagsMappingList().stream()
-                .map(entity -> new TagsResponse().toTagsResponse(entity.getTags()))
-                .collect(Collectors.toList());
-
-        postsResponse.addTagsList(tagsResponseList);
-        return postsResponse;
-    }
 }
