@@ -4,6 +4,7 @@ import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -31,4 +32,10 @@ public class Tags extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "tags")
     private List<PostsTagsMapping> postsTagsMappingList;
+
+    @Builder
+    public Tags(Long id , String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -1,9 +1,12 @@
 package com.drogbalog.server.domain.posts.service;
 
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
+import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,6 +31,9 @@ class PostsServiceTest {
 
     @Mock
     private PostsRepository postsRepository;
+
+    @Mock
+    private PostsTagsMappingRepository postsTagsMappingRepository;
 
     @InjectMocks
     private PostsService postsService;
@@ -68,8 +74,21 @@ class PostsServiceTest {
             assertThat(result.getContent().get(2).getId()).isEqualTo(3L);
             assertThat(result.getContent().get(3).getId()).isEqualTo(4L);
         }
-    }
 
+        @Test
+        @DisplayName("태그번호로 게시글 리스트 가져오기")
+        public void getPostsListByTagsIdTest() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 5);
+
+            // when
+            when(postsTagsMappingRepository.findAllByTagsId(pageRequest , 1L)).thenReturn(Page.empty());
+
+            // then
+            Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , 1L);
+            assertThat(result).isEqualTo(Page.empty());
+        }
+    }
 }
 
 class PostsTestDomain {
@@ -94,6 +113,33 @@ class PostsTestDomain {
             .email("test4")
             .build();
 
+    final Tags tags = Tags.builder()
+            .id(1L)
+            .name("tag1")
+            .build();
+
+    final Tags tags2 = Tags.builder()
+            .id(2L)
+            .name("tag2")
+            .build();
+
+    final PostsTagsMapping postsTagsMapping = PostsTagsMapping.builder()
+            .id(1L)
+            .posts(posts)
+            .tags(tags)
+            .build();
+
+    final PostsTagsMapping postsTagsMapping2 = PostsTagsMapping.builder()
+            .id(1L)
+            .posts(posts2)
+            .tags(tags)
+            .build();
+
+    final PostsTagsMapping postsTagsMapping3 = PostsTagsMapping.builder()
+            .id(3L)
+            .posts(posts3)
+            .tags(tags)
+            .build();
 
 
     final PageRequest pageRequest = PageRequest.of(0 , 5);
