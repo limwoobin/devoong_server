@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,14 +20,14 @@ public class PostsResponse {
     @ApiModelProperty(value = "id")
     private long id;
 
-    @ApiModelProperty(value = "subject")
-    private String subject;
+    @ApiModelProperty(value = "title")
+    private String title;
 
     @ApiModelProperty(value = "contents")
     private String contents;
 
     @ApiModelProperty(value = "views")
-    private BigInteger views;
+    private Long views;
 
     @ApiModelProperty(value = "createdDate")
     @JsonFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN, timezone = "Asia/Seoul")
@@ -45,10 +44,11 @@ public class PostsResponse {
         this.tagsResponseList = tagsResponseList;
     }
 
-    public PostsResponse(long id , String subject , String contents , LocalDateTime createdDate) {
+    public PostsResponse(long id , String title , String contents , Long views ,  LocalDateTime createdDate) {
         this.id = id;
-        this.subject = subject;
+        this.title = title;
         this.contents = contents;
+        this.views = views;
         this.createdDate = createdDate;
     }
 

@@ -27,8 +27,9 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
         QueryResults<PostsResponse> results = queryFactory
                 .select(Projections.constructor(PostsResponse.class,
                         postsTagsMapping.posts.id,
-                        postsTagsMapping.posts.subject,
+                        postsTagsMapping.posts.title,
                         postsTagsMapping.posts.contents,
+                        postsTagsMapping.posts.views,
                         postsTagsMapping.posts.createdDate))
                 .from(postsTagsMapping)
                 .where(postsTagsMapping.tags.id.eq(tagsId)

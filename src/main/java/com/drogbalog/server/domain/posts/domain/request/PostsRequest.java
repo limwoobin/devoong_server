@@ -16,7 +16,7 @@ public class PostsRequest {
     private String email;
 
     @ApiModelProperty(value = "제목")
-    private String subject;
+    private String title;
 
     @ApiModelProperty(value = "내용")
     private String contents;

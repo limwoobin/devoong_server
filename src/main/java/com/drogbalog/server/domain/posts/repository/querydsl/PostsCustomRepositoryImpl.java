@@ -3,6 +3,7 @@ package com.drogbalog.server.domain.posts.repository.querydsl;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsCustomRepository;
 import com.drogbalog.server.global.code.Status;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,12 +27,19 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
 
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
+            .select(Projections.constructor(PostsResponse.class,
+                    posts.id,
+                    posts.title,
+                    posts.contents,
+                    posts.views,
+                    posts.createdDate
+            ))
             .from(posts)
-            .select(Projections.constructor(PostsResponse.class))
-            .where(posts.subject.contains(keyword)
-                            .or(posts.contents.contains(keyword))
-                    ,posts.status.eq(Status.ACTIVE))
+            .where(posts.title.contains(keyword)
+            .and(posts.status.eq(Status.ACTIVE)))
             .orderBy(posts.id.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetchResults();
 
         return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());

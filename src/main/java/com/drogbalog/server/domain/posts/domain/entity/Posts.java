@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,7 @@ public class Posts extends BaseTimeEntity {
     private String email;
 
     @Column(nullable = false , length = 50)
-    private String subject;
+    private String title;
 
     @Lob
     private String contents;
@@ -38,26 +37,26 @@ public class Posts extends BaseTimeEntity {
     private Status status;
 
     @Column
-    private BigInteger views;
+    private Long views;
 
     @OneToMany(mappedBy = "posts")
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Posts(Long id , String email , String subject , String contents) {
+    public Posts(Long id , String email , String title , String contents) {
         this.id = id;
         this.email = email;
-        this.subject = subject;
+        this.title = title;
         this.contents = contents;
         this.status = Status.ACTIVE;
     }
 
-    public void update(String subject , String contents) {
-        this.subject = subject;
+    public void update(String title , String contents) {
+        this.title = title;
         this.contents = contents;
     }
 
     public void addPostsViews() {
-        this.views = views.add(BigInteger.ONE);
+        this.views++;
     }
 }
