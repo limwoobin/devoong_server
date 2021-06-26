@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Status implements CodeInfo {
+public enum Status {
     ACTIVE("active" , "ACTIVE"),
     DISABLE("disable" , "DISABLE");
 

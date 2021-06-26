@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OrderByType implements CodeInfo {
+public enum OrderByType {
     ID("id"),
     CREATED_DATE("createdDate"),
     MODIFIED_DATE("modifiedDate");
