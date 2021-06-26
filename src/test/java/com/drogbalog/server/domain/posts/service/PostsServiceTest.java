@@ -88,6 +88,8 @@ class PostsServiceTest {
             Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , 1L);
             assertThat(result).isEqualTo(Page.empty());
         }
+
+
     }
 }
 
