@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class SubScribeService {
     private final SubScribeRepository subScribeRepository;
-    private final SubscribeMapper subscribeMapper;
+    private final SubscribeMapper subscribeMapper = SubscribeMapper.INSTANCE;
 
     @Transactional(readOnly = true)
     public List<SubScribeResponse> getSubscribeList() {

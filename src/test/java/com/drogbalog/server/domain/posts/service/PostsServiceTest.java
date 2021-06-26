@@ -3,7 +3,6 @@ package com.drogbalog.server.domain.posts.service;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
-import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
@@ -14,14 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,7 +38,7 @@ class PostsServiceTest {
 
     @Nested
     @DisplayName("게시글 목록 조회 테스트")
-    class GetPostsTest extends PostsTestDomain {
+    class GetPostsTest {
 
         @Test
         @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다.")
@@ -93,58 +91,58 @@ class PostsServiceTest {
     }
 }
 
-class PostsTestDomain {
-    final Posts 널_게시글 = null;
-    final Posts posts = Posts.builder()
+final class PostsTestDomain {
+    static final Posts 널_게시글 = null;
+    static final Posts posts = Posts.builder()
             .id(1L)
             .email("test")
             .build();
 
-    final Posts posts2 = Posts.builder()
+    static final Posts posts2 = Posts.builder()
             .id(2L)
             .email("test2")
             .build();
 
-    final Posts posts3 = Posts.builder()
+    static final Posts posts3 = Posts.builder()
             .id(3L)
             .email("test3")
             .build();
 
-    final Posts posts4 = Posts.builder()
+    static final Posts posts4 = Posts.builder()
             .id(4L)
             .email("test4")
             .build();
 
-    final Tags tags = Tags.builder()
+    static final Tags tags = Tags.builder()
             .id(1L)
             .name("tag1")
             .build();
 
-    final Tags tags2 = Tags.builder()
+    static final Tags tags2 = Tags.builder()
             .id(2L)
             .name("tag2")
             .build();
 
-    final PostsTagsMapping postsTagsMapping = PostsTagsMapping.builder()
+    static final PostsTagsMapping postsTagsMapping = PostsTagsMapping.builder()
             .id(1L)
             .posts(posts)
             .tags(tags)
             .build();
 
-    final PostsTagsMapping postsTagsMapping2 = PostsTagsMapping.builder()
+    static final PostsTagsMapping postsTagsMapping2 = PostsTagsMapping.builder()
             .id(1L)
             .posts(posts2)
             .tags(tags)
             .build();
 
-    final PostsTagsMapping postsTagsMapping3 = PostsTagsMapping.builder()
+    static final PostsTagsMapping postsTagsMapping3 = PostsTagsMapping.builder()
             .id(3L)
             .posts(posts3)
             .tags(tags)
             .build();
 
 
-    final PageRequest pageRequest = PageRequest.of(0 , 5);
+    static final PageRequest pageRequest = PageRequest.of(0 , 5);
 
-    final List<Posts> 게시글_리스트 = List.of(posts , posts2 , posts3 , posts4);
+    static final List<Posts> 게시글_리스트 = List.of(posts , posts2 , posts3 , posts4);
 }

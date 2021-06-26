@@ -24,8 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.drogbalog.server.global.exception.messages.CommonExceptionType.NOT_FOUND_USER;
-import static com.drogbalog.server.global.exception.messages.CommonExceptionType.REFRESH_TOKEN_IS_EXPIRED;
+import static com.drogbalog.server.global.exception.messages.CommonExceptionType.*;
 
 @Log4j2
 @Service
@@ -35,8 +34,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String , Object> redisTemplate;
-    private final UserMapper userMapper;
     private final UserRepository userRepository;
+
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     @Transactional
     public UserResponse signUp(UserRequest request) {
