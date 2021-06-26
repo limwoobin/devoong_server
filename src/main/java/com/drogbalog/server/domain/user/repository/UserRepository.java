@@ -12,7 +12,7 @@ public interface UserRepository extends DefaultRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    User findByNickname(String nickname);
+    Optional<User> findByNickname(String nickname);
 
     Optional<User> findByEmailAndPassword(String email , String password);
 }

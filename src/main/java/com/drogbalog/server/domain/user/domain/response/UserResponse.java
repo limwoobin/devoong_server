@@ -1,6 +1,5 @@
 package com.drogbalog.server.domain.user.domain.response;
 
-import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,9 +20,6 @@ public class UserResponse {
 
     @ApiModelProperty(value = "사용자 프로필 이미지")
     private String imageUri;
-
-    @ApiModelProperty(value = "사용자 성별")
-    private Gender gender;
 
     @ApiModelProperty(value = "사용자 상태")
     private Status status;

@@ -1,17 +1,18 @@
 package com.drogbalog.server.domain.user.domain.request;
 
-import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @ApiModel(value = "User Api Request Model")
 public class UserRequest {
     public UserRequest() {
@@ -41,6 +42,16 @@ public class UserRequest {
 
     @ApiModelProperty(value = "사용자 구분")
     private Role role;
+
+    @Builder
+    public UserRequest(String email , String password , String nickname , String imageUri , Status status , Role role) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.imageUri = imageUri;
+        this.status = status;
+        this.role = role;
+    }
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {
         String encryptPassword = this.password;

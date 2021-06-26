@@ -1,6 +1,5 @@
 package com.drogbalog.server.domain.user.service.validator.impl;
 
-import com.drogbalog.server.domain.user.domain.entity.User;
 import com.drogbalog.server.domain.user.domain.request.UserRequest;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.domain.user.service.validator.Validator;
@@ -17,16 +16,14 @@ public class EmailValidator implements Validator {
 
     @Override
     public void execute(UserRequest request) {
-        User user = this.availableEmailCheck(request.getEmail());
-        if (!StringUtils.isEmpty(user)) {
+        if (nonAvailableEmailCheck(request.getEmail())) {
             throw new DuplicateDataException(
                     DuplicateExceptionType.EMAIL_DUPLICATED.getCode(),
                     DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
         }
     }
 
-    private User availableEmailCheck(String email) {
-        return userRepository.findByEmail(email)
-                .orElse(null);
+    private boolean nonAvailableEmailCheck(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }

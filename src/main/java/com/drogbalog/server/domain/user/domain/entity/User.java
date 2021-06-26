@@ -1,7 +1,6 @@
 package com.drogbalog.server.domain.user.domain.entity;
 
 import com.drogbalog.server.global.code.AuthProvider;
-import com.drogbalog.server.global.code.Gender;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.entity.BaseTimeEntity;
@@ -37,10 +36,6 @@ public class User extends BaseTimeEntity {
     @Column(length = 100)
     private String imageUri;
 
-    @Column(length = 6)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     @Column(length = 7)
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -57,13 +52,13 @@ public class User extends BaseTimeEntity {
     private String providerId;
 
     @Builder
-    public User(String email , String password , String nickname , String imageUri
-            , Gender gender , Role role , AuthProvider provider , String providerId) {
+    public User(Long id , String email , String password , String nickname , String imageUri
+            , Role role , AuthProvider provider , String providerId) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.imageUri = imageUri;
-        this.gender = gender;
         this.status = Status.ACTIVE;
         this.role = role;
         this.provider = provider;
@@ -73,7 +68,6 @@ public class User extends BaseTimeEntity {
     public void update(String nickname , String imageUri) {
         this.nickname = nickname;
         this.imageUri = imageUri;
-
     }
 
     public void updateUserInfo(UserRequest request) {

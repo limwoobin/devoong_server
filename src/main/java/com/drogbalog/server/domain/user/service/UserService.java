@@ -51,7 +51,9 @@ public class UserService {
                 .role(request.getRole())
                 .build();
 
-        return userMapper.toUserResponse(userRepository.save(user));
+//        return userMapper.toUserResponse(userRepository.save(user));
+        User user1 = userRepository.save(user);
+        return userMapper.toUserResponse(user1);
     }
 
     @Transactional
