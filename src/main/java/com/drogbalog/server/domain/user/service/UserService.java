@@ -9,7 +9,6 @@ import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import com.drogbalog.server.domain.user.service.validator.Validator;
 import com.drogbalog.server.domain.user.service.validator.impl.PasswordValidator;
-import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.global.exception.UserNotFoundException;
 import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
@@ -79,6 +78,7 @@ public class UserService {
         redisTemplate.expire(accessToken , expirationDate.getTime() - System.currentTimeMillis() , TimeUnit.MILLISECONDS);
     }
 
+    @Transactional(readOnly = true)
     public UserResponse getUserInfo(String email) {
         User user =  userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(NOT_FOUND_USER));
@@ -86,19 +86,20 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    @Transactional
     public UserResponse updateUserInfo(UserRequest request) {
         userValidator.userUpdateValidationCheck(request);
         User user = userRepository.findById(request.getId())
                 .orElseThrow(() -> new UserNotFoundException(NOT_FOUND_USER));
 
         user.updateUserInfo(request);
-        userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
 
+    @Transactional
     public void deleteUser(long userId) {
         User user = userRepository.findById(userId);
-        user.updateStatus(Status.DISABLE);
+        userRepository.delete(user);
     }
 
     public String getAccessToken(String email , String refreshToken) {
