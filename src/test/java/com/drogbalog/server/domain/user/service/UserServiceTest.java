@@ -10,6 +10,8 @@ import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.global.exception.DuplicateDataException;
+import com.drogbalog.server.global.exception.UserNotFoundException;
+import com.drogbalog.server.global.exception.messages.CommonExceptionType;
 import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -50,7 +52,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다.")
-        public void exception_alreadyExistEmail() {
+        public void alreadyExistEmail_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
 
@@ -65,7 +67,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("이미 존재하는 닉네임이 있으면 DuplicateDataException 이 발생해야 한다.")
-        public void exception_alreadyExistNickname() {
+        public void alreadyExistNickname_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
 
@@ -119,6 +121,54 @@ class UserServiceTest {
             assertThat(userResponse.getJwtResponse()).isEqualTo(jwtResponse);
         }
     }
+
+    @Nested
+    @DisplayName("유저 관련 테스트")
+    class GetUserTest {
+        @Test
+        @DisplayName("유저 정보가 있으면 정상적으로 조회되어야 한다.")
+        public void getUserInfo_test() {
+            // given
+            String email = 유저_ENTITY.getEmail();
+
+            // when
+            when(userRepository.findByEmail(email)).thenReturn(Optional.of(유저_ENTITY));
+
+            // then
+            UserResponse userResponse = userService.getUserInfo(email);
+            assertThat(userResponse.getEmail()).isEqualTo(email);
+        }
+
+        @Test
+        @DisplayName("유저 정보가 없으면 UserNotFoundException 이 발생되어야 한다.")
+        public void getUserInfo_exception() {
+            // given
+            String 회원목록에_존재하지_않는_이메일 = "tet123@naver.com";
+
+            // when
+            when(userRepository.findByEmail(회원목록에_존재하지_않는_이메일)).thenReturn(Optional.empty());
+
+            // then
+            assertThatThrownBy(() -> userService.getUserInfo(회원목록에_존재하지_않는_이메일))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessageContaining(CommonExceptionType.NOT_FOUND_USER.getMessage());
+        }
+
+        @Test
+        @DisplayName("유저 정보를 업데이트 하면 정상적으로 변경되어야 한다")
+        public void update_test() {
+            // given
+            UserRequest userRequest = 업데이트_요청한_유저;
+            userRequest.setId(1L);
+
+            // when
+            when(userRepository.findById(userRequest.getId())).thenReturn(Optional.of(유저_ENTITY));
+
+            // then
+            UserResponse userResponse = userService.updateUserInfo(userRequest);
+            assertThat(userResponse.getNickname()).isEqualTo(변경된_유저_ENTITY.getNickname());
+        }
+    }
 }
 
 final class UserTestDomain {
@@ -126,6 +176,14 @@ final class UserTestDomain {
             .email("test@naver.com")
             .password("woobeen123")
             .nickname("drogba")
+            .status(Status.ACTIVE)
+            .role(Role.USER)
+            .build();
+
+    static final UserRequest 업데이트_요청한_유저 = UserRequest.builder()
+            .email("test@naver.com")
+            .password("123123123")
+            .nickname("changedNickname")
             .status(Status.ACTIVE)
             .role(Role.USER)
             .build();
@@ -160,6 +218,15 @@ final class UserTestDomain {
             .email("test@naver.com")
             .password("123123123")
             .nickname("drogba")
+            .imageUri("testPath")
+            .role(Role.USER)
+            .build();
+
+    static final User 변경된_유저_ENTITY = User.builder()
+            .id(1L)
+            .email("test@naver.com")
+            .password("123123123")
+            .nickname("changedNickname")
             .imageUri("testPath")
             .role(Role.USER)
             .build();
