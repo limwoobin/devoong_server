@@ -16,9 +16,7 @@ public class NickNameValidator implements Validator {
     @Override
     public void execute(UserRequest request) {
         if (nonAvailableNicknameCheck(request.getNickname())) {
-            throw new DuplicateDataException(
-                    DuplicateExceptionType.NICKNAME_DUPLICATED.getCode(),
-                    DuplicateExceptionType.NICKNAME_DUPLICATED.getMessage());
+            throw new DuplicateDataException(DuplicateExceptionType.NICKNAME_DUPLICATED);
         }
     }
 

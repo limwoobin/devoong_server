@@ -16,10 +16,10 @@ public class EmailValidator implements Validator {
 
     @Override
     public void execute(UserRequest request) {
+        boolean asd = nonAvailableEmailCheck(request.getEmail());
+        System.out.println("asd = " + asd);
         if (nonAvailableEmailCheck(request.getEmail())) {
-            throw new DuplicateDataException(
-                    DuplicateExceptionType.EMAIL_DUPLICATED.getCode(),
-                    DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
+            throw new DuplicateDataException(DuplicateExceptionType.EMAIL_DUPLICATED);
         }
     }
 

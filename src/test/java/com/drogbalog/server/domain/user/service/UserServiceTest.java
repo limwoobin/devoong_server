@@ -9,6 +9,8 @@ import com.drogbalog.server.domain.user.service.validator.UserValidator;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
+import com.drogbalog.server.global.exception.DuplicateDataException;
+import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,7 @@ import java.util.Optional;
 
 import static com.drogbalog.server.domain.user.service.UserTestDomain.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +41,43 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    @Nested
+    @DisplayName("유저 유효성 테스트")
+    class UserValidateTest {
+        @Mock UserRepository userRepository;
+        @InjectMocks UserValidator userValidator;
+
+        @Test
+        @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다.")
+        public void exception_alreadyExistEmail() {
+            // given
+            UserRequest userRequest = 회원가입_신청한_유저;
+
+            // when
+            when(userRepository.findByEmail(userRequest.getEmail())).thenReturn(Optional.ofNullable(회원가입된_유저_ENTITY));
+
+            // then
+            assertThatThrownBy(() -> {
+                userValidator.signUpValidationCheck(userRequest);
+            }).isInstanceOf(DuplicateDataException.class).hasMessageContaining(DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
+        }
+
+        @Test
+        @DisplayName("이미 존재하는 닉네임이 있으면 DuplicateDataException 이 발생해야 한다.")
+        public void exception_alreadyExistNickname() {
+            // given
+            UserRequest userRequest = 회원가입_신청한_유저;
+
+            // when
+            when(userRepository.findByEmail(userRequest.getEmail())).thenReturn(Optional.empty());
+            when(userRepository.findByNickname(userRequest.getNickname())).thenReturn(Optional.ofNullable(회원가입된_유저_ENTITY));
+
+            assertThatThrownBy(() -> {
+                userValidator.signUpValidationCheck(userRequest);
+            }).isInstanceOf(DuplicateDataException.class).hasMessageContaining(DuplicateExceptionType.NICKNAME_DUPLICATED.getMessage());
+        }
+    }
 
     @Nested
     @DisplayName("유저 인증 관련 테스트")
