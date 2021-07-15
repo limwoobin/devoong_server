@@ -28,6 +28,7 @@ public class Tags extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false , length = 10)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @OneToMany(mappedBy = "tags")
