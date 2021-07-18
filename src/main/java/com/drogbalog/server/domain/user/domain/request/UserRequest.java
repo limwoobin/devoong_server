@@ -15,11 +15,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @ApiModel(value = "User Api Request Model")
 public class UserRequest {
-    public UserRequest() {
-        this.status = Status.ACTIVE;
-        this.role = Role.USER;
-    }
-
     @ApiModelProperty(value = "사용자 id")
     private Long id;
 
@@ -37,20 +32,12 @@ public class UserRequest {
     @ApiModelProperty(value = "프로필 이미지")
     private String imageUri;
 
-    @ApiModelProperty(value = "사용자 상태")
-    private Status status;
-
-    @ApiModelProperty(value = "사용자 구분")
-    private Role role;
-
     @Builder
-    public UserRequest(String email , String password , String nickname , String imageUri , Status status , Role role) {
+    public UserRequest(String email , String password , String nickname , String imageUri) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.imageUri = imageUri;
-        this.status = status;
-        this.role = role;
     }
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {

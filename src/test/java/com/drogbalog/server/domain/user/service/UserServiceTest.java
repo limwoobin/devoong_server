@@ -176,16 +176,12 @@ final class UserTestDomain {
             .email("test@naver.com")
             .password("woobeen123")
             .nickname("drogba")
-            .status(Status.ACTIVE)
-            .role(Role.USER)
             .build();
 
     static final UserRequest 업데이트_요청한_유저 = UserRequest.builder()
             .email("test@naver.com")
             .password("123123123")
             .nickname("changedNickname")
-            .status(Status.ACTIVE)
-            .role(Role.USER)
             .build();
 
     static final User 회원가입_신청한_유저_ENTITY = User.builder()
@@ -209,8 +205,6 @@ final class UserTestDomain {
             .email("test@naver.com")
             .password("woobeen123")
             .nickname("drogba")
-            .status(Status.ACTIVE)
-            .role(Role.USER)
             .build();
 
     static final User 유저_ENTITY = User.builder()

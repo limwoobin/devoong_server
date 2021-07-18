@@ -47,7 +47,6 @@ public class UserService {
                 .password(request.getPassword())
                 .nickname(request.getNickname())
                 .imageUri(request.getImageUri())
-                .role(request.getRole())
                 .build();
 
         return userMapper.toUserResponse(userRepository.save(user));

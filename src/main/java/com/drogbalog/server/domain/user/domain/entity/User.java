@@ -60,7 +60,7 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.imageUri = imageUri;
         this.status = Status.ACTIVE;
-        this.role = role;
+        this.role = Role.USER;
         this.provider = provider;
         this.providerId = providerId;
     }
