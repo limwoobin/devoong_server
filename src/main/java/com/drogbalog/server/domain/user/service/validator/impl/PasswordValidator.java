@@ -8,10 +8,12 @@ import com.drogbalog.server.global.exception.UnAuthorizedException;
 import com.drogbalog.server.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import static com.drogbalog.server.global.exception.messages.CommonExceptionType.*;
 
 @RequiredArgsConstructor
+@Component
 public class PasswordValidator implements Validator {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
