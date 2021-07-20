@@ -32,6 +32,9 @@ public class Posts extends BaseTimeEntity {
     @Lob
     private String contents;
 
+    @Column(length = 100)
+    private String bannerImage;
+
     @Column(length = 7)
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -43,11 +46,12 @@ public class Posts extends BaseTimeEntity {
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Posts(Long id , String email , String title , String contents) {
+    public Posts(Long id , String email , String title , String contents , String bannerImage) {
         this.id = id;
         this.email = email;
         this.title = title;
         this.contents = contents;
+        this.bannerImage = bannerImage;
         this.status = Status.ACTIVE;
     }
 
