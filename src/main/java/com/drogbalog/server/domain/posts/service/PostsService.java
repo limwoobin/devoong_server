@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostsService {
@@ -39,6 +41,12 @@ public class PostsService {
         PostsResponse postsResponse = postsMapper.converts(posts);
         postsResponse.addTagsList(postsTagsMappingRepository.findTagsByPostsId(postsId));
         return postsResponse;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsResponse> getLatestPosts() {
+        List<Posts> latestPosts = postsRepository.findTop3ByOrderByIdDesc();
+        return postsMapper.convertList(latestPosts);
     }
 
     @Transactional(readOnly = true)

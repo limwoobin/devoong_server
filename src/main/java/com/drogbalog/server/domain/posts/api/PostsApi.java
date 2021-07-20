@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -43,6 +45,13 @@ public class PostsApi {
         Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , tagsId);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
+
+    @GetMapping(value = "/latest")
+    @ApiOperation(value = "최근 게시물 조회")
+    public ResponseEntity<List<PostsResponse>> getLatestPosts() {
+        return new ResponseEntity<>(postsService.getLatestPosts() , HttpStatus.OK);
+    }
+
 
     @GetMapping(value = "/search/{keyword}")
     @ApiOperation(value = "게시글 검색")
