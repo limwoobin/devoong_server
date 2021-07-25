@@ -1,6 +1,6 @@
-package com.drogbalog.server.global.retrofit.impl;
+package com.drogbalog.server.infra.retrofit.impl;
 
-import com.drogbalog.server.global.retrofit.RetrofitFactory;
+import com.drogbalog.server.infra.retrofit.RetrofitFactory;
 import okhttp3.OkHttpClient;
 
 public class RetrofitSafe<S> extends RetrofitFactory<S> {

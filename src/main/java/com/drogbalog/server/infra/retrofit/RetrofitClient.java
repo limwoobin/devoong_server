@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.retrofit;
+package com.drogbalog.server.infra.retrofit;
 
 import com.drogbalog.server.global.exception.DrogbalogException;
 import com.drogbalog.server.global.exception.ErrorResponse;

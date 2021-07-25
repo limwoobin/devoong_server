@@ -1,4 +1,4 @@
-package com.drogbalog.server.global.retrofit;
+package com.drogbalog.server.infra.retrofit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
