@@ -10,13 +10,12 @@ import static com.drogbalog.server.global.exception.messages.IllegalDataExceptio
 @NoArgsConstructor
 @Getter
 public class PostsCardList {
-    private static final int FIRST_INDEX = 0;
-    private static final int SECOND_INDEX = 1;
-    private static final int MAX_SIZE = 2;
+    private static final int PREVIOUS_INDEX = 0;
+    private static final int NOW_INDEX = 1;
+    private static final int NEXT_INDEX = 2;
+    private static final int MAX_SIZE = 3;
 
     private List<PostsCard> postsCardList;
-    private PostsCard firstPostsCard;
-    private PostsCard secondPostsCard;
 
     public PostsCardList(List<PostsCard> postsCardList) {
         if (postsCardList.size() > MAX_SIZE) {
@@ -24,23 +23,20 @@ public class PostsCardList {
         }
 
         this.postsCardList = postsCardList;
-        this.firstPostsCard = postsCardList.get(FIRST_INDEX);
-        this.secondPostsCard = postsCardList.get(SECOND_INDEX);
     }
 
     public PostsCard getPreviousPostsCard() {
-        if (secondPostsCard.getId() > firstPostsCard.getId()) {
-            return firstPostsCard;
+        if (postsCardList.get(NOW_INDEX) == null) {
+            return null;
         }
-
-        return secondPostsCard;
+        return postsCardList.get(PREVIOUS_INDEX);
     }
 
     public PostsCard getNextPostsCard() {
-        if (firstPostsCard.getId() > secondPostsCard.getId()) {
-            return firstPostsCard;
+        if (postsCardList.get(NEXT_INDEX) == null) {
+            return null;
         }
 
-        return secondPostsCard;
+        return postsCardList.get(NEXT_INDEX);
     }
 }

@@ -66,7 +66,8 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
                 qPosts.title,
                 qPosts.bannerImage))
                 .from(qPosts)
-                .where(qPosts.id.in(previousId , nextId))
+                .where(qPosts.id.in(previousId , id , nextId))
+                .orderBy(qPosts.id.asc())
                 .fetch();
     }
 }
