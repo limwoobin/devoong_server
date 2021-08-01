@@ -1,15 +1,12 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
 import com.drogbalog.server.domain.posts.domain.entity.QPosts;
-import com.drogbalog.server.domain.posts.domain.response.PostsCard;
+import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsCustomRepository;
 import com.drogbalog.server.global.code.Status;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

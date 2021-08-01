@@ -1,7 +1,8 @@
 package com.drogbalog.server.domain.posts.service;
 
+import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
-import com.drogbalog.server.domain.posts.domain.response.PostsCard;
+import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
@@ -41,9 +42,13 @@ public class PostsService {
 
         PostsResponse postsResponse = postsMapper.converts(posts);
         postsResponse.addTagsList(postsTagsMappingRepository.findTagsByPostsId(postsId));
-        List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(postsResponse.getId());
-        postsResponse.addPreviousAndNextPostsCard(postsCards);
+        postsResponse.addPreviousAndNextPostsCard(getPostsCardList(postsId));
         return postsResponse;
+    }
+
+    public PostsCardList getPostsCardList(Long postsId) {
+        List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(postsId);
+        return new PostsCardList(postsCards);
     }
 
     @Transactional(readOnly = true)

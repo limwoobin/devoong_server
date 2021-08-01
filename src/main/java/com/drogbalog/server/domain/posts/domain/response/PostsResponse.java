@@ -1,5 +1,7 @@
 package com.drogbalog.server.domain.posts.domain.response;
 
+import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
+import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
 import com.drogbalog.server.global.utils.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -53,15 +55,9 @@ public class PostsResponse {
         this.tagsResponseList = tagsResponseList;
     }
 
-    public void addPreviousAndNextPostsCard(List<PostsCard> postsCardList) {
-        if (postsCardList.get(0).getId() > postsCardList.get(1).getId()) {
-            setPreviousPostsCard(postsCardList.get(1));
-            setNextPostsCard(postsCardList.get(0));
-            return;
-        }
-
-        setPreviousPostsCard(postsCardList.get(0));
-        setNextPostsCard(postsCardList.get(1));
+    public void addPreviousAndNextPostsCard(PostsCardList postsCardList) {
+        setPreviousPostsCard(postsCardList.getPreviousPostsCard());
+        setNextPostsCard(postsCardList.getNextPostsCard());
     }
 
     public PostsResponse(long id , String title , String contents , String bannerImage , Long views ,  LocalDateTime createdDate) {

@@ -1,4 +1,4 @@
-package com.drogbalog.server.domain.posts.domain.response;
+package com.drogbalog.server.domain.posts.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
