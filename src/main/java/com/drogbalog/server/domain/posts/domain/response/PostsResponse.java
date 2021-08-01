@@ -53,6 +53,17 @@ public class PostsResponse {
         this.tagsResponseList = tagsResponseList;
     }
 
+    public void addPreviousAndNextPostsCard(List<PostsCard> postsCardList) {
+        if (postsCardList.get(0).getId() > postsCardList.get(1).getId()) {
+            setPreviousPostsCard(postsCardList.get(1));
+            setNextPostsCard(postsCardList.get(0));
+            return;
+        }
+
+        setPreviousPostsCard(postsCardList.get(0));
+        setNextPostsCard(postsCardList.get(1));
+    }
+
     public PostsResponse(long id , String title , String contents , String bannerImage , Long views ,  LocalDateTime createdDate) {
         this.id = id;
         this.title = title;

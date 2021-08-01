@@ -1,17 +1,23 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
+import com.drogbalog.server.domain.posts.domain.entity.QPosts;
+import com.drogbalog.server.domain.posts.domain.response.PostsCard;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsCustomRepository;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
 
@@ -43,5 +49,27 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
             .fetchResults();
 
         return new PageImpl<>(postsResponseList.getResults() , pageable , postsResponseList.getTotal());
+    }
+
+    @Override
+    public List<PostsCard> findPreviousAndNextPostsCardById(Long id) {
+        QPosts qPosts = posts;
+        Long previousId = queryFactory.select(qPosts.id)
+                .from(qPosts)
+                .where(qPosts.id.lt(id))
+                .fetchOne();
+
+        Long nextId = queryFactory.select(qPosts.id)
+                .from(qPosts)
+                .where(qPosts.id.gt(id))
+                .fetchOne();
+
+        return queryFactory.select(Projections.constructor(PostsCard.class,
+                qPosts.id,
+                qPosts.title,
+                qPosts.bannerImage))
+                .from(qPosts)
+                .where(qPosts.id.in(previousId , nextId))
+                .fetch();
     }
 }
