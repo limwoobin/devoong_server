@@ -26,6 +26,9 @@ public class PostsResponse {
     @ApiModelProperty(value = "contents")
     private String contents;
 
+    @ApiModelProperty(value = "banner image")
+    private String bannerImage;
+
     @ApiModelProperty(value = "views")
     private Long views;
 
@@ -40,14 +43,21 @@ public class PostsResponse {
     @ApiModelProperty(value = "tags")
     private List<TagsResponse> tagsResponseList;
 
+    @ApiModelProperty(value = "previous Posts")
+    private PostsCard previousPostsCard;
+
+    @ApiModelProperty(value = "next Posts")
+    private PostsCard nextPostsCard;
+
     public void addTagsList(List<TagsResponse> tagsResponseList) {
         this.tagsResponseList = tagsResponseList;
     }
 
-    public PostsResponse(long id , String title , String contents , Long views ,  LocalDateTime createdDate) {
+    public PostsResponse(long id , String title , String contents , String bannerImage , Long views ,  LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.contents = contents;
+        this.bannerImage = bannerImage;
         this.views = views;
         this.createdDate = createdDate;
     }
