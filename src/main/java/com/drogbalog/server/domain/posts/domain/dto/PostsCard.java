@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class PostsCard {
     private Long id;
-    private String name;
+    private String title;
     private String bannerImage;
 }
