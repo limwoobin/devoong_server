@@ -16,25 +16,30 @@ public class PostsCardList {
     private static final int MAX_SIZE = 3;
 
     private List<PostsCard> postsCardList;
+    private Long id;
 
-    public PostsCardList(List<PostsCard> postsCardList) {
+    public PostsCardList(List<PostsCard> postsCardList , Long id) {
         if (postsCardList.size() > MAX_SIZE) {
             throw new DrogbalogException(ILLEGAL_POSTS_CARD_DATA.getMessage());
         }
 
         this.postsCardList = postsCardList;
+        this.id = id;
     }
 
     public PostsCard getPreviousPostsCard() {
-        if (postsCardList.get(NOW_INDEX) == null) {
+        if (postsCardList.size() == 2 && postsCardList.get(PREVIOUS_INDEX).getId().equals(id)) {
             return null;
         }
+
         return postsCardList.get(PREVIOUS_INDEX);
     }
 
     public PostsCard getNextPostsCard() {
-        if (postsCardList.get(NEXT_INDEX) == null) {
+        if (postsCardList.size() == 2 && postsCardList.get(NOW_INDEX).getId().equals(id)) {
             return null;
+        } else if (postsCardList.size() == 2) {
+            return postsCardList.get(NOW_INDEX);
         }
 
         return postsCardList.get(NEXT_INDEX);

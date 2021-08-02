@@ -48,7 +48,7 @@ public class PostsService {
 
     public PostsCardList getPostsCardList(Long postsId) {
         List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(postsId);
-        return new PostsCardList(postsCards);
+        return new PostsCardList(postsCards , postsId);
     }
 
     @Transactional(readOnly = true)

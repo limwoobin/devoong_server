@@ -51,12 +51,13 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
     @Override
     public List<PostsCard> findPreviousAndNextPostsCardById(Long id) {
         QPosts qPosts = posts;
-        Long previousId = queryFactory.select(qPosts.id)
+
+        Long previousId = queryFactory.select(qPosts.id.max())
                 .from(qPosts)
                 .where(qPosts.id.lt(id))
                 .fetchOne();
 
-        Long nextId = queryFactory.select(qPosts.id)
+        Long nextId = queryFactory.select(qPosts.id.min())
                 .from(qPosts)
                 .where(qPosts.id.gt(id))
                 .fetchOne();
