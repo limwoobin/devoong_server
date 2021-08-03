@@ -29,6 +29,7 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
                         postsTagsMapping.posts.id,
                         postsTagsMapping.posts.title,
                         postsTagsMapping.posts.contents,
+                        postsTagsMapping.posts.bannerImage,
                         postsTagsMapping.posts.views,
                         postsTagsMapping.posts.createdDate))
                 .from(postsTagsMapping)
