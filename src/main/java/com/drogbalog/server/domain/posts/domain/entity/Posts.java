@@ -29,7 +29,7 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false , length = 50)
     private String title;
 
-    @Lob
+    @Column(nullable = false , length = 200)
     private String contents;
 
     @Column(length = 100)

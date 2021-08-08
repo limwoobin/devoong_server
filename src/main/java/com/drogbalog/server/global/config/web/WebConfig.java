@@ -17,19 +17,18 @@ public class WebConfig implements WebMvcConfigurer {
     private final JwtAuthenticationInterceptor interceptor;
 
     private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(Arrays.asList("/test" , "/test_db" , "/swagger-ui.html" , "/auth/**"));
+            List.of("/test", "/test_db", "/swagger-ui.html", "/auth/**");
     private static final long MAX_SECONDS = 3600;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods(Arrays.toString(MethodType.values()))
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(MAX_SECONDS);
     }
-
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
