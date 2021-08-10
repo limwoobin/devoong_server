@@ -54,3 +54,6 @@ jwt:
     validate_time: 86400000
   refresh_token:
     validate_time: 2592000000
+
+client:
+  domain: http://localhost:3000

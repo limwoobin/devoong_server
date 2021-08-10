@@ -55,6 +55,9 @@ jwt:
   refresh_token:
     validate_time: 2592000000
 
+client:
+  domain: http://localhost:3000
+
 app:
   oauth2:
     authorizedRedirectUris: http://localhost:3000/oauth2/redirect , http://localhost:3100/oauth2/redirect

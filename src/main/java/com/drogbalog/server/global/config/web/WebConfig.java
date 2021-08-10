@@ -2,13 +2,12 @@ package com.drogbalog.server.global.config.web;
 
 import com.drogbalog.server.global.config.security.jwt.JwtAuthenticationInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,10 +19,13 @@ public class WebConfig implements WebMvcConfigurer {
             List.of("/test", "/test_db", "/swagger-ui.html", "/auth/**");
     private static final long MAX_SECONDS = 3600;
 
+    @Value("${client.domain}")
+    private String client;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins(client)
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
