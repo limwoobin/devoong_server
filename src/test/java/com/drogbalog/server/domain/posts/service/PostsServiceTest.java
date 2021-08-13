@@ -1,11 +1,16 @@
 package com.drogbalog.server.domain.posts.service;
 
+import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.global.exception.DuplicateDataException;
+import com.drogbalog.server.global.exception.EmptyDataException;
+import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
+import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
 import static org.mockito.Mockito.when;
@@ -39,7 +45,7 @@ class PostsServiceTest {
 
     @Nested
     @DisplayName("게시글 목록 조회 테스트")
-    class GetPostsTest {
+    class GetPostsAllTest {
 
         @Test
         @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다.")
@@ -110,6 +116,41 @@ class PostsServiceTest {
             // then
             List<PostsResponse> result2 = postsService.getLatestPosts();
             assertThat(result2.size()).isEqualTo(3);
+        }
+    }
+
+    @Nested
+    @DisplayName("단일 컨텐츠 조회 테스트")
+    class GetPostsTest {
+        @Test
+        @DisplayName("게시글 조회시 데이터가 없다면 예외가 발생해야 한다.")
+        public void emptyData_exception() {
+            // given
+            long id = 1L;
+
+            // when
+            when(postsRepository.findById(id)).thenReturn(Optional.empty());
+
+            // then
+            assertThatThrownBy(() -> {
+                postsService.getPosts(id);
+            }).isInstanceOf(EmptyDataException.class)
+                    .hasMessageContaining(EmptyDataExceptionType.EMPTY_POSTS_DATA.getMessage());
+        }
+
+        @Test
+        @DisplayName("게시글 조회시 데이터가 있다면 정상적으로 조회되어야 한다.")
+        public void findTest() {
+            // given
+            long id = 1L;
+
+            // when
+            when(postsRepository.findById(id)).thenReturn(Optional.of(posts));
+            when(postsTagsMappingRepository.findTagsByPostsId(id)).thenReturn(Collections.emptyList());
+            when(postsRepository.findPreviousAndNextPostsCardById(id)).thenReturn(Collections.emptyList());
+
+            // then
+            assertThat(postsService.getPosts(id).getId()).isEqualTo(id);
         }
     }
 }
