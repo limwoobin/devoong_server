@@ -1,15 +1,12 @@
 package com.drogbalog.server.domain.posts.service;
 
-import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
-import com.drogbalog.server.global.exception.DuplicateDataException;
 import com.drogbalog.server.global.exception.EmptyDataException;
-import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -148,6 +145,7 @@ class PostsServiceTest {
             when(postsRepository.findById(id)).thenReturn(Optional.of(posts));
             when(postsTagsMappingRepository.findTagsByPostsId(id)).thenReturn(Collections.emptyList());
             when(postsRepository.findPreviousAndNextPostsCardById(id)).thenReturn(Collections.emptyList());
+
 
             // then
             assertThat(postsService.getPosts(id).getId()).isEqualTo(id);

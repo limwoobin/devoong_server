@@ -3,6 +3,8 @@ package com.drogbalog.server.domain.posts.domain.dto;
 import com.drogbalog.server.global.exception.DrogbalogException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Collections;
 import java.util.List;
 
 import static com.drogbalog.server.global.exception.messages.IllegalDataExceptionType.ILLEGAL_POSTS_CARD_DATA;
@@ -28,7 +30,9 @@ public class PostsCardList {
     }
 
     public PostsCard getPreviousPostsCard() {
-        if (postsCardList.size() == 2 && postsCardList.get(PREVIOUS_INDEX).getId().equals(id)) {
+        if (postsCardList.isEmpty()) {
+            return null;
+        } else if (postsCardList.size() == 2 && postsCardList.get(PREVIOUS_INDEX).getId().equals(id)) {
             return null;
         }
 
@@ -36,7 +40,9 @@ public class PostsCardList {
     }
 
     public PostsCard getNextPostsCard() {
-        if (postsCardList.size() == 2 && postsCardList.get(NOW_INDEX).getId().equals(id)) {
+        if (postsCardList.isEmpty()) {
+            return null;
+        } else if (postsCardList.size() == 2 && postsCardList.get(NOW_INDEX).getId().equals(id)) {
             return null;
         } else if (postsCardList.size() == 2) {
             return postsCardList.get(NOW_INDEX);
