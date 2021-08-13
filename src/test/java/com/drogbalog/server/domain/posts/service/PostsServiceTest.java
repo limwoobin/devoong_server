@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
@@ -86,8 +87,30 @@ class PostsServiceTest {
             Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , 1L);
             assertThat(result).isEqualTo(Page.empty());
         }
+    }
 
+    @Nested
+    @DisplayName("최근 게시글 조회 테스트")
+    class LatestPostsTest {
+        @Test
+        @DisplayName("최근 게시물 조회시 최근 3개 혹은 3개 이하의 데이터가 나와야 한다")
+        public void getLatestPostsTest() {
+            // case 1
+            // when
+            when(postsRepository.findTop3ByOrderByIdDesc()).thenReturn(Collections.emptyList());
 
+            // then
+            List<PostsResponse> result = postsService.getLatestPosts();
+            assertThat(result.size()).isEqualTo(0);
+
+            // case 2
+            // when
+            when(postsRepository.findTop3ByOrderByIdDesc()).thenReturn(List.of(posts , posts2 , posts3));
+
+            // then
+            List<PostsResponse> result2 = postsService.getLatestPosts();
+            assertThat(result2.size()).isEqualTo(3);
+        }
     }
 }
 
