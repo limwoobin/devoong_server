@@ -23,7 +23,7 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostsResponse> findAllByTagsId(Pageable pageable, Long tagsId) {
+    public Page<PostsResponse> findAllByTagsId(Pageable pageable, String name) {
         QueryResults<PostsResponse> results = queryFactory
                 .select(Projections.constructor(PostsResponse.class,
                         postsTagsMapping.posts.id,
@@ -33,7 +33,7 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
                         postsTagsMapping.posts.views,
                         postsTagsMapping.posts.createdDate))
                 .from(postsTagsMapping)
-                .where(postsTagsMapping.tags.id.eq(tagsId)
+                .where(postsTagsMapping.tags.name.eq(name)
                 .and(postsTagsMapping.posts.status.eq(Status.ACTIVE)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

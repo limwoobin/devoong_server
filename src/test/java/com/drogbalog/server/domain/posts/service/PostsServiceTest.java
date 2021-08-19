@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.*;
 
@@ -84,10 +85,10 @@ class PostsServiceTest {
             PageRequest pageRequest = PageRequest.of(0 , 5);
 
             // when
-            when(postsTagsMappingRepository.findAllByTagsId(pageRequest , 1L)).thenReturn(Page.empty());
+            when(postsTagsMappingRepository.findAllByTagsId(pageRequest , anyString())).thenReturn(Page.empty());
 
             // then
-            Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , 1L);
+            Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , anyString());
             assertThat(result).isEqualTo(Page.empty());
         }
     }

@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface PostsTagsMappingCustomRepository {
-    Page<PostsResponse> findAllByTagsId(Pageable pageable , Long tagsId);
+    Page<PostsResponse> findAllByTagsId(Pageable pageable , String name);
     List<TagsResponse> findTagsByPostsId(Long postsId);
 }

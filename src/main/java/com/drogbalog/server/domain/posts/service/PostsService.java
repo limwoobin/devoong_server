@@ -31,8 +31,8 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsResponse> getPostsListByTagsId(Pageable pageable , Long tagsId) {
-        return postsTagsMappingRepository.findAllByTagsId(pageable, tagsId);
+    public Page<PostsResponse> getPostsListByTagsId(Pageable pageable , String name) {
+        return postsTagsMappingRepository.findAllByTagsId(pageable, name);
     }
 
     @Transactional(readOnly = true)

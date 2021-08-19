@@ -25,7 +25,7 @@ public class PostsApi {
     @GetMapping(value = "")
     @ApiOperation(value = "게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsList(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable) {
+            @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) final Pageable pageable) {
         Page<PostsResponse> postsList = postsService.getPostsList(pageable);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
@@ -37,12 +37,12 @@ public class PostsApi {
         return new ResponseEntity<>(PostsResponse , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/tags/{tagsId}")
+    @GetMapping(value = "/tags/{name}")
     @ApiOperation(value = "태그별 게시글 목록 조회")
     public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable,
-            @PathVariable(name = "tagsId") Long tagsId) {
-        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , tagsId);
+            @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) final Pageable pageable,
+            @PathVariable(name = "name") String name) {
+        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , name);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class PostsApi {
     @GetMapping(value = "/search/{keyword}")
     @ApiOperation(value = "게시글 검색")
     public ResponseEntity<Page<PostsResponse>> getPostsListByKeyword(
-            @PageableDefault(size = 10 , sort = "createdDate" , direction = Sort.Direction.DESC) final Pageable pageable ,
+            @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) final Pageable pageable ,
             @PathVariable(name = "keyword") String keyword) {
 
         Page<PostsResponse> postsList = postsService.searchAll(pageable , keyword);
