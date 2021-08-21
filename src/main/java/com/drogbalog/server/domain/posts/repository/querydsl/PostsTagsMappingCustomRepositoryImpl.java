@@ -37,6 +37,7 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
                 .and(postsTagsMapping.posts.status.eq(Status.ACTIVE)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(postsTagsMapping.posts.id.desc())
                 .fetchResults();
 
         return new PageImpl<>(results.getResults() , pageable , results.getTotal());

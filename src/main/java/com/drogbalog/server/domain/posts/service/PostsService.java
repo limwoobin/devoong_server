@@ -1,5 +1,7 @@
 package com.drogbalog.server.domain.posts.service;
 
+import com.drogbalog.server.domain.posts.domain.dto.Archive;
+import com.drogbalog.server.domain.posts.domain.dto.ArchiveByYear;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
@@ -15,7 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +63,27 @@ public class PostsService {
     @Transactional(readOnly = true)
     public Page<PostsResponse> searchAll(Pageable pageable , String keyword) {
         return postsRepository.searchAllResponse(pageable , keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArchiveByYear> getPostsArchive() {
+        List<Archive> archives = postsRepository.findPostsArchive();
+
+        Map<String , List<Archive>> archiveMaps = archives
+                .stream()
+                .collect(Collectors.groupingBy(Archive::getCreatedYear));
+
+        return createSortedArchiveDto(archiveMaps);
+    }
+
+    private List<ArchiveByYear> createSortedArchiveDto(Map<String , List<Archive>> archiveMaps) {
+        List<ArchiveByYear> archiveByYears = new ArrayList<>();
+        for (Map.Entry<String , List<Archive>> elem : archiveMaps.entrySet()) {
+            ArchiveByYear archiveByYear = new ArchiveByYear(elem.getKey() , elem.getValue());
+            archiveByYears.add(archiveByYear);
+        }
+
+        Collections.sort(archiveByYears);
+        return archiveByYears;
     }
 }

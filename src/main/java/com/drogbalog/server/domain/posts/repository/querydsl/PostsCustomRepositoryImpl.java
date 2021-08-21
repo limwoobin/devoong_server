@@ -1,12 +1,16 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
+import com.drogbalog.server.domain.posts.domain.dto.Archive;
 import com.drogbalog.server.domain.posts.domain.entity.QPosts;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsCustomRepository;
 import com.drogbalog.server.global.code.Status;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -69,6 +73,30 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
                 .from(qPosts)
                 .where(qPosts.id.in(previousId , id , nextId))
                 .orderBy(qPosts.id.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Archive> findPostsArchive() {
+        QPosts qPosts = posts;
+        StringTemplate formattedYear = Expressions.stringTemplate(
+                "DATE_FORMAT({0} , {1})"
+                ,qPosts.createdDate
+                ,ConstantImpl.create("%Y"));
+
+        StringTemplate formattedDate = Expressions.stringTemplate(
+                "DATE_FORMAT({0} , {1})"
+                ,qPosts.createdDate
+                ,ConstantImpl.create("%Y-%m-%d"));
+
+        return queryFactory.select(Projections.constructor(Archive.class,
+                qPosts.id,
+                qPosts.title,
+                formattedYear,
+                formattedDate))
+                .from(qPosts)
+                .orderBy(qPosts.id.desc())
+                .orderBy(formattedDate.desc())
                 .fetch();
     }
 }

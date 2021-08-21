@@ -1,5 +1,7 @@
 package com.drogbalog.server.domain.posts.api;
 
+import com.drogbalog.server.domain.posts.domain.dto.Archive;
+import com.drogbalog.server.domain.posts.domain.dto.ArchiveByYear;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/posts")
@@ -61,5 +64,11 @@ public class PostsApi {
 
         Page<PostsResponse> postsList = postsService.searchAll(pageable , keyword);
         return new ResponseEntity<>(postsList , HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/archive")
+    @ApiOperation(value = "전체 조회(archive)")
+    public ResponseEntity<List<ArchiveByYear>> getPostsAll() {
+        return new ResponseEntity<>(postsService.getPostsArchive() , HttpStatus.OK);
     }
 }
