@@ -66,7 +66,7 @@ public class PostsApi {
         return new ResponseEntity<>(postsList , HttpStatus.OK);
     }
 
-    @GetMapping(value = "/archive")
+    @GetMapping(value = "/archives")
     @ApiOperation(value = "전체 조회(archive)")
     public ResponseEntity<List<ArchiveByYear>> getPostsAll() {
         return new ResponseEntity<>(postsService.getPostsArchive() , HttpStatus.OK);
