@@ -33,6 +33,5 @@
             <AppenderRef ref="console" level="info" />
             <AppenderRef ref="file" level="debug" />
         </logger>
-
     </Loggers>
 </Configuration>

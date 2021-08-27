@@ -6,6 +6,7 @@ import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import org.junit.jupiter.api.DisplayName;
@@ -101,7 +102,7 @@ class PostsServiceTest {
         public void getLatestPostsTest() {
             // case 1
             // when
-            when(postsRepository.findTop3ByOrderByIdDesc()).thenReturn(Collections.emptyList());
+            when(postsRepository.findTop3ByStatusOrderByIdDesc(Status.ACTIVE)).thenReturn(Collections.emptyList());
 
             // then
             List<PostsResponse> result = postsService.getLatestPosts();
@@ -109,7 +110,7 @@ class PostsServiceTest {
 
             // case 2
             // when
-            when(postsRepository.findTop3ByOrderByIdDesc()).thenReturn(List.of(posts , posts2 , posts3));
+            when(postsRepository.findTop3ByStatusOrderByIdDesc(Status.ACTIVE)).thenReturn(List.of(posts , posts2 , posts3));
 
             // then
             List<PostsResponse> result2 = postsService.getLatestPosts();
