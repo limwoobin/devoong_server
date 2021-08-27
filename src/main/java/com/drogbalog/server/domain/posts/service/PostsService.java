@@ -5,14 +5,19 @@ import com.drogbalog.server.domain.posts.domain.dto.ArchiveByYear;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.domain.tags.mapper.TagsMapper;
+import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +31,25 @@ public class PostsService {
     private final PostsRepository postsRepository;
     private final PostsTagsMappingRepository postsTagsMappingRepository;
     private final PostsMapper postsMapper = PostsMapper.INSTANCE;
+    private final TagsMapper tagsMapper = TagsMapper.INSTANCE;
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
-        Page<Posts> posts = postsRepository.findAll(pageable);
-        return posts.map(postsMapper::converts);
+        Page<Posts> posts = postsRepository.findAllPostsAndTags(pageable);
+        List<PostsResponse> postsResponseList = new ArrayList<>(posts.getSize());
+
+        for (Posts posts1 : posts) {
+            List<Tags> tagsList = posts1.getPostsTagsMappingList()
+                    .stream()
+                    .map(PostsTagsMapping::getTags)
+                    .collect(Collectors.toList());
+
+            PostsResponse postsResponse = postsMapper.converts(posts1);
+            postsResponse.setTagsResponseList(tagsMapper.toTagResponseList(tagsList));
+            postsResponseList.add(postsResponse);
+        }
+
+        return new PageImpl<>(postsResponseList , pageable , posts.getSize());
     }
 
     @Transactional(readOnly = true)
@@ -56,7 +75,7 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public List<PostsResponse> getLatestPosts() {
-        List<Posts> latestPosts = postsRepository.findTop3ByOrderByIdDesc();
+        List<Posts> latestPosts = postsRepository.findTop3ByStatusOrderByIdDesc(Status.ACTIVE);
         return postsMapper.convertList(latestPosts);
     }
 

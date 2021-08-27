@@ -1,6 +1,7 @@
 package com.drogbalog.server.domain.posts.repository.querydsl;
 
 import com.drogbalog.server.domain.posts.domain.dto.Archive;
+import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.QPosts;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
+import static com.drogbalog.server.domain.posts.domain.entity.QPostsTagsMapping.postsTagsMapping;
+import static com.drogbalog.server.domain.tags.domain.entity.QTags.tags;
 
 /**
  * Created by Drogba on 2021-02-05
@@ -31,6 +34,35 @@ import static com.drogbalog.server.domain.posts.domain.entity.QPosts.posts;
 @RequiredArgsConstructor
 public class PostsCustomRepositoryImpl implements PostsCustomRepository {
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Page<Posts> findAllPostsAndTags(Pageable pageable) {
+//        QueryResults<Posts> postsQueryResults = queryFactory
+//                .select(posts)
+//                .from(posts)
+//                .innerJoin(postsTagsMapping)
+//                .on(posts.id.eq(postsTagsMapping.posts.id))
+//                .innerJoin(tags)
+//                .on(postsTagsMapping.tags.id.eq(tags.id))
+//                .where(posts.status.eq(Status.ACTIVE))
+//                .orderBy(posts.id.desc())
+//                .fetchResults();
+
+        QueryResults<Posts> postsQueryResults = queryFactory
+                .select(posts)
+                .from(posts)
+                .innerJoin(posts.postsTagsMappingList , postsTagsMapping)
+                .fetchJoin()
+                .innerJoin(postsTagsMapping.tags , tags)
+                .fetchJoin()
+                .where(posts.status.eq(Status.ACTIVE))
+                .orderBy(posts.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(postsQueryResults.getResults() , pageable , postsQueryResults.getTotal());
+    }
 
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {
         QueryResults<PostsResponse> postsResponseList = queryFactory
