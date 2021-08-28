@@ -37,17 +37,6 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
 
     @Override
     public Page<Posts> findAllPostsAndTags(Pageable pageable) {
-//        QueryResults<Posts> postsQueryResults = queryFactory
-//                .select(posts)
-//                .from(posts)
-//                .innerJoin(postsTagsMapping)
-//                .on(posts.id.eq(postsTagsMapping.posts.id))
-//                .innerJoin(tags)
-//                .on(postsTagsMapping.tags.id.eq(tags.id))
-//                .where(posts.status.eq(Status.ACTIVE))
-//                .orderBy(posts.id.desc())
-//                .fetchResults();
-
         QueryResults<Posts> postsQueryResults = queryFactory
                 .select(posts)
                 .from(posts)
@@ -61,7 +50,17 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-        return new PageImpl<>(postsQueryResults.getResults() , pageable , postsQueryResults.getTotal());
+        return new PageImpl<>(postsQueryResults.getResults() , pageable , this.findAllPostsCount());
+    }
+
+    private long findAllPostsCount() {
+        return queryFactory.select(posts.id)
+                .distinct()
+                .from(posts)
+                .innerJoin(posts.postsTagsMappingList , postsTagsMapping)
+                .fetchJoin()
+                .where(posts.status.eq(Status.ACTIVE))
+                .fetchCount();
     }
 
     public Page<PostsResponse> searchAllResponse(Pageable pageable , String keyword) {

@@ -49,7 +49,7 @@ public class PostsService {
             postsResponseList.add(postsResponse);
         }
 
-        return new PageImpl<>(postsResponseList , pageable , posts.getSize());
+        return new PageImpl<>(postsResponseList , posts.getPageable() , posts.getTotalElements());
     }
 
     @Transactional(readOnly = true)
