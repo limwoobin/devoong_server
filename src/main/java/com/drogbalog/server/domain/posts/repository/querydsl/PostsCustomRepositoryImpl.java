@@ -35,9 +35,8 @@ import static com.drogbalog.server.domain.tags.domain.entity.QTags.tags;
 public class PostsCustomRepositoryImpl implements PostsCustomRepository {
     private final JPAQueryFactory queryFactory;
 
-    @Override
-    public Page<Posts> findAllPostsAndTags(Pageable pageable) {
-        QueryResults<Posts> postsQueryResults = queryFactory
+    public List<Posts> findAllPostsAndTags(Pageable pageable) {
+        return queryFactory
                 .select(posts)
                 .from(posts)
                 .innerJoin(posts.postsTagsMappingList , postsTagsMapping)
@@ -48,12 +47,10 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
                 .orderBy(posts.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
-
-        return new PageImpl<>(postsQueryResults.getResults() , pageable , this.findAllPostsCount());
+                .fetch();
     }
 
-    private long findAllPostsCount() {
+    public long findAllPostsCount() {
         return queryFactory.select(posts.id)
                 .distinct()
                 .from(posts)

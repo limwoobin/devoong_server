@@ -16,5 +16,7 @@ public interface PostsCustomRepository {
 
     List<Archive> findPostsArchive();
 
-    Page<Posts> findAllPostsAndTags(Pageable pageable);
+    List<Posts> findAllPostsAndTags(Pageable pageable);
+
+    long findAllPostsCount();
 }

@@ -35,8 +35,8 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
-        Page<Posts> posts = postsRepository.findAllPostsAndTags(pageable);
-        List<PostsResponse> postsResponseList = new ArrayList<>(posts.getSize());
+        List<Posts> posts = postsRepository.findAllPostsAndTags(pageable);
+        List<PostsResponse> postsResponseList = new ArrayList<>(posts.size());
 
         for (Posts posts1 : posts) {
             List<Tags> tagsList = posts1.getPostsTagsMappingList()
@@ -49,7 +49,7 @@ public class PostsService {
             postsResponseList.add(postsResponse);
         }
 
-        return new PageImpl<>(postsResponseList , posts.getPageable() , posts.getTotalElements());
+        return new PageImpl<>(postsResponseList , pageable , postsRepository.findAllPostsCount());
     }
 
     @Transactional(readOnly = true)
