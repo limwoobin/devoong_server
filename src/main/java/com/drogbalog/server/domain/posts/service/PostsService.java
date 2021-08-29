@@ -97,6 +97,7 @@ public class PostsService {
 
     private List<ArchiveByYear> createSortedArchiveDto(Map<String , List<Archive>> archiveMaps) {
         List<ArchiveByYear> archiveByYears = new ArrayList<>();
+
         for (Map.Entry<String , List<Archive>> elem : archiveMaps.entrySet()) {
             ArchiveByYear archiveByYear = new ArchiveByYear(elem.getKey() , elem.getValue());
             archiveByYears.add(archiveByYear);

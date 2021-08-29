@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ class PostsServiceTest {
             PageRequest pageRequest = PageRequest.of(0 , 5);
 
             // when
-            when(postsRepository.findAll(pageRequest)).thenReturn(Page.empty());
+            when(postsRepository.findAllPostsAndTags(pageRequest)).thenReturn(Collections.emptyList());
 
             // then
             Page<PostsResponse> result = postsService.getPostsList(pageRequest);
@@ -64,11 +65,10 @@ class PostsServiceTest {
         @DisplayName("리스트에 값이 있으면 정상적으로 반환되어야 한다.")
         public void getPostsListTest() {
             // given
-            PageRequest pageRequest = PageRequest.of(0 , 5);
-            Page<Posts> 게시글_목록 = new PageImpl<>(게시글_리스트 , pageRequest, 게시글_리스트.size());
+            List<Posts> 게시글_목록 = new ArrayList<>(게시글_리스트);
 
             // when
-            when(postsRepository.findAll(pageRequest)).thenReturn(게시글_목록);
+            when(postsRepository.findAllPostsAndTags(pageRequest)).thenReturn(게시글_목록);
 
             // then
             Page<PostsResponse> result = postsService.getPostsList(pageRequest);
