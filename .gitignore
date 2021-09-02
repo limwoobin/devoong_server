@@ -40,4 +40,4 @@ settings.gradle
 
 ### yml files ###
 application-oauth.yml
-application-email.yml
+application-prod.yml
