@@ -57,8 +57,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
-                .title("Drogbalog Server")
-                .description("Drogbalog Server Api based on Spring boot")
+                .title("Devoong Server")
+                .description("Devoong Server Api based on Spring boot")
                 .version("1.0")
                 .contact(new Contact("drogba", "", "drogbacuty@gmail.com"))
                 .build();
