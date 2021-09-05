@@ -91,8 +91,7 @@ class UserServiceTest {
             UserRequest userRequest = 회원가입_신청한_유저;
 
             // when
-            when(passwordEncoder.e
-                    ncode(userRequest.getPassword())).thenReturn("123123123");
+            when(passwordEncoder.encode(userRequest.getPassword())).thenReturn("123123123");
             when(userRepository.save(any())).thenReturn(회원가입된_유저_ENTITY);
 
             // then
