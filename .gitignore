@@ -28,7 +28,6 @@ hs_err_pid*
 build
 out
 .idea
-gradle
 logs
 src/main/generated/*
 
