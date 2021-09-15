@@ -15,11 +15,11 @@ import java.io.IOException;
 @Log4j2
 public class RetrofitClient<T> {
 
-    public T execute(Call<ResponseEntity<T>> call) {
+    public T execute(Call<T> call) {
         try {
-            Response<ResponseEntity<T>> response = call.execute();
+            Response<T> response = call.execute();
             if (response.isSuccessful()) {
-                return response.body().getBody();
+                return response.body();
             }
 
             ErrorResponse errorResponse = parseErrorBody(response.errorBody());
