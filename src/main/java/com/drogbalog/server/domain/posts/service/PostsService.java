@@ -15,9 +15,7 @@ import com.drogbalog.server.domain.tags.mapper.TagsMapper;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
-import com.drogbalog.server.infra.retrofit.ExternalHandler;
-import com.drogbalog.server.infra.retrofit.RetrofitClient;
-import com.drogbalog.server.infra.retrofit.RetrofitFactory;
+import com.drogbalog.server.infra.retrofit.GithubApiClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,9 +33,7 @@ public class PostsService {
     private final PostsTagsMappingRepository postsTagsMappingRepository;
     private final PostsMapper postsMapper = PostsMapper.INSTANCE;
     private final TagsMapper tagsMapper = TagsMapper.INSTANCE;
-    private final RetrofitFactory<ExternalHandler> retrofitFactory;
-
-    private static final String GITHUB_API_URI = "https://raw.githubusercontent.com";
+    private final GithubApiClient githubApiClient;
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
@@ -72,16 +68,11 @@ public class PostsService {
         postsResponse.addTagsList(postsTagsMappingRepository.findTagsByPostsId(postsId));
         postsResponse.addPreviousAndNextPostsCard(getPostsCardList(postsId));
 
-        String data = getMarkdownData(postsResponse.getContents());
-        System.out.println(data);
+        String markdownData = githubApiClient.callMarkdownApi(posts.getContents());
+        System.out.println(markdownData);
+        postsResponse.setContents(markdownData);
 
         return postsResponse;
-    }
-
-    private String getMarkdownData(String path) {
-        ExternalHandler handler = retrofitFactory.createUnsafeService(GITHUB_API_URI , ExternalHandler.class);
-        String markdown =  new RetrofitClient<String>().execute(handler.requestGithubMarkdownApi(path, "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"));
-        return markdown;
     }
 
     public PostsCardList getPostsCardList(Long postsId) {

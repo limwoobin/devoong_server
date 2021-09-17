@@ -61,3 +61,7 @@ client:
 app:
   oauth2:
     authorizedRedirectUris: http://localhost:3000/oauth2/redirect , http://localhost:3100/oauth2/redirect
+
+github:
+  token: test
+  uri: https://raw.githubusercontent.com
