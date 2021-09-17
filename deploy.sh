@@ -2,6 +2,8 @@
 REPOSITORY=/home/ubuntu/repo/devoong_server
 cd $REPOSITORY
 
+CONTAINER_NAME=devoong
+
 echo "> Git Pull"
 git pull
 
@@ -21,13 +23,18 @@ echo "> DockerHub pull"
 docker pull drogbacuty/devoong_server
 
 CONTAINER_PID=docker top devoong | awk '{print $2}' | sed -n 2p
-echo "> $CONTAINER_PID"
+CONTAINER_ID=docker container ls -f "name=$CONTAINER_NAME" -q
+
+echo "> $CONTAINER_ID"
 
 if [ -z $CONTAINER_PID ]; then
   echo "> 현재 구동중인 서버가 없으므로 종료하지 않습니다."
 else
-  echo "> kill -9 $CONTAINER_PID"
-  kill -9 $CONTAINER_PID
+  echo "> Container Stop..."
+  docker stop $CONTAINER_ID
+
+  echo "> Container Remove..."
+  docker rm $CONTAINER_ID
   sleep 5
 fi
 
