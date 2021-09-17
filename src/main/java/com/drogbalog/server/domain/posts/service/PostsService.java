@@ -33,7 +33,7 @@ public class PostsService {
     private final PostsTagsMappingRepository postsTagsMappingRepository;
     private final PostsMapper postsMapper = PostsMapper.INSTANCE;
     private final TagsMapper tagsMapper = TagsMapper.INSTANCE;
-    private final GithubApiClient githubApiClient;
+    private final GithubApiClient<String> githubApiClient;
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
