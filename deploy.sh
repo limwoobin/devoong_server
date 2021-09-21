@@ -26,7 +26,7 @@ CONTAINER_ID=docker container ls -f "name=$CONTAINER_NAME" -q
 
 echo "> $CONTAINER_ID"
 
-if [ -z $CONTAINER_PID ]; then
+if [ -z $CONTAINER_ID ]; then
   echo "> 현재 구동중인 서버가 없으므로 종료하지 않습니다."
 else
   echo "> Container Stop..."
