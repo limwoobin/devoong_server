@@ -22,7 +22,6 @@ docker push drogbacuty/devoong_server
 echo "> DockerHub pull"
 docker pull drogbacuty/devoong_server
 
-CONTAINER_PID=docker top devoong | awk '{print $2}' | sed -n 2p
 CONTAINER_ID=docker container ls -f "name=$CONTAINER_NAME" -q
 
 echo "> $CONTAINER_ID"
