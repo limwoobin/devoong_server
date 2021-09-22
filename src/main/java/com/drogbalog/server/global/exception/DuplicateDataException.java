@@ -4,7 +4,7 @@ package com.drogbalog.server.global.exception;
 import com.drogbalog.server.global.exception.messages.DuplicateExceptionType;
 import org.springframework.http.HttpStatus;
 
-public class DuplicateDataException extends DrogbalogException {
+public class DuplicateDataException extends DevoongException {
 
     public DuplicateDataException(HttpStatus status) {
         super(status);

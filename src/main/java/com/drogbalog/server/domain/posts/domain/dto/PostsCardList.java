@@ -1,10 +1,9 @@
 package com.drogbalog.server.domain.posts.domain.dto;
 
-import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.DevoongException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.drogbalog.server.global.exception.messages.IllegalDataExceptionType.ILLEGAL_POSTS_CARD_DATA;
@@ -22,7 +21,7 @@ public class PostsCardList {
 
     public PostsCardList(List<PostsCard> postsCardList , Long id) {
         if (postsCardList.size() > MAX_SIZE) {
-            throw new DrogbalogException(ILLEGAL_POSTS_CARD_DATA.getMessage());
+            throw new DevoongException(ILLEGAL_POSTS_CARD_DATA.getMessage());
         }
 
         this.postsCardList = postsCardList;

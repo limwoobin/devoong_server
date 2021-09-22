@@ -2,7 +2,7 @@ package com.drogbalog.server.global.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class BadRequestException extends DrogbalogException {
+public class BadRequestException extends DevoongException {
 
     public BadRequestException(HttpStatus status) {
         super(status);

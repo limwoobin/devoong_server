@@ -69,7 +69,6 @@ public class PostsService {
         postsResponse.addPreviousAndNextPostsCard(getPostsCardList(postsId));
 
         String markdownData = githubApiClient.callMarkdownApi(posts.getContents());
-        System.out.println(markdownData);
         postsResponse.setContents(markdownData);
 
         return postsResponse;

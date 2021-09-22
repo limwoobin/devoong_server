@@ -13,8 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(DrogbalogException.class)
-    public ResponseEntity<ErrorResponse> handleException(DrogbalogException e) {
+    @ExceptionHandler(DevoongException.class)
+    public ResponseEntity<ErrorResponse> handleException(DevoongException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
         errorResponse.setCode(e.getCode());

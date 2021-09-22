@@ -4,7 +4,7 @@ import com.drogbalog.server.global.exception.auth.AuthExceptionCode;
 import com.drogbalog.server.global.exception.messages.ExceptionType;
 import org.springframework.http.HttpStatus;
 
-public class UnAuthorizedException extends DrogbalogException {
+public class UnAuthorizedException extends DevoongException {
     public UnAuthorizedException(ExceptionType exceptionType) {
         super(HttpStatus.UNAUTHORIZED , exceptionType.getMessage());
     }

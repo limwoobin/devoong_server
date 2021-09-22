@@ -22,7 +22,7 @@ docker push drogbacuty/devoong_server
 echo "> DockerHub pull"
 docker pull drogbacuty/devoong_server
 
-CONTAINER_ID=docker container ls -f "name=$CONTAINER_NAME" -q
+CONTAINER_ID=$(docker container ls -f "name=$CONTAINER_NAME" -q)
 
 echo "> $CONTAINER_ID"
 

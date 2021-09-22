@@ -1,13 +1,16 @@
 package com.drogbalog.server.infra.retrofit;
 
-import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.DevoongException;
 import com.drogbalog.server.global.exception.ErrorResponse;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
@@ -22,8 +25,15 @@ public class GithubApiClient<T> extends RetrofitClient<T , ErrorResponse> {
 
     @SuppressWarnings("unchecked")
     public String callMarkdownApi(String path) {
-        ExternalHandler handler = retrofitFactory.createUnsafeService(baseURI , ExternalHandler.class);
-        return (String) super.execute((Call<T>) handler.requestGithubMarkdownApi(path, token));
+        String markdownData = "";
+        try {
+            ExternalHandler handler = retrofitFactory.createUnsafeService(baseURI , ExternalHandler.class);
+            markdownData = (String) super.execute((Call<T>) handler.requestGithubMarkdownApi(path , token));
+        } catch (RuntimeException e) {
+            throw new DevoongException(HttpStatus.NOT_FOUND, 404, "컨텐츠를 찾을 수 없습니다.");
+        }
+
+        return markdownData;
     }
 
     @Override
@@ -38,6 +48,6 @@ public class GithubApiClient<T> extends RetrofitClient<T , ErrorResponse> {
 
     @Override
     void throwException(ErrorResponse response) {
-        throw new DrogbalogException(response.getStatus(), response.getCode(), response.getMessage());
+        throw new DevoongException(response.getStatus(), response.getCode(), response.getMessage());
     }
 }

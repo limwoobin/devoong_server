@@ -1,6 +1,6 @@
 package com.drogbalog.server.infra.retrofit;
 
-import com.drogbalog.server.global.exception.DrogbalogException;
+import com.drogbalog.server.global.exception.DevoongException;
 import lombok.extern.log4j.Log4j2;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -21,7 +21,7 @@ public abstract class RetrofitClient<T , E> {
             throwException(errorResponse);
             return null;
         } catch (IOException e) {
-            throw new DrogbalogException(e.getMessage());
+            throw new DevoongException(e.getMessage());
         }
     }
 
