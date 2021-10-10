@@ -2,15 +2,12 @@ package com.drogbalog.server.infra.retrofit;
 
 import com.drogbalog.server.global.exception.DevoongException;
 import com.drogbalog.server.global.exception.ErrorResponse;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor

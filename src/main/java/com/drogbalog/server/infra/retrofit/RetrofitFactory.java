@@ -1,7 +1,5 @@
 package com.drogbalog.server.infra.retrofit;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,7 +14,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.lang.invoke.StringConcatFactory;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
