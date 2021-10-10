@@ -2,7 +2,7 @@
 <Configuration status="INFO">
 
     <Properties>
-        <Property name="logFileName">drogbalog_server</Property>
+        <Property name="logFileName">devoong-server</Property>
         <Property name="consoleLayout">%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property>
         <Property name="fileLayout">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
     </Properties>
@@ -16,7 +16,12 @@
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 시간별 로그 파일 생성-->
             </Policies>
-            <DefaultRolloverStrategy max="5" fileIndex="min" /><!-- 롤링 파일 5개 까지 생성 -->
+            <DefaultRolloverStrategy max="5" fileIndex="min">
+                <Delete basePath="./logs" maxDepth="1">
+                    <!-- 7일 경과한 log file 자동 삭제 -->
+                    <IfLastModified age="7d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
     </Appenders>
 
