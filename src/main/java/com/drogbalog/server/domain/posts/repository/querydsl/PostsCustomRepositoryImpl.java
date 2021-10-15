@@ -115,7 +115,7 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository {
         StringTemplate formattedDate = Expressions.stringTemplate(
                 "DATE_FORMAT({0} , {1})"
                 ,qPosts.createdDate
-                ,ConstantImpl.create("%m-%d"));
+                ,ConstantImpl.create("%m/%d"));
 
         return queryFactory.select(Projections.constructor(Archive.class,
                 qPosts.id,

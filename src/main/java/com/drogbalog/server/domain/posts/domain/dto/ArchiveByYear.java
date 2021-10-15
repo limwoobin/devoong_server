@@ -17,7 +17,6 @@ public class ArchiveByYear implements Comparable<ArchiveByYear> {
 
     @Override
     public int compareTo(ArchiveByYear o) {
-//        return this.createdYear.compareTo(o.createdYear);
         return o.createdYear.compareTo(this.createdYear);
     }
 }

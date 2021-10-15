@@ -23,6 +23,7 @@ public class GithubApiClient<T> extends RetrofitClient<T , ErrorResponse> {
     @SuppressWarnings("unchecked")
     public String callMarkdownApi(String path) {
         String markdownData = "";
+        
         try {
             ExternalHandler handler = retrofitFactory.createUnsafeService(baseURI , ExternalHandler.class);
             markdownData = (String) super.execute((Call<T>) handler.requestGithubMarkdownApi(path , token));
