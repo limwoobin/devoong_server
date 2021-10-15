@@ -38,4 +38,10 @@ else
 fi
 
 echo "> Docker Container Run"
-docker run -d -p 8080:8080 --name devoong drogbacuty/devoong_server
+docker run \
+ -d \
+ -p 8080:8080 \
+ --name devoong drogbacuty/devoong_server \
+ -v /etc/localtime:/etc/localtime:ro \
+ -e TZ=Asia/Seoul
+# docker run -v /etc/localtime:/etc/localtime:ro -e TZ=Asia/Seoul -d -p 8080:8080 --name devoong drogbacuty/devoong_server
