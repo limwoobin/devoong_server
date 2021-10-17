@@ -7,9 +7,12 @@ spring:
     include: oauth
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dlog?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&allowMultiQueries=true&autoReconnect=true&serverTimezone=Asia/Seoul
-      username: root
-      password: 1234
+#      jdbc-url: jdbc:mysql://127.0.0.1:3306/dlog?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&allowMultiQueries=true&autoReconnect=true&serverTimezone=Asia/Seoul
+#      username: root
+#      password: 1234
+      jdbc-url: jdbc:mysql://3.34.56.196:3306/devoong?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&allowMultiQueries=true&autoReconnect=true&serverTimezone=Asia/Seoul
+      username: drogba02
+      password: wjqhsaoal22
       driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
