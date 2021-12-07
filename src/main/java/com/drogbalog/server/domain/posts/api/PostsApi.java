@@ -44,7 +44,7 @@ public class PostsApi {
     public ResponseEntity<Page<PostsResponse>> getPostsListByTagsId(
             @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) final Pageable pageable,
             @PathVariable(name = "name") String name) {
-        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsId(pageable , name);
+        Page<PostsResponse> postsResponseList = postsService.getPostsListByTagsName(pageable , name);
         return new ResponseEntity<>(postsResponseList , HttpStatus.OK);
     }
 

@@ -37,16 +37,16 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public Page<PostsResponse> getPostsList(Pageable pageable) {
-        List<Posts> posts = postsRepository.findAllPostsAndTags(pageable);
-        List<PostsResponse> postsResponseList = new ArrayList<>(posts.size());
+        List<Posts> postsList = postsRepository.findAllPostsAndTags(pageable);
+        List<PostsResponse> postsResponseList = new ArrayList<>(postsList.size());
 
-        for (Posts posts1 : posts) {
-            List<Tags> tagsList = posts1.getPostsTagsMappingList()
+        for (Posts posts : postsList) {
+            List<Tags> tagsList = posts.getPostsTagsMappingList()
                     .stream()
                     .map(PostsTagsMapping::getTags)
                     .collect(Collectors.toList());
 
-            PostsResponse postsResponse = postsMapper.converts(posts1);
+            PostsResponse postsResponse = postsMapper.converts(posts);
             postsResponse.setTagsResponseList(tagsMapper.toTagResponseList(tagsList));
             postsResponseList.add(postsResponse);
         }
@@ -55,8 +55,8 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsResponse> getPostsListByTagsId(Pageable pageable , String name) {
-        return postsTagsMappingRepository.findAllByTagsId(pageable, name);
+    public Page<PostsResponse> getPostsListByTagsName(Pageable pageable , String name) {
+        return postsTagsMappingRepository.findAllByTagsName(pageable, name);
     }
 
     @Transactional(readOnly = true)

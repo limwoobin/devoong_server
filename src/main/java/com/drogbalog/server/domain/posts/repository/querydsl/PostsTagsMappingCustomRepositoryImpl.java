@@ -23,7 +23,7 @@ public class PostsTagsMappingCustomRepositoryImpl implements PostsTagsMappingCus
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostsResponse> findAllByTagsId(Pageable pageable, String name) {
+    public Page<PostsResponse> findAllByTagsName(Pageable pageable, String name) {
         QueryResults<PostsResponse> results = queryFactory
                 .select(Projections.constructor(PostsResponse.class,
                         postsTagsMapping.posts.id,
