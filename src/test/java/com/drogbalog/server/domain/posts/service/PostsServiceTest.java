@@ -3,6 +3,7 @@ package com.drogbalog.server.domain.posts.service;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
+import com.drogbalog.server.domain.posts.mapper.PostsMapper;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
@@ -26,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.*;
 
@@ -43,6 +43,8 @@ class PostsServiceTest {
     @InjectMocks
     private PostsService postsService;
 
+    private final PostsMapper postsMapper = PostsMapper.INSTANCE;
+
     @Nested
     @DisplayName("게시글 목록 조회 테스트")
     class GetPostsAllTest {
@@ -51,10 +53,11 @@ class PostsServiceTest {
         @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다.")
         public void empty_getPostsListTest() {
             // given
-            PageRequest pageRequest = PageRequest.of(0 , 5);
+            PageRequest pageRequest = PostsTestDomain.pageRequest;
 
             // when
-            when(postsRepository.findAllPostsAndTags(pageRequest)).thenReturn(Collections.emptyList());
+            when(postsRepository.findAllPostsAndTags(pageRequest))
+                    .thenReturn(Collections.emptyList());
 
             // then
             Page<PostsResponse> result = postsService.getPostsList(pageRequest);
@@ -68,7 +71,8 @@ class PostsServiceTest {
             List<Posts> 게시글_목록 = new ArrayList<>(게시글_리스트);
 
             // when
-            when(postsRepository.findAllPostsAndTags(pageRequest)).thenReturn(게시글_목록);
+            when(postsRepository.findAllPostsAndTags(pageRequest))
+                    .thenReturn(게시글_목록);
 
             // then
             Page<PostsResponse> result = postsService.getPostsList(pageRequest);
@@ -80,17 +84,41 @@ class PostsServiceTest {
         }
 
         @Test
-        @DisplayName("태그번호로 게시글 리스트 가져오기")
-        public void getPostsListByTagsIdTest() {
+        @DisplayName("태그번호로 게시글 리스트 조회시 빈값은 빈값으로 반환되어야 한다")
+        public void empty_getPostsListByTagsIdTest() {
             // given
-            PageRequest pageRequest = PageRequest.of(0 , 5);
+            PageRequest pageRequest = PostsTestDomain.pageRequest;
+            String name = "testCode";
 
             // when
-            when(postsTagsMappingRepository.findAllByTagsId(pageRequest , anyString())).thenReturn(Page.empty());
+            when(postsTagsMappingRepository.findAllByTagsName(pageRequest , name))
+                    .thenReturn(Page.empty());
 
             // then
-            Page<PostsResponse> result = postsService.getPostsListByTagsId(pageRequest , anyString());
+            Page<PostsResponse> result = postsService.getPostsListByTagsName(pageRequest , name);
             assertThat(result).isEqualTo(Page.empty());
+        }
+
+        @Test
+        @DisplayName("태그번호로 게시글 리스트 조회시 정상적으로 반환되어야 한다")
+        public void getPostsListByTagsIdTest() {
+            // given
+            PageRequest pageRequest = PostsTestDomain.pageRequest;
+            String name = "testCode";
+            List<PostsResponse> postsResponseList = List.of(
+                    postsMapper.converts(posts),
+                    postsMapper.converts(posts2),
+                    postsMapper.converts(posts3)
+            );
+
+            // when
+            when(postsTagsMappingRepository.findAllByTagsName(pageRequest , name))
+                    .thenReturn(new PageImpl<>(postsResponseList , pageRequest , postsResponseList.size()));
+
+            // then
+            Page<PostsResponse> result = postsService.getPostsListByTagsName(pageRequest , name);
+            assertThat(result.getTotalElements()).isEqualTo(3);
+            assertThat(result.getContent()).isEqualTo(postsResponseList);
         }
     }
 
@@ -204,7 +232,6 @@ final class PostsTestDomain {
             .posts(posts3)
             .tags(tags)
             .build();
-
 
     static final PageRequest pageRequest = PageRequest.of(0 , 5);
 
