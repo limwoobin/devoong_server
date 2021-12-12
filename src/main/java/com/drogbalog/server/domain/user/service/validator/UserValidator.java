@@ -14,7 +14,6 @@ import java.util.List;
 public class UserValidator {
     private final EmailValidator emailValidator;
     private final NickNameValidator nickNameValidator;
-    private final PasswordValidator passwordValidator;
 
     public void signUpValidationCheck(UserRequest request) {
         List<Validator> signUpValidators = List.of(emailValidator , nickNameValidator);

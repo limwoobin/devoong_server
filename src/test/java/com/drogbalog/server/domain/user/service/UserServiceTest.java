@@ -6,7 +6,8 @@ import com.drogbalog.server.domain.user.domain.response.JwtResponse;
 import com.drogbalog.server.domain.user.domain.response.UserResponse;
 import com.drogbalog.server.domain.user.repository.UserRepository;
 import com.drogbalog.server.domain.user.service.validator.UserValidator;
-import com.drogbalog.server.global.code.Status;
+import com.drogbalog.server.domain.user.service.validator.impl.EmailValidator;
+import com.drogbalog.server.domain.user.service.validator.impl.NickNameValidator;
 import com.drogbalog.server.global.config.security.Role;
 import com.drogbalog.server.global.config.security.jwt.JwtTokenProvider;
 import com.drogbalog.server.global.exception.DuplicateDataException;
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -35,11 +35,10 @@ import static org.mockito.Mockito.when;
 @DisplayName("유저 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    @Mock private UserValidator userValidator;
     @Mock private UserRepository userRepository;
     @Mock private JwtTokenProvider jwtTokenProvider;
-    @Mock private RedisTemplate<String , Object> redisTemplate;
     @Mock private PasswordEncoder passwordEncoder;
+    @Mock UserValidator userValidator;
 
     @InjectMocks
     private UserService userService;
@@ -48,7 +47,8 @@ class UserServiceTest {
     @DisplayName("유저 유효성 테스트")
     class UserValidateTest {
         @Mock UserRepository userRepository;
-        @InjectMocks UserValidator userValidator;
+        @InjectMocks EmailValidator emailValidator;
+        @InjectMocks NickNameValidator nickNameValidator;
 
         @Test
         @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다.")
@@ -61,7 +61,7 @@ class UserServiceTest {
 
             // then
             assertThatThrownBy(() -> {
-                userValidator.signUpValidationCheck(userRequest);
+                emailValidator.execute(userRequest);
             }).isInstanceOf(DuplicateDataException.class).hasMessageContaining(DuplicateExceptionType.EMAIL_DUPLICATED.getMessage());
         }
 
@@ -72,11 +72,10 @@ class UserServiceTest {
             UserRequest userRequest = 회원가입_신청한_유저;
 
             // when
-            when(userRepository.findByEmail(userRequest.getEmail())).thenReturn(Optional.empty());
             when(userRepository.findByNickname(userRequest.getNickname())).thenReturn(Optional.ofNullable(회원가입된_유저_ENTITY));
 
             assertThatThrownBy(() -> {
-                userValidator.signUpValidationCheck(userRequest);
+                nickNameValidator.execute(userRequest);
             }).isInstanceOf(DuplicateDataException.class).hasMessageContaining(DuplicateExceptionType.NICKNAME_DUPLICATED.getMessage());
         }
     }
@@ -162,11 +161,11 @@ class UserServiceTest {
             userRequest.setId(1L);
 
             // when
-            when(userRepository.findById(userRequest.getId())).thenReturn(Optional.of(유저_ENTITY));
+            when(userRepository.findById(userRequest.getId())).thenReturn(Optional.of(유저_ENTITY_2));
 
             // then
             UserResponse userResponse = userService.updateUserInfo(userRequest);
-            assertThat(userResponse.getNickname()).isEqualTo(변경된_유저_ENTITY.getNickname());
+            assertThat(userResponse.getNickname()).isEqualTo(업데이트_요청한_유저.getNickname());
         }
     }
 }
@@ -216,11 +215,11 @@ final class UserTestDomain {
             .role(Role.USER)
             .build();
 
-    static final User 변경된_유저_ENTITY = User.builder()
+    static final User 유저_ENTITY_2 = User.builder()
             .id(1L)
             .email("test@naver.com")
             .password("123123123")
-            .nickname("changedNickname")
+            .nickname("drogba02")
             .imageUri("testPath")
             .role(Role.USER)
             .build();
