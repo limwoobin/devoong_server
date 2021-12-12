@@ -10,6 +10,7 @@ import com.drogbalog.server.domain.tags.domain.entity.Tags;
 import com.drogbalog.server.global.code.Status;
 import com.drogbalog.server.global.exception.EmptyDataException;
 import com.drogbalog.server.global.exception.messages.EmptyDataExceptionType;
+import com.drogbalog.server.infra.retrofit.GithubApiClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.drogbalog.server.domain.posts.service.PostsTestDomain.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.*;
 
@@ -39,6 +41,9 @@ class PostsServiceTest {
 
     @Mock
     private PostsTagsMappingRepository postsTagsMappingRepository;
+
+    @Mock
+    private GithubApiClient githubApiClient;
 
     @InjectMocks
     private PostsService postsService;
@@ -169,16 +174,18 @@ class PostsServiceTest {
         @DisplayName("게시글 조회시 데이터가 있다면 정상적으로 조회되어야 한다.")
         public void findTest() {
             // given
-            long id = 1L;
+            long id = posts.getId();
 
             // when
             when(postsRepository.findById(id)).thenReturn(Optional.of(posts));
             when(postsTagsMappingRepository.findTagsByPostsId(id)).thenReturn(Collections.emptyList());
             when(postsRepository.findPreviousAndNextPostsCardById(id)).thenReturn(Collections.emptyList());
-
+            when(githubApiClient.callMarkdownApi(any())).thenReturn("test");
 
             // then
-            assertThat(postsService.getPosts(id).getId()).isEqualTo(id);
+            PostsResponse postsResponse = postsService.getPosts(id);
+            assertThat(postsResponse.getId()).isEqualTo(id);
+            assertThat(postsResponse.getContents()).isEqualTo("test");
         }
     }
 }
@@ -188,21 +195,25 @@ final class PostsTestDomain {
     static final Posts posts = Posts.builder()
             .id(1L)
             .email("test")
+            .postsTagsMappingList(Collections.emptyList())
             .build();
 
     static final Posts posts2 = Posts.builder()
             .id(2L)
             .email("test2")
+            .postsTagsMappingList(Collections.emptyList())
             .build();
 
     static final Posts posts3 = Posts.builder()
             .id(3L)
             .email("test3")
+            .postsTagsMappingList(Collections.emptyList())
             .build();
 
     static final Posts posts4 = Posts.builder()
             .id(4L)
             .email("test4")
+            .postsTagsMappingList(Collections.emptyList())
             .build();
 
     static final Tags tags = Tags.builder()

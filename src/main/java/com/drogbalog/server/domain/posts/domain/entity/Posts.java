@@ -46,13 +46,14 @@ public class Posts extends BaseTimeEntity {
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Posts(Long id , String email , String title , String contents , String bannerImage) {
+    public Posts(Long id , String email , String title , String contents , String bannerImage , List<PostsTagsMapping> postsTagsMappingList) {
         this.id = id;
         this.email = email;
         this.title = title;
         this.contents = contents;
         this.bannerImage = bannerImage;
         this.status = Status.ACTIVE;
+        this.postsTagsMappingList = postsTagsMappingList;
     }
 
     public void update(String title , String contents) {
