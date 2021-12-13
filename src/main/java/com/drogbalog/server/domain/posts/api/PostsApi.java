@@ -1,6 +1,5 @@
 package com.drogbalog.server.domain.posts.api;
 
-import com.drogbalog.server.domain.posts.domain.dto.Archive;
 import com.drogbalog.server.domain.posts.domain.dto.ArchiveByYear;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.service.PostsService;
