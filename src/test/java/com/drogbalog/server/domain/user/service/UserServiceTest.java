@@ -52,7 +52,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다.")
-        public void alreadyExistEmail_exception() {
+        void alreadyExistEmail_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
 
@@ -67,7 +67,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("이미 존재하는 닉네임이 있으면 DuplicateDataException 이 발생해야 한다.")
-        public void alreadyExistNickname_exception() {
+        void alreadyExistNickname_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
 
@@ -85,7 +85,7 @@ class UserServiceTest {
     class UserAuthTest {
         @Test
         @DisplayName("유저 회원가입 테스트")
-        public void signIn_test() {
+        void signIn_test() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
 
@@ -101,7 +101,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("로그인 테스트")
-        public void login_test() {
+        void login_test() {
             // given
             UserRequest userRequest = 유저;
             JwtResponse jwtResponse = new JwtResponse();
@@ -126,7 +126,7 @@ class UserServiceTest {
     class GetUserTest {
         @Test
         @DisplayName("유저 정보가 있으면 정상적으로 조회되어야 한다.")
-        public void getUserInfo_test() {
+        void getUserInfo_test() {
             // given
             String email = 유저_ENTITY.getEmail();
 
@@ -140,7 +140,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("유저 정보가 없으면 UserNotFoundException 이 발생되어야 한다.")
-        public void getUserInfo_exception() {
+        void getUserInfo_exception() {
             // given
             String 회원목록에_존재하지_않는_이메일 = "tet123@naver.com";
 
@@ -155,7 +155,7 @@ class UserServiceTest {
 
         @Test
         @DisplayName("유저 정보를 업데이트 하면 정상적으로 변경되어야 한다")
-        public void update_test() {
+        void update_test() {
             // given
             UserRequest userRequest = 업데이트_요청한_유저;
             userRequest.setId(1L);

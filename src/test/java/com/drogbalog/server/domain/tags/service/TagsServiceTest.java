@@ -30,7 +30,7 @@ class TagsServiceTest {
 
     @Test
     @DisplayName("사용가능한 태그 목록 조회 테스트 - 빈 리스트 반환")
-    public void empty_getTagsListTest() {
+    void empty_getTagsListTest() {
         // given
         Status status = Status.ACTIVE;
 
@@ -44,7 +44,7 @@ class TagsServiceTest {
 
     @Test
     @DisplayName("사용가능한 태그 목록 조회 테스트 - 리스트 반환")
-    public void getTagsListTest() {
+    void getTagsListTest() {
         // given
         Status status = Status.ACTIVE;
 
