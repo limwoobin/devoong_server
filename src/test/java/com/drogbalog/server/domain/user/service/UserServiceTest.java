@@ -51,7 +51,7 @@ class UserServiceTest {
         @InjectMocks NickNameValidator nickNameValidator;
 
         @Test
-        @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다.")
+        @DisplayName("이미 존재하는 이메일이 있으면 DuplicateDataException 이 발생해야 한다")
         void alreadyExistEmail_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
@@ -66,7 +66,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("이미 존재하는 닉네임이 있으면 DuplicateDataException 이 발생해야 한다.")
+        @DisplayName("이미 존재하는 닉네임이 있으면 DuplicateDataException 이 발생해야 한다")
         void alreadyExistNickname_exception() {
             // given
             UserRequest userRequest = 회원가입_신청한_유저;
@@ -125,7 +125,7 @@ class UserServiceTest {
     @DisplayName("유저 관련 테스트")
     class GetUserTest {
         @Test
-        @DisplayName("유저 정보가 있으면 정상적으로 조회되어야 한다.")
+        @DisplayName("유저 정보가 있으면 정상적으로 조회되어야 한다")
         void getUserInfo_test() {
             // given
             String email = 유저_ENTITY.getEmail();
@@ -139,7 +139,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("유저 정보가 없으면 UserNotFoundException 이 발생되어야 한다.")
+        @DisplayName("유저 정보가 없으면 UserNotFoundException 이 발생되어야 한다")
         void getUserInfo_exception() {
             // given
             String 회원목록에_존재하지_않는_이메일 = "tet123@naver.com";
