@@ -1,5 +1,7 @@
 package com.drogbalog.server.domain.posts.service;
 
+import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
+import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
@@ -55,7 +57,7 @@ class PostsServiceTest {
     class GetPostsAllTest {
 
         @Test
-        @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다.")
+        @DisplayName("리스트가 빈값이면 빈값으로 반환되어야 한다")
         public void empty_getPostsListTest() {
             // given
             PageRequest pageRequest = PostsTestDomain.pageRequest;
@@ -70,7 +72,7 @@ class PostsServiceTest {
         }
 
         @Test
-        @DisplayName("리스트에 값이 있으면 정상적으로 반환되어야 한다.")
+        @DisplayName("리스트에 값이 있으면 정상적으로 반환되어야 한다")
         public void getPostsListTest() {
             // given
             List<Posts> 게시글_목록 = new ArrayList<>(게시글_리스트);
@@ -155,7 +157,7 @@ class PostsServiceTest {
     @DisplayName("단일 컨텐츠 조회 테스트")
     class GetPostsTest {
         @Test
-        @DisplayName("게시글 조회시 데이터가 없다면 예외가 발생해야 한다.")
+        @DisplayName("게시글 조회시 데이터가 없다면 예외가 발생해야 한다")
         public void emptyData_exception() {
             // given
             long id = 1L;
@@ -171,7 +173,7 @@ class PostsServiceTest {
         }
 
         @Test
-        @DisplayName("게시글 조회시 데이터가 있다면 정상적으로 조회되어야 한다.")
+        @DisplayName("게시글 조회시 데이터가 있다면 정상적으로 조회되어야 한다")
         public void findTest() {
             // given
             long id = posts.getId();
@@ -186,6 +188,133 @@ class PostsServiceTest {
             PostsResponse postsResponse = postsService.getPosts(id);
             assertThat(postsResponse.getId()).isEqualTo(id);
             assertThat(postsResponse.getContents()).isEqualTo("test");
+        }
+    }
+    
+    @Nested
+    @DisplayName("이전글 , 다음글 게시글 조회")
+    class PreviousAndNextPosts {
+
+        @Test
+        @DisplayName("게시글이 총 1개인 경우엔 이전 게시글 , 다음 게시글은 null 이어야 한다")
+        void getPostsCardList() {
+            // given
+            long id = firstPostsCard.getId();
+            List<PostsCard> postsCards = List.of(firstPostsCard);
+
+            // when
+            when(postsRepository.findPreviousAndNextPostsCardById(id))
+                    .thenReturn(postsCards);
+
+            // then
+            PostsCardList postsCardList = postsService.getPostsCardList(id);
+            assertThat(postsCardList.getPreviousPostsCard()).isNull();
+            assertThat(postsCardList.getNextPostsCard()).isNull();
+            assertThat(postsCardList.getPostsCardList().get(0).getId()).isEqualTo(id);
+        }
+
+        @Test
+        @DisplayName("게시글이 총 2개인경우 첫번째 게시글을 조회했을시 이전 게시글은 null 이어야 한다. " +
+                "현재 게시글 , 다음 게시글은 값이 존재해야 한다")
+        void getPostsCardList2() {
+            // given
+            long id = firstPostsCard.getId();
+            List<PostsCard> postsCards = List.of(firstPostsCard , secondPostsCard);
+
+            // when
+            when(postsRepository.findPreviousAndNextPostsCardById(id))
+                    .thenReturn(postsCards);
+
+            // then
+            PostsCardList postsCardList = postsService.getPostsCardList(id);
+            assertThat(postsCardList.getPreviousPostsCard()).isNull();
+
+            assertThat(postsCardList.getPostsCardList().get(0).getId()).isEqualTo(firstPostsCard.getId());
+            assertThat(postsCardList.getPostsCardList().get(0).getTitle()).isEqualTo(firstPostsCard.getTitle());
+            assertThat(postsCardList.getPostsCardList().get(0).getBannerImage()).isEqualTo(firstPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getNextPostsCard().getId()).isEqualTo(secondPostsCard.getId());
+            assertThat(postsCardList.getNextPostsCard().getTitle()).isEqualTo(secondPostsCard.getTitle());
+            assertThat(postsCardList.getNextPostsCard().getBannerImage()).isEqualTo(secondPostsCard.getBannerImage());
+        }
+
+        @Test
+        @DisplayName("마지막 게시글을 조회했을시 다음 게시글은 null 이어야 한다, " +
+                "이전 게시글 , 현재 게시글은 값이 존재해야 한다")
+        void getPostsCardList3() {
+            // given
+            long id = secondPostsCard.getId();
+            List<PostsCard> postsCards = List.of(firstPostsCard , secondPostsCard);
+
+            // when
+            when(postsRepository.findPreviousAndNextPostsCardById(id))
+                    .thenReturn(postsCards);
+
+            // then
+            PostsCardList postsCardList = postsService.getPostsCardList(id);
+
+            assertThat(postsCardList.getPreviousPostsCard().getId()).isEqualTo(firstPostsCard.getId());
+            assertThat(postsCardList.getPreviousPostsCard().getTitle()).isEqualTo(firstPostsCard.getTitle());
+            assertThat(postsCardList.getPreviousPostsCard().getBannerImage()).isEqualTo(firstPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getPostsCardList().get(1).getId()).isEqualTo(secondPostsCard.getId());
+            assertThat(postsCardList.getPostsCardList().get(1).getTitle()).isEqualTo(secondPostsCard.getTitle());
+            assertThat(postsCardList.getPostsCardList().get(1).getBannerImage()).isEqualTo(secondPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getNextPostsCard()).isNull();
+        }
+
+        @Test
+        @DisplayName("마지막 게시글을 조회했을시 다음 게시글은 null 이어야 한다, " +
+                "이전 게시글 , 현재 게시글은 값이 존재해야 한다")
+        void getPostsCardList4() {
+            // given
+            long id = thirdPostsCard.getId();
+            List<PostsCard> postsCards = List.of(secondPostsCard , thirdPostsCard);
+
+            // when
+            when(postsRepository.findPreviousAndNextPostsCardById(id))
+                    .thenReturn(postsCards);
+
+            // then
+            PostsCardList postsCardList = postsService.getPostsCardList(id);
+
+            assertThat(postsCardList.getPreviousPostsCard().getId()).isEqualTo(secondPostsCard.getId());
+            assertThat(postsCardList.getPreviousPostsCard().getTitle()).isEqualTo(secondPostsCard.getTitle());
+            assertThat(postsCardList.getPreviousPostsCard().getBannerImage()).isEqualTo(secondPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getPostsCardList().get(1).getId()).isEqualTo(thirdPostsCard.getId());
+            assertThat(postsCardList.getPostsCardList().get(1).getTitle()).isEqualTo(thirdPostsCard.getTitle());
+            assertThat(postsCardList.getPostsCardList().get(1).getBannerImage()).isEqualTo(thirdPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getNextPostsCard()).isNull();
+        }
+
+        @Test
+        @DisplayName("게시글을 조회했을시 이전 게시글 , 현재 게시글이 존재한다면 값이 존재해야 한다")
+        void getPostsCardList5() {
+            // given
+            long id = secondPostsCard.getId();
+            List<PostsCard> postsCards = List.of(firstPostsCard , secondPostsCard , thirdPostsCard);
+
+            // when
+            when(postsRepository.findPreviousAndNextPostsCardById(id))
+                    .thenReturn(postsCards);
+
+            // then
+            PostsCardList postsCardList = postsService.getPostsCardList(id);
+
+            assertThat(postsCardList.getPreviousPostsCard().getId()).isEqualTo(firstPostsCard.getId());
+            assertThat(postsCardList.getPreviousPostsCard().getTitle()).isEqualTo(firstPostsCard.getTitle());
+            assertThat(postsCardList.getPreviousPostsCard().getBannerImage()).isEqualTo(firstPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getPostsCardList().get(1).getId()).isEqualTo(secondPostsCard.getId());
+            assertThat(postsCardList.getPostsCardList().get(1).getTitle()).isEqualTo(secondPostsCard.getTitle());
+            assertThat(postsCardList.getPostsCardList().get(1).getBannerImage()).isEqualTo(secondPostsCard.getBannerImage());
+
+            assertThat(postsCardList.getNextPostsCard().getId()).isEqualTo(thirdPostsCard.getId());
+            assertThat(postsCardList.getNextPostsCard().getTitle()).isEqualTo(thirdPostsCard.getTitle());
+            assertThat(postsCardList.getNextPostsCard().getBannerImage()).isEqualTo(thirdPostsCard.getBannerImage());
         }
     }
 }
@@ -243,6 +372,26 @@ final class PostsTestDomain {
             .posts(posts3)
             .tags(tags)
             .build();
+
+
+    static final PostsCard firstPostsCard = PostsCard.builder()
+            .id(1L)
+            .title("first-test-title")
+            .bannerImage("first-test-image")
+            .build();
+
+    static final PostsCard secondPostsCard = PostsCard.builder()
+            .id(2L)
+            .title("second-test-title2")
+            .bannerImage("second-test-image2")
+            .build();
+
+    static final PostsCard thirdPostsCard = PostsCard.builder()
+            .id(3L)
+            .title("third-test-title3")
+            .bannerImage("third-test-image3")
+            .build();
+
 
     static final PageRequest pageRequest = PageRequest.of(0 , 5);
 

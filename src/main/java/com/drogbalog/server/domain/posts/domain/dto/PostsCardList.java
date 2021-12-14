@@ -31,6 +31,8 @@ public class PostsCardList {
     public PostsCard getPreviousPostsCard() {
         if (postsCardList.isEmpty()) {
             return null;
+        } else if (postsCardList.size() == 1) {
+            return null;
         } else if (postsCardList.size() == 2 && postsCardList.get(PREVIOUS_INDEX).getId().equals(id)) {
             return null;
         }
@@ -40,6 +42,8 @@ public class PostsCardList {
 
     public PostsCard getNextPostsCard() {
         if (postsCardList.isEmpty()) {
+            return null;
+        } else if (postsCardList.size() == 1) {
             return null;
         } else if (postsCardList.size() == 2 && postsCardList.get(NOW_INDEX).getId().equals(id)) {
             return null;
