@@ -3,14 +3,20 @@ package com.drogbalog.server.domain.posts.service;
 import com.drogbalog.server.domain.JpaTestConfig;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
+import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
+import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
+import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.domain.tags.repository.TagsRepository;
 import com.drogbalog.server.global.code.Status;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +32,12 @@ public class PostsDataTest {
     @Autowired
     PostsRepository postsRepository;
 
+    @Autowired
+    TagsRepository tagsRepository;
+
+    @Autowired
+    PostsTagsMappingRepository postsTagsMappingRepository;
+
     @Nested
     @DisplayName("save 관련 테스트")
     class PostsSaveTest {
@@ -40,10 +52,9 @@ public class PostsDataTest {
                     .contents("test-contents")
                     .build();
 
-            // when
+            // then
             Posts savedPosts = postsRepository.save(posts);
 
-            // then
             assertThat(savedPosts).isNotNull();
             assertThat(savedPosts.getId()).isEqualTo(1L);
             assertThat(savedPosts.getEmail()).isEqualTo("test@gmail.com");
@@ -87,10 +98,9 @@ public class PostsDataTest {
             // given
             Status status = Status.ACTIVE;
 
-            // when
+            // then
             List<Posts> postsList = postsRepository.findTop3ByStatusOrderByIdDesc(status);
 
-            // then
             assertThat(postsList.size()).isEqualTo(3);
             assertThat(postsList.get(0).getId()).isEqualTo(5L);
             assertThat(postsList.get(1).getId()).isEqualTo(4L);
@@ -108,10 +118,8 @@ public class PostsDataTest {
         @Test
         @DisplayName("이전글 , 다음글을이 있는 경우에 쿼리를 조회하면 (이전글|현재글|다음글)이 나와야한다")
         void findTest2() {
-            // when
             List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(3L);
 
-            // then
             assertThat(postsCards.size()).isEqualTo(3);
             assertThat(postsCards.get(0).getId()).isEqualTo(2L);
             assertThat(postsCards.get(1).getId()).isEqualTo(3L);
@@ -120,11 +128,10 @@ public class PostsDataTest {
 
         @Test
         @DisplayName("이전글이 없는 경우에 쿼리를 조회하면 (현재글|다음글)이 나와야한다")
+        @SuppressWarnings("ResultOfMethodCallIgnored")
         void findTest3() {
-            // when
             List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(1L);
 
-            // then
             assertThat(postsCards.size()).isEqualTo(2);
             assertThat(postsCards.get(0).getId()).isEqualTo(1L);
             assertThat(postsCards.get(1).getId()).isEqualTo(2L);
@@ -135,11 +142,10 @@ public class PostsDataTest {
 
         @Test
         @DisplayName("다음글이 없는 경우에 쿼리를 조회하면 (이전글|현재글)이 나와야한다")
+        @SuppressWarnings("ResultOfMethodCallIgnored")
         void findTest4() {
-            // when
             List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(5L);
 
-            // then
             assertThat(postsCards.size()).isEqualTo(2);
             assertThat(postsCards.get(0).getId()).isEqualTo(4L);
             assertThat(postsCards.get(1).getId()).isEqualTo(5L);
@@ -150,11 +156,10 @@ public class PostsDataTest {
 
         @Test
         @DisplayName("이전글 , 다음글 조회시 index 3 이상을 조회하면 IndexOutOfBoundsException 이 발생해야 한다")
+        @SuppressWarnings("ResultOfMethodCallIgnored")
         void findTestException() {
-            // when
             List<PostsCard> postsCards = postsRepository.findPreviousAndNextPostsCardById(3L);
 
-            // then
             assertThatThrownBy(() -> {
                 postsCards.get(3);
             }).isInstanceOf(IndexOutOfBoundsException.class);
@@ -162,6 +167,89 @@ public class PostsDataTest {
             assertThatThrownBy(() -> {
                 postsCards.get(4);
             }).isInstanceOf(IndexOutOfBoundsException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 페이징 테스트")
+    class PostsArchiveTest {
+        @BeforeEach
+        void init() {
+            postsRepository.save(posts);
+            postsRepository.save(posts2);
+            postsRepository.save(posts3);
+            postsRepository.save(posts4);
+            postsRepository.save(posts5);
+
+            tagsRepository.save(tags);
+            tagsRepository.save(tags2);
+            tagsRepository.save(tags3);
+
+            postsTagsMappingRepository.save(mapping);
+            postsTagsMappingRepository.save(mapping2);
+            postsTagsMappingRepository.save(mapping3);
+            postsTagsMappingRepository.save(mapping4);
+            postsTagsMappingRepository.save(mapping5);
+            postsTagsMappingRepository.save(mapping6);
+        }
+
+        @Test
+        @DisplayName("데이터가 총 5개일때 페이징이 0,5 이면 모두 나와야한다")
+        void findPagingTest() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 5);
+
+            // then
+            List<Posts> postsList = postsRepository.findAllPostsAndTags(pageRequest);
+            assertThat(postsList.size()).isEqualTo(5);
+            assertThat(postsList.get(0).getId()).isEqualTo(5L);
+            assertThat(postsList.get(4).getId()).isEqualTo(1L);
+        }
+
+        @Test
+        @DisplayName("데이터가 총 5개일때 페이징이 0,3 이면 모두 3개만 나와야한다")
+        void findPagingTest2() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 3);
+
+            // then
+            List<Posts> postsList = postsRepository.findAllPostsAndTags(pageRequest);
+            assertThat(postsList.size()).isEqualTo(3);
+            assertThat(postsList.get(0).getId()).isEqualTo(5L);
+            assertThat(postsList.get(2).getId()).isEqualTo(3L);
+        }
+
+        @Test
+        @DisplayName("데이터가 총 5개일때 페이징이 1,2 이면 모두 두번째페이지의 두개가 나와야한다")
+        void findPagingTest3() {
+            // given
+            PageRequest pageRequest = PageRequest.of(1 , 2);
+
+            // then
+            List<Posts> postsList = postsRepository.findAllPostsAndTags(pageRequest);
+            assertThat(postsList.size()).isEqualTo(2);
+            assertThat(postsList.get(0).getId()).isEqualTo(3L);
+            assertThat(postsList.get(1).getId()).isEqualTo(2L);
+        }
+
+        @Test
+        @DisplayName("데이터가 총 5개일때 페이징이 2,2 이면 모두 세번째 페이지의 나머지 데이터가 나와야한다")
+        void findPagingTest4() {
+            // given
+            PageRequest pageRequest = PageRequest.of(2 , 2);
+
+            // then
+            List<Posts> postsList = postsRepository.findAllPostsAndTags(pageRequest);
+            assertThat(postsList.size()).isEqualTo(1);
+            assertThat(postsList.get(0).getId()).isEqualTo(1L);
+        }
+
+        @Test
+        @DisplayName("총 게시글의 수를 조회하면 정상적으로 조회되어야 한다")
+        void findAllCount() {
+            long count = postsRepository.findAllPostsCount();
+
+            assertThat(count).isEqualTo(5);
         }
     }
 }
@@ -173,6 +261,7 @@ final class DataJpaTestDomain {
             .title("test-title")
             .contents("test-contents")
             .postsTagsMappingList(Collections.emptyList())
+            .createdDate(LocalDateTime.of(2021, 12, 19, 5, 11 , 0))
             .build();
 
     static final Posts posts2 = Posts.builder()
@@ -181,6 +270,7 @@ final class DataJpaTestDomain {
             .title("test-title-2")
             .contents("test-contents-2")
             .postsTagsMappingList(Collections.emptyList())
+            .createdDate(LocalDateTime.of(2021, 7, 11, 14, 25 , 0))
             .build();
 
     static final Posts posts3 = Posts.builder()
@@ -189,6 +279,7 @@ final class DataJpaTestDomain {
             .title("test-title-3")
             .contents("test-contents-3")
             .postsTagsMappingList(Collections.emptyList())
+            .createdDate(LocalDateTime.of(2021, 7, 15, 1, 5 , 0))
             .build();
 
     static final Posts posts4 = Posts.builder()
@@ -197,6 +288,7 @@ final class DataJpaTestDomain {
             .title("test-title-4")
             .contents("test-contents-4")
             .postsTagsMappingList(Collections.emptyList())
+            .createdDate(LocalDateTime.of(2021, 6, 29, 23, 17 , 0))
             .build();
 
     static final Posts posts5 = Posts.builder()
@@ -205,5 +297,66 @@ final class DataJpaTestDomain {
             .title("test-title-5")
             .contents("test-contents-5")
             .postsTagsMappingList(Collections.emptyList())
+            .createdDate(LocalDateTime.of(2021, 10, 28, 4, 30 , 0))
+            .build();
+
+    static final Tags tags = Tags.builder()
+            .id(1L)
+            .name("java-test")
+            .status(Status.ACTIVE)
+            .build();
+
+    static final Tags tags2 = Tags.builder()
+            .id(2L)
+            .name("tdd-test")
+            .status(Status.ACTIVE)
+            .build();
+
+    static final Tags tags3 = Tags.builder()
+            .id(3L)
+            .name("oop-test")
+            .status(Status.ACTIVE)
+            .build();
+
+    static final PostsTagsMapping mapping = PostsTagsMapping
+            .builder()
+            .id(1L)
+            .posts(posts)
+            .tags(tags)
+            .build();
+
+    static final PostsTagsMapping mapping2 = PostsTagsMapping
+            .builder()
+            .id(2L)
+            .posts(posts)
+            .tags(tags2)
+            .build();
+
+    static final PostsTagsMapping mapping3 = PostsTagsMapping
+            .builder()
+            .id(3L)
+            .posts(posts2)
+            .tags(tags3)
+            .build();
+
+    static final PostsTagsMapping mapping4 = PostsTagsMapping
+            .builder()
+            .id(4L)
+            .posts(posts3)
+            .tags(tags2)
+            .build();
+
+    static final PostsTagsMapping mapping5 = PostsTagsMapping
+            .builder()
+            .id(5L)
+            .posts(posts4)
+            .tags(tags)
+            .build();
+
+    static final PostsTagsMapping mapping6 = PostsTagsMapping
+            .builder()
+            .id(6L)
+            .posts(posts5)
+            .tags(tags3)
             .build();
 }
