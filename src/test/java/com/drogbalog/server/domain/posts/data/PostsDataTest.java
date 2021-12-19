@@ -1,4 +1,4 @@
-package com.drogbalog.server.domain.posts.service;
+package com.drogbalog.server.domain.posts.data;
 
 import com.drogbalog.server.domain.JpaTestConfig;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static com.drogbalog.server.domain.posts.service.DataJpaTestDomain.*;
+import static com.drogbalog.server.domain.posts.data.PostsTestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -252,9 +252,15 @@ public class PostsDataTest {
             assertThat(count).isEqualTo(5);
         }
     }
+
+    @Nested
+    @DisplayName("게시글-태그 매핑 테스트")
+    class PostsTagsMappingTest {
+
+    }
 }
 
-final class DataJpaTestDomain {
+final class PostsTestData {
     static final Posts posts = Posts.builder()
             .id(1L)
             .email("test-email")
