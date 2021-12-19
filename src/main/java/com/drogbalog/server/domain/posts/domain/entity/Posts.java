@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -46,7 +47,7 @@ public class Posts extends BaseTimeEntity {
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Posts(Long id , String email , String title , String contents , String bannerImage , List<PostsTagsMapping> postsTagsMappingList) {
+    public Posts(Long id , String email , String title , String contents , String bannerImage , List<PostsTagsMapping> postsTagsMappingList , LocalDateTime createdDate) {
         this.id = id;
         this.email = email;
         this.title = title;
@@ -54,6 +55,7 @@ public class Posts extends BaseTimeEntity {
         this.bannerImage = bannerImage;
         this.status = Status.ACTIVE;
         this.postsTagsMappingList = postsTagsMappingList;
+        this.createdDate = createdDate;
     }
 
     public void update(String title , String contents) {

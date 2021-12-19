@@ -35,8 +35,9 @@ public class Tags extends BaseTimeEntity {
     private List<PostsTagsMapping> postsTagsMappingList;
 
     @Builder
-    public Tags(Long id , String name) {
+    public Tags(Long id , String name , Status status) {
         this.id = id;
         this.name = name;
+        this.status = status;
     }
 }

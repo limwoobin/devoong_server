@@ -94,8 +94,7 @@ public class PostsService {
     public List<ArchiveByYear> getPostsArchive() {
         List<Archive> archives = postsRepository.findPostsArchive();
 
-        Map<String , List<Archive>> archiveMaps = archives
-                .stream()
+        Map<String , List<Archive>> archiveMaps = archives.stream()
                 .collect(Collectors.groupingBy(Archive::getCreatedYear));
 
         return createSortedArchiveDto(archiveMaps);
