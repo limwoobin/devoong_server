@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    protected LocalDateTime createdDate;
 
     @LastModifiedBy
-    private LocalDateTime modifiedDate;
+    protected LocalDateTime modifiedDate;
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
