@@ -8,6 +8,7 @@ import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
+import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
 import com.drogbalog.server.domain.tags.repository.TagsRepository;
 import com.drogbalog.server.global.code.Status;
 import org.junit.jupiter.api.*;
@@ -39,6 +40,27 @@ public class PostsDataTest {
 
     @Autowired
     PostsTagsMappingRepository postsTagsMappingRepository;
+
+    void init() {
+        postsRepository.save(posts);
+        postsRepository.save(posts2);
+        postsRepository.save(posts3);
+        postsRepository.save(posts4);
+        postsRepository.save(posts5);
+
+        tagsRepository.save(tags);
+        tagsRepository.save(tags2);
+        tagsRepository.save(tags3);
+
+        postsTagsMappingRepository.save(mapping);
+        postsTagsMappingRepository.save(mapping2);
+        postsTagsMappingRepository.save(mapping3);
+        postsTagsMappingRepository.save(mapping4);
+        postsTagsMappingRepository.save(mapping5);
+        postsTagsMappingRepository.save(mapping6);
+        postsTagsMappingRepository.save(mapping7);
+        postsTagsMappingRepository.save(mapping8);
+    }
 
     @Nested
     @DisplayName("save 관련 테스트")
@@ -177,22 +199,7 @@ public class PostsDataTest {
     class PostsArchiveTest {
         @BeforeEach
         void init() {
-            postsRepository.save(posts);
-            postsRepository.save(posts2);
-            postsRepository.save(posts3);
-            postsRepository.save(posts4);
-            postsRepository.save(posts5);
-
-            tagsRepository.save(tags);
-            tagsRepository.save(tags2);
-            tagsRepository.save(tags3);
-
-            postsTagsMappingRepository.save(mapping);
-            postsTagsMappingRepository.save(mapping2);
-            postsTagsMappingRepository.save(mapping3);
-            postsTagsMappingRepository.save(mapping4);
-            postsTagsMappingRepository.save(mapping5);
-            postsTagsMappingRepository.save(mapping6);
+            PostsDataTest.this.init();
         }
 
         @Test
@@ -259,25 +266,8 @@ public class PostsDataTest {
     @DisplayName("게시글-태그 매핑 테스트")
     class PostsTagsMappingTest {
         @BeforeEach
-        void init() {
-            postsRepository.save(posts);
-            postsRepository.save(posts2);
-            postsRepository.save(posts3);
-            postsRepository.save(posts4);
-            postsRepository.save(posts5);
-
-            tagsRepository.save(tags);
-            tagsRepository.save(tags2);
-            tagsRepository.save(tags3);
-
-            postsTagsMappingRepository.save(mapping);
-            postsTagsMappingRepository.save(mapping2);
-            postsTagsMappingRepository.save(mapping3);
-            postsTagsMappingRepository.save(mapping4);
-            postsTagsMappingRepository.save(mapping5);
-            postsTagsMappingRepository.save(mapping6);
-            postsTagsMappingRepository.save(mapping7);
-            postsTagsMappingRepository.save(mapping8);
+        public void init() {
+            PostsDataTest.this.init();
         }
 
         @Test
@@ -349,6 +339,31 @@ public class PostsDataTest {
             assertThat(postsResponsePage.getTotalElements()).isEqualTo(4);
             assertThat(postsResponsePage.getSize()).isEqualTo(1);
             assertThat(postsResponsePage.getTotalPages()).isEqualTo(4);
+        }
+
+        @Test
+        @DisplayName("게시글 id 로 태그명 조회시 정상적으로 조회되어야한다")
+        void findTagsByPostsIdTest() {
+            // given
+            long postsId = posts2.getId();
+
+            // then
+            List<TagsResponse> tagsResponseList = postsTagsMappingRepository.findTagsByPostsId(postsId);
+            assertThat(tagsResponseList.size()).isEqualTo(1);
+            assertThat(tagsResponseList.get(0).getName()).isEqualTo(tags3.getName());
+        }
+
+        @Test
+        @DisplayName("게시글 id 로 태그명 조회시 정상적으로 조회되어야한다")
+        void findTagsByPostsIdTest_v2() {
+            // given
+            long postsId = posts3.getId();
+
+            // then
+            List<TagsResponse> tagsResponseList = postsTagsMappingRepository.findTagsByPostsId(postsId);
+            assertThat(tagsResponseList.size()).isEqualTo(2);
+            assertThat(tagsResponseList.get(0).getName()).isEqualTo(tags2.getName());
+            assertThat(tagsResponseList.get(1).getName()).isEqualTo(tags3.getName());
         }
     }
 }
