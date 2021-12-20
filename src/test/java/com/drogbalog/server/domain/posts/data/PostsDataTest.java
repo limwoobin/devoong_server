@@ -4,6 +4,7 @@ import com.drogbalog.server.domain.JpaTestConfig;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
 import com.drogbalog.server.domain.posts.domain.entity.PostsTagsMapping;
+import com.drogbalog.server.domain.posts.domain.response.PostsResponse;
 import com.drogbalog.server.domain.posts.repository.PostsRepository;
 import com.drogbalog.server.domain.posts.repository.PostsTagsMappingRepository;
 import com.drogbalog.server.domain.tags.domain.entity.Tags;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
@@ -256,7 +258,98 @@ public class PostsDataTest {
     @Nested
     @DisplayName("게시글-태그 매핑 테스트")
     class PostsTagsMappingTest {
+        @BeforeEach
+        void init() {
+            postsRepository.save(posts);
+            postsRepository.save(posts2);
+            postsRepository.save(posts3);
+            postsRepository.save(posts4);
+            postsRepository.save(posts5);
 
+            tagsRepository.save(tags);
+            tagsRepository.save(tags2);
+            tagsRepository.save(tags3);
+
+            postsTagsMappingRepository.save(mapping);
+            postsTagsMappingRepository.save(mapping2);
+            postsTagsMappingRepository.save(mapping3);
+            postsTagsMappingRepository.save(mapping4);
+            postsTagsMappingRepository.save(mapping5);
+            postsTagsMappingRepository.save(mapping6);
+            postsTagsMappingRepository.save(mapping7);
+            postsTagsMappingRepository.save(mapping8);
+        }
+
+        @Test
+        @DisplayName("태그명으로 페이징 게시글 조회시 정상적으로 조회되어야한다")
+        void findPostsAndTagsTest() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 5);
+            String tagName = tags2.getName();
+
+            // then
+            Page<PostsResponse> postsResponsePage = postsTagsMappingRepository.findAllByTagsName(pageRequest , tagName);
+            assertThat(postsResponsePage.getTotalElements()).isEqualTo(2);
+        }
+
+        @Test
+        @DisplayName("태그명으로 페이징 게시글 조회시 정상적으로 정렬되어야한다")
+        void findPostsAndTagsTest2() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 5);
+            String tagName = tags2.getName();
+
+            // then
+            Page<PostsResponse> postsResponsePage = postsTagsMappingRepository.findAllByTagsName(pageRequest , tagName);
+            assertThat(postsResponsePage.getTotalElements()).isEqualTo(2);
+
+            List<PostsResponse> postsResponseList = postsResponsePage.getContent();
+            assertThat(postsResponseList.get(0).getId()).isEqualTo(3L);
+            assertThat(postsResponseList.get(1).getId()).isEqualTo(1L);
+            assertThat(postsResponseList.get(0).getId()).isGreaterThan(postsResponseList.get(1).getId());
+        }
+
+        @Test
+        @DisplayName("태그명으로 페이징 게시글 조회시 페이징이 정상적으로 되어야한다")
+        void findPostsAndTagsTest3() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 2);
+            String tagName = tags3.getName();
+
+            // then
+            Page<PostsResponse> postsResponsePage = postsTagsMappingRepository.findAllByTagsName(pageRequest , tagName);
+            assertThat(postsResponsePage.getTotalElements()).isEqualTo(4);
+            assertThat(postsResponsePage.getSize()).isEqualTo(2);
+            assertThat(postsResponsePage.getTotalPages()).isEqualTo(2);
+        }
+
+        @Test
+        @DisplayName("태그명으로 페이징 게시글 조회시 페이징이 정상적으로 되어야한다_v2")
+        void findPostsAndTagsTest4() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 3);
+            String tagName = tags3.getName();
+
+            // then
+            Page<PostsResponse> postsResponsePage = postsTagsMappingRepository.findAllByTagsName(pageRequest , tagName);
+            assertThat(postsResponsePage.getTotalElements()).isEqualTo(4);
+            assertThat(postsResponsePage.getSize()).isEqualTo(3);
+            assertThat(postsResponsePage.getTotalPages()).isEqualTo(2);
+        }
+
+        @Test
+        @DisplayName("태그명으로 페이징 게시글 조회시 페이징이 정상적으로 되어야한다_v3")
+        void findPostsAndTagsTest5() {
+            // given
+            PageRequest pageRequest = PageRequest.of(0 , 1);
+            String tagName = tags3.getName();
+
+            // then
+            Page<PostsResponse> postsResponsePage = postsTagsMappingRepository.findAllByTagsName(pageRequest , tagName);
+            assertThat(postsResponsePage.getTotalElements()).isEqualTo(4);
+            assertThat(postsResponsePage.getSize()).isEqualTo(1);
+            assertThat(postsResponsePage.getTotalPages()).isEqualTo(4);
+        }
     }
 }
 
@@ -363,6 +456,20 @@ final class PostsTestData {
             .builder()
             .id(6L)
             .posts(posts5)
+            .tags(tags3)
+            .build();
+
+    static final PostsTagsMapping mapping7 = PostsTagsMapping
+            .builder()
+            .id(7L)
+            .posts(posts3)
+            .tags(tags3)
+            .build();
+
+    static final PostsTagsMapping mapping8 = PostsTagsMapping
+            .builder()
+            .id(8L)
+            .posts(posts4)
             .tags(tags3)
             .build();
 }
