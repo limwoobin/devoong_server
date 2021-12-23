@@ -32,13 +32,8 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    public Docket adminSwagger() {
-        return getDocket("admin-api" , "/admin/**");
-    }
-
-    @Bean
     public Docket tagSwagger() {
-        return getDocket("tag-api" , "/tag/**");
+        return getDocket("tags-api" , "/tags/**");
     }
 
     @Bean

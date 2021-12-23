@@ -3,6 +3,7 @@ package com.drogbalog.server.domain.tags.api;
 import com.drogbalog.server.domain.tags.domain.response.TagsResponse;
 import com.drogbalog.server.domain.tags.service.TagsService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class TagsApi {
     private final TagsService tagsService;
 
     @GetMapping("")
+    @ApiOperation(value = "태그 조회")
     public ResponseEntity<List<TagsResponse>> list() {
         List<TagsResponse> tagsResponseList = tagsService.getTagsList();
         return new ResponseEntity<>(tagsResponseList , OK);
