@@ -1,5 +1,7 @@
 package com.drogbalog.server.domain.posts.service;
 
+import com.drogbalog.server.domain.posts.domain.dto.Archive;
+import com.drogbalog.server.domain.posts.domain.dto.ArchiveByYear;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCard;
 import com.drogbalog.server.domain.posts.domain.dto.PostsCardList;
 import com.drogbalog.server.domain.posts.domain.entity.Posts;
@@ -316,6 +318,63 @@ class PostsServiceTest {
             assertThat(postsCardList.getNextPostsCard().getTitle()).isEqualTo(thirdPostsCard.getTitle());
             assertThat(postsCardList.getNextPostsCard().getBannerImage()).isEqualTo(thirdPostsCard.getBannerImage());
         }
+    }
+
+    @Nested
+    @DisplayName("Archive 테스트")
+    class ArchiveTest {
+        List<Archive> initData() {
+            Archive archive = new Archive(5L , "title-test5" , "2021" , "07/25");
+            Archive archive2 = new Archive(4L , "title-test4" , "2021" , "04/11");
+            Archive archive3 = new Archive(3L , "title-test3" , "2020" , "11/15");
+            Archive archive4 = new Archive(2L , "title-test2" , "2020" , "10/31");
+            Archive archive5 = new Archive(1L , "title-test" , "2019" , "10/28");
+
+            return List.of(archive , archive2 , archive3 , archive4 , archive5);
+        }
+
+        @Test
+        @DisplayName("같은 년도에 있을때는 ArciveYear List가 한개가 나와야한다")
+        void archiveTest() {
+            // given
+            // 2021년도 게시글 4개
+            Archive archive = new Archive(4L , "title-test4" , "2021" , "12/11");
+            Archive archive2 = new Archive(3L , "title-test3" , "2021" , "11/15");
+            Archive archive3 = new Archive(2L , "title-test2" , "2021" , "10/31");
+            Archive archive4 = new Archive(1L , "title-test" , "2021" , "10/28");
+
+            List<Archive> archives = List.of(archive , archive2 , archive3 , archive4);
+
+            // when
+            when(postsRepository.findPostsArchive())
+                    .thenReturn(archives);
+
+            // then
+            List<ArchiveByYear> archiveByYears = postsService.getPostsArchive();
+            assertThat(archiveByYears.size()).isEqualTo(1);
+
+            ArchiveByYear archiveByYear = archiveByYears.get(0);
+            assertThat(archiveByYear.getCreatedYear()).isEqualTo("2021");
+            assertThat(archiveByYear.getArchives().size()).isEqualTo(4);
+        }
+
+        @Test
+        @DisplayName("다른 년도에 있을때는 ArciveYear 연도의 개수만큼 나와야한다")
+        void archiveTest2() {
+            // given
+            // 2021년도 게시글 4개
+            List<Archive> archives = this.initData();
+
+            // when
+            when(postsRepository.findPostsArchive())
+                    .thenReturn(archives);
+
+            // then
+            List<ArchiveByYear> archiveByYears = postsService.getPostsArchive();
+            assertThat(archiveByYears.size()).isEqualTo(3);
+        }
+
+
     }
 }
 

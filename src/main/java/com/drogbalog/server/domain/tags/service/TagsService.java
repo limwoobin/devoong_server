@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,10 +23,10 @@ public class TagsService {
     @Transactional(readOnly = true)
     public List<TagsResponse> getTagsList() {
         List<Tags> tagsList = tagsRepository.findAllByStatus(Status.ACTIVE);
-        if (tagsList.size() > 0) {
-            return tagsMapper.toTagResponseList(tagsList);
+        if (tagsList.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        return Collections.emptyList();
+        return tagsMapper.toTagResponseList(tagsList);
     }
 }
