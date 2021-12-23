@@ -374,7 +374,61 @@ class PostsServiceTest {
             assertThat(archiveByYears.size()).isEqualTo(3);
         }
 
+        @Test
+        @DisplayName("다른 년도에 있을때는 ArciveYear 연도의 개수만큼 나와야하고 , 연도 , 날짜 내림차순으로 정렬되어야한다")
+        void archiveTest3() {
+            // given
+            // 2021년도 게시글 4개
+            List<Archive> archives = this.initData();
 
+            // when
+            when(postsRepository.findPostsArchive())
+                    .thenReturn(archives);
+
+            // then
+            List<ArchiveByYear> archiveByYears = postsService.getPostsArchive();
+            assertThat(archiveByYears.size()).isEqualTo(3);
+
+            assertThat(archiveByYears.get(0).getCreatedYear()).isEqualTo("2021");
+            assertThat(archiveByYears.get(1).getCreatedYear()).isEqualTo("2020");
+            assertThat(archiveByYears.get(2).getCreatedYear()).isEqualTo("2019");
+
+            assertThat(archiveByYears.get(0).getCreatedYear()).isGreaterThan(archiveByYears.get(1).getCreatedYear());
+            assertThat(archiveByYears.get(0).getCreatedYear()).isGreaterThan(archiveByYears.get(2).getCreatedYear());
+            assertThat(archiveByYears.get(1).getCreatedYear()).isGreaterThan(archiveByYears.get(2).getCreatedYear());
+
+            ArchiveByYear archive_2021 = archiveByYears.get(0);
+            ArchiveByYear archive_2020 = archiveByYears.get(1);
+
+            assertThat(archive_2021.getArchives().get(0).getCreatedDate())
+                    .isGreaterThan(archive_2021.getArchives().get(1).getCreatedDate());
+            assertThat(archive_2020.getArchives().get(0).getCreatedDate())
+                    .isGreaterThan(archive_2020.getArchives().get(1).getCreatedDate());
+        }
+
+        @Test
+        @DisplayName("각각의 연도가 개수에 맞게 나와야 한다")
+        void archiveTest4() {
+            // given
+            // 2021년도 게시글 4개
+            List<Archive> archives = this.initData();
+
+            // when
+            when(postsRepository.findPostsArchive())
+                    .thenReturn(archives);
+
+            // then
+            List<ArchiveByYear> archiveByYears = postsService.getPostsArchive();
+            assertThat(archiveByYears.size()).isEqualTo(3);
+
+            assertThat(archiveByYears.get(0).getCreatedYear()).isEqualTo("2021");
+            assertThat(archiveByYears.get(1).getCreatedYear()).isEqualTo("2020");
+            assertThat(archiveByYears.get(2).getCreatedYear()).isEqualTo("2019");
+
+            assertThat(archiveByYears.get(0).getArchives().size()).isEqualTo(2);
+            assertThat(archiveByYears.get(1).getArchives().size()).isEqualTo(2);
+            assertThat(archiveByYears.get(2).getArchives().size()).isEqualTo(1);
+        }
     }
 }
 
