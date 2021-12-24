@@ -56,17 +56,6 @@ public class PostsApi {
         return new ResponseEntity<>(postsService.getLatestPosts() , HttpStatus.OK);
     }
 
-
-    @GetMapping(value = "/search/{keyword}")
-    @ApiOperation(value = "게시글 검색")
-    public ResponseEntity<Page<PostsResponse>> getPostsListByKeyword(
-            @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) final Pageable pageable ,
-            @PathVariable(name = "keyword") String keyword) {
-
-        Page<PostsResponse> postsList = postsService.searchAll(pageable , keyword);
-        return new ResponseEntity<>(postsList , HttpStatus.OK);
-    }
-
     @GetMapping(value = "/archives")
     @ApiOperation(value = "전체 조회(archive)")
     public ResponseEntity<List<ArchiveByYear>> getPostsAll() {

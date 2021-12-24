@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface PostsCustomRepository {
-    Page<PostsResponse> searchAllResponse(Pageable pageable, String keyword);
-
     List<PostsCard> findPreviousAndNextPostsCardById(Long id);
 
     List<Archive> findPostsArchive();

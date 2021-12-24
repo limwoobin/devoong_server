@@ -86,11 +86,6 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsResponse> searchAll(Pageable pageable , String keyword) {
-        return postsRepository.searchAllResponse(pageable , keyword);
-    }
-
-    @Transactional(readOnly = true)
     public List<ArchiveByYear> getPostsArchive() {
         List<Archive> archives = postsRepository.findPostsArchive();
 
