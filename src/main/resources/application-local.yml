@@ -22,6 +22,7 @@ spring:
         show_sql: true
         use_sql_comments: false
         format_sql: true
+        default_batch_fetch_size: 100
 
   ## redis ##
   redis:
